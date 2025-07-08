@@ -42,6 +42,7 @@ X（旧Twitter）やInstagramなどのSNSで開発過程や完成報告、アプ
 ■ 機能候補
 
 ・MVPリリース時
+
 商品の一覧表示
 商品の新規登録
 商品情報の編集
@@ -54,6 +55,7 @@ X（旧Twitter）やInstagramなどのSNSで開発過程や完成報告、アプ
 ヘルプページ、FAQ
 
 ・本リリースまでに追加したい機能
+
 在庫アラート（在庫不足/過剰）
 メール・LINE通知
 発注メール自動作成
@@ -62,9 +64,11 @@ UI/UX、操作性の向上
 お試し機能
 
 ・余裕があれば作れたらいいなという希望
+
 AIによる発注・在庫提案
 
 ■ 機能の実装方針予定
+
 ・ログイン機能（一般・管理者）
 Devise（認証全般）
 Pundit（権限管理）
@@ -89,3 +93,7 @@ letter_opener（開発環境でのメール確認）
 ・UI/UX、操作性の向上
 Simple Form（フォームの作成）
 Bootstrap または Tailwind CSS（デザインフレームワーク）
+
+画面遷移図
+
+https://www.figma.com/design/7EoUtQV4gDNhGuWsRcqQCr/%E5%9C%A8%E5%BA%AB%E7%AE%A1%E7%90%86?node-id=0-1&t=ibj8XBUYCrBLxszO-1
