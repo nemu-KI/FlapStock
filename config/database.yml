@@ -81,6 +81,4 @@ test:
 #
 production:
   <<: *default
-  database: flapstock_production
-  username: flapstock
-  password: <%= ENV["FLAPSTOCK_DATABASE_PASSWORD"] %>
+  url: <%= ENV['DATABASE_URL'] %>
