@@ -1,26 +1,43 @@
 FROM ruby:3.2.3-slim
 
-# 必要なパッケージをインストール
-RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y \
-    build-essential \
-    libpq-dev \
-    nodejs \
-    yarn \
-    git
+ENV LANG C.UTF-8
+ENV TZ Asia/Tokyo
 
-# 作業ディレクトリを作成
+# Node.js/Yarn公式リポジトリから導入
+RUN apt-get update -qq \
+    && apt-get install -y --no-install-recommends \
+        ca-certificates \
+        curl \
+        gnupg \
+        build-essential \
+        libpq-dev \
+        git \
+        python3 \
+    && mkdir -p /etc/apt/keyrings \
+    && curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg \
+    && echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_18.x $(lsb_release -cs) main" > /etc/apt/sources.list.d/nodesource.list \
+    && curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
+    && echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list \
+    && apt-get update -qq \
+    && apt-get install -y nodejs yarn \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
 WORKDIR /app
 
-# GemfileとGemfile.lockを先にコピーしてbundle install
+# bundlerバージョンをGemfile.lockに合わせて明示
+RUN gem install bundler:2.4.19
+
+# 依存ファイルを先にコピーしてキャッシュ活用
 COPY Gemfile Gemfile.lock ./
-RUN gem install bundler && bundle install
+RUN bundle install
+
+COPY package.json yarn.lock ./
+RUN if [ -f yarn.lock ]; then yarn install; fi
 
 # アプリケーションの全ファイルをコピー
 COPY . .
 
-# ポート3000を公開
 EXPOSE 3000
 
-# サーバ起動時にPIDファイルが残っていたら削除し、Railsサーバを起動
 CMD ["bash", "-c", "rm -f tmp/pids/server.pid && bundle exec rails server -b 0.0.0.0"]
