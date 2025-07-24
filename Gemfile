@@ -2,34 +2,47 @@ source "https://rubygems.org"
 
 ruby "3.2.3"
 
+# --- Rails本体・必須 ---
 gem "rails", "~> 7.1.2"
-gem "pg", "~> 1.1"
-gem "puma", ">= 5.0"
-gem "sprockets-rails"
-gem "importmap-rails"
-gem "turbo-rails"
-gem "stimulus-rails"
-gem "jbuilder"
-gem "bootsnap", require: false
+gem "pg", "~> 1.1"                # PostgreSQL用
+gem "puma", ">= 5.0"              # Webサーバ
+gem "bootsnap", require: false    # 起動高速化
 
-# Windows用
-gem "tzinfo-data", platforms: %i[ windows jruby ]
+# --- フロントエンド・UI ---
+gem "sprockets-rails"             # アセット管理
+gem "importmap-rails"             # JS管理
+gem "turbo-rails"                 # Turbo（ページ遷移高速化）
+gem "stimulus-rails"              # Stimulus（JSフレームワーク）
+gem "tailwindcss-rails"           # TailwindCSS（CSSフレームワーク）
 
-# Active Storage variants（画像アップロードを使う場合のみ）
-# gem "image_processing", "~> 1.2"
+# --- ビュー・API ---
+gem "jbuilder"                    # JSONレスポンス生成
 
+# --- 認証・権限管理 ---
+gem "devise"                      # 認証（ログイン機能）
+gem "pundit"                      # 権限管理
+
+# --- OS依存 ---
+gem "tzinfo-data", platforms: %i[ windows jruby ]  # Windows用タイムゾーン
+
+# --- 開発・テスト共通 ---
 group :development, :test do
-  gem "debug", platforms: %i[ mri windows ]
-  gem "dotenv-rails"
+  gem "debug", platforms: %i[ mri windows ]        # デバッグ
+  gem "dotenv-rails"                              # 環境変数管理
 end
 
+# --- 開発専用 ---
 group :development do
-  gem "web-console"
-  # gem "rack-mini-profiler"
-  # gem "spring"
+  gem "web-console"                               # ブラウザでのデバッグ
+  # gem "rack-mini-profiler"                      # パフォーマンス計測
+  # gem "spring"                                  # コマンド高速化
 end
 
+# --- テスト専用 ---
 group :test do
-  gem "capybara"
-  gem "selenium-webdriver"
+  gem "capybara"                                 # E2Eテスト
+  gem "selenium-webdriver"                       # ブラウザ自動操作
 end
+
+# --- 画像アップロード（必要なら有効化） ---
+# gem "image_processing", "~> 1.2"
