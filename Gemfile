@@ -21,6 +21,7 @@ gem "jbuilder"                    # JSONレスポンス生成
 # --- 認証・権限管理 ---
 gem "devise"                      # 認証（ログイン機能）
 gem "pundit"                      # 権限管理
+gem "devise-i18n"                # Devise日本語化
 
 # --- OS依存 ---
 gem "tzinfo-data", platforms: %i[ windows jruby ]  # Windows用タイムゾーン
