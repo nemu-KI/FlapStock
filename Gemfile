@@ -47,3 +47,5 @@ end
 
 # --- 画像アップロード（必要なら有効化） ---
 # gem "image_processing", "~> 1.2"
+
+gem "cssbundling-rails", "~> 1.4"
