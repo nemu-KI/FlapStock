@@ -1,0 +1,94 @@
+ja:
+  hello: "こんにちは"
+
+  # バリデーションエラーメッセージ
+  errors:
+    messages:
+      required: "を入力してください"
+      blank: "を入力してください"
+      taken: "は既に使用されています"
+      too_short: "は%{count}文字以上で入力してください"
+      too_long: "は%{count}文字以下で入力してください"
+      not_a_number: "は数値で入力してください"
+      greater_than: "は%{count}より大きい値で入力してください"
+      greater_than_or_equal_to: "は%{count}以上の値で入力してください"
+      less_than: "は%{count}より小さい値で入力してください"
+      less_than_or_equal_to: "は%{count}以下の値で入力してください"
+
+  # モデル名
+  activerecord:
+    models:
+      item: "物品"
+      category: "分類"
+      location: "保管場所"
+      supplier: "発注先"
+      company: "会社"
+      user: "ユーザー"
+      stock_movement: "入出庫履歴"
+
+    # 属性名
+    attributes:
+      item:
+        name: "物品名"
+        stock_quantity: "在庫数"
+        unit: "単位"
+        description: "備考"
+        sku: "型式"
+        image_url: "画像URL"
+        min_stock: "最小在庫"
+        max_stock: "最大在庫"
+        category: "分類"
+        location: "保管場所"
+        supplier: "発注先"
+        company: "会社"
+
+      category:
+        name: "分類名"
+        company: "会社"
+
+      location:
+        name: "保管場所名"
+        company: "会社"
+
+      supplier:
+        name: "発注先名"
+        company: "会社"
+
+      user:
+        name: "ユーザー名"
+        email: "メールアドレス"
+        password: "パスワード"
+        company: "会社"
+
+      company:
+        name: "会社名"
+        email: "メールアドレス"
+        phone: "電話番号"
+        active: "有効状態"
+
+    # エラーメッセージ
+    errors:
+      models:
+        item:
+          attributes:
+            name:
+              required: "物品名を入力してください"
+              blank: "物品名を入力してください"
+            category:
+              required: "分類を選択してください"
+              blank: "分類を選択してください"
+            location:
+              required: "保管場所を選択してください"
+              blank: "保管場所を選択してください"
+            supplier:
+              required: "発注先を選択してください"
+              blank: "発注先を選択してください"
+            stock_quantity:
+              not_a_number: "在庫数は数値で入力してください"
+              greater_than_or_equal_to: "在庫数は0以上の値で入力してください"
+            min_stock:
+              not_a_number: "最小在庫は数値で入力してください"
+              greater_than_or_equal_to: "最小在庫は0以上の値で入力してください"
+            max_stock:
+              not_a_number: "最大在庫は数値で入力してください"
+              greater_than_or_equal_to: "最大在庫は0以上の値で入力してください"
