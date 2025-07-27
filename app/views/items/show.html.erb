@@ -1,0 +1,180 @@
+<div class="min-h-screen h-screen flex flex-col bg-slate-50">
+  <%= render 'layouts/dashboard_header' %>
+  <div class="flex flex-1 min-h-0">
+    <%= render 'layouts/dashboard_sidebar' %>
+    <main class="flex-1 p-6 min-h-0 h-full overflow-auto">
+      <!-- ヘッダー部分 -->
+      <div class="flex justify-between items-center mb-6">
+        <div class="flex items-center space-x-4">
+          <h1 class="text-2xl font-bold text-slate-800">物品詳細</h1>
+          <%= link_to items_path, class: "text-blue-600 hover:text-blue-800 transition" do %>
+            <i class="fas fa-arrow-left mr-2"></i>物品一覧に戻る
+          <% end %>
+        </div>
+        <div class="flex space-x-3">
+          <%= link_to edit_item_path(@item), class: "bg-blue-400 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded transition flex items-center justify-center" do %>
+            編集
+          <% end %>
+                                                                      <%= form_with url: item_path(@item), method: :delete, local: true, style: "display: inline;" do |f| %>
+            <%= f.submit '削除',
+                data: {
+                  controller: "delete-confirmation",
+                  action: "click->delete-confirmation#confirm",
+                  confirm: "「#{@item.name}」を削除しますか？\n\nこの操作は取り消せません。\n関連する入出庫履歴も削除されます。"
+                },
+                class: "bg-red-400 hover:bg-red-600 text-white font-bold py-2 px-4 rounded transition flex items-center justify-center" %>
+          <% end %>
+        </div>
+      </div>
+
+      <!-- メインコンテンツ -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- 左側：基本情報 -->
+        <div class="lg:col-span-2 space-y-6">
+          <!-- 基本情報カード -->
+          <div class="bg-white rounded-lg shadow p-6">
+            <h2 class="text-xl font-semibold text-slate-800 mb-4 flex items-center">
+              <i class="fas fa-info-circle mr-2 text-blue-500"></i>基本情報
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-500 mb-1">物品名</label>
+                <p class="text-lg text-slate-800 font-medium"><%= @item.name %></p>
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-500 mb-1">型式</label>
+                <p class="text-lg text-slate-800"><%= @item.sku.present? ? @item.sku : '未設定' %></p>
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-500 mb-1">分類</label>
+                <p class="text-lg text-slate-800"><%= @item.category&.name || '未設定' %></p>
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-500 mb-1">保管場所</label>
+                <p class="text-lg text-slate-800"><%= @item.location&.name || '未設定' %></p>
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-500 mb-1">仕入先</label>
+                <p class="text-lg text-slate-800"><%= @item.supplier&.name || '未設定' %></p>
+              </div>
+            </div>
+            <% if @item.description.present? %>
+              <div class="mt-4">
+                <label class="block text-sm font-medium text-gray-500 mb-1">備考</label>
+                <p class="text-slate-800 whitespace-pre-wrap"><%= @item.description %></p>
+              </div>
+            <% end %>
+          </div>
+
+          <!-- 在庫情報カード -->
+          <div class="bg-white rounded-lg shadow p-6">
+            <h2 class="text-xl font-semibold text-slate-800 mb-4 flex items-center">
+              <i class="fas fa-boxes mr-2 text-green-500"></i>在庫情報
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div class="text-center">
+                <label class="block text-sm font-medium text-gray-500 mb-1">現在の在庫数</label>
+                <p class="text-3xl font-bold text-slate-800"><%= @item.stock_quantity || 0 %></p>
+                <p class="text-sm text-gray-500"><%= @item.unit.present? ? @item.unit : '個' %></p>
+              </div>
+              <div class="text-center">
+                <label class="block text-sm font-medium text-gray-500 mb-1">最小在庫</label>
+                <p class="text-2xl font-semibold text-orange-600"><%= @item.min_stock || '未設定' %></p>
+                <p class="text-sm text-gray-500">アラート基準</p>
+              </div>
+              <div class="text-center">
+                <label class="block text-sm font-medium text-gray-500 mb-1">最大在庫</label>
+                <p class="text-2xl font-semibold text-blue-600"><%= @item.max_stock || '未設定' %></p>
+                <p class="text-sm text-gray-500">上限基準</p>
+              </div>
+            </div>
+
+            <!-- 在庫状況インジケーター -->
+            <div class="mt-6">
+              <label class="block text-sm font-medium text-gray-500 mb-2">在庫状況</label>
+              <div class="flex items-center space-x-2">
+                <% if @item.min_stock.present? && @item.stock_quantity.to_i <= @item.min_stock %>
+                  <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+                  <span class="text-red-600 font-medium">在庫不足</span>
+                <% elsif @item.max_stock.present? && @item.stock_quantity.to_i >= @item.max_stock %>
+                  <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                  <span class="text-yellow-600 font-medium">在庫過剰</span>
+                <% else %>
+                  <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                  <span class="text-green-600 font-medium">正常</span>
+                <% end %>
+              </div>
+            </div>
+          </div>
+
+          <!-- 入出庫履歴（後で実装予定） -->
+          <div class="bg-white rounded-lg shadow p-6">
+            <h2 class="text-xl font-semibold text-slate-800 mb-4 flex items-center">
+              <i class="fas fa-history mr-2 text-purple-500"></i>入出庫履歴
+            </h2>
+            <div class="text-center py-8 text-gray-500">
+              <i class="fas fa-clock text-4xl mb-4"></i>
+              <p>入出庫履歴機能は後ほど実装予定です</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 右側：サイドバー -->
+        <div class="space-y-6">
+          <!-- 商品画像 -->
+          <div class="bg-white rounded-lg shadow p-6">
+            <h3 class="text-lg font-semibold text-slate-800 mb-4">商品画像</h3>
+            <% if @item.image.attached? %>
+              <%= image_tag @item.image, alt: @item.name, class: "w-full h-48 object-contain rounded bg-gray-100" %>
+            <% else %>
+              <div class="w-full h-48 bg-gray-200 rounded flex items-center justify-center">
+                <div class="text-center text-gray-500">
+                  <i class="fas fa-image text-4xl mb-2"></i>
+                  <p>画像なし</p>
+                </div>
+              </div>
+            <% end %>
+          </div>
+
+          <!-- クイックアクション -->
+          <div class="bg-white rounded-lg shadow p-6">
+            <h3 class="text-lg font-semibold text-slate-800 mb-4">クイックアクション</h3>
+            <div class="space-y-3">
+              <button class="w-full bg-green-400 hover:bg-green-600 text-white font-bold py-3 px-4 rounded transition flex items-center justify-center">
+                入庫
+              </button>
+              <button class="w-full bg-red-400 hover:bg-red-600 text-white font-bold py-3 px-4 rounded transition flex items-center justify-center">
+                出庫
+              </button>
+              <button class="w-full bg-blue-400 hover:bg-blue-600 text-white font-bold py-3 px-4 rounded transition flex items-center justify-center">
+                在庫調整
+              </button>
+              <%= link_to "#", class: "w-full bg-purple-400 hover:bg-purple-600 text-white font-bold py-3 px-4 rounded transition flex items-center justify-center" do %>
+                発注メール作成
+              <% end %>
+            </div>
+          </div>
+
+          <!-- メタ情報 -->
+          <div class="bg-white rounded-lg shadow p-6">
+            <h3 class="text-lg font-semibold text-slate-800 mb-4">メタ情報</h3>
+            <div class="space-y-3 text-sm">
+              <div class="flex justify-between">
+                <span class="text-gray-500">作成日</span>
+                <span class="text-slate-800"><%= @item.created_at.strftime('%Y年%m月%d日') %></span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-gray-500">更新日</span>
+                <span class="text-slate-800"><%= @item.updated_at.strftime('%Y年%m月%d日') %></span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-gray-500">ID</span>
+                <span class="text-slate-800">#<%= @item.id %></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
