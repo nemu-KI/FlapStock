@@ -2,12 +2,19 @@
   <%= render 'layouts/dashboard_header' %>
   <div class="flex flex-1 min-h-0">
     <%= render 'layouts/dashboard_sidebar' %>
-    <main class="flex-1 p-6 min-h-0 h-full overflow-auto">
+    <!-- コンテンツエリア -->
+    <div class="flex-1 p-6">
+      <!-- フラッシュメッセージ（自動消去なし） -->
+      <%= render 'shared/flash_messages_persistent' %>
+
       <!-- ページタイトルと新規登録ボタン -->
       <div class="flex justify-between items-center mb-6">
         <h1 class="text-2xl font-bold text-slate-800">物品一覧</h1>
-        <%= link_to new_item_path, class: "bg-blue-400 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded transition flex items-center justify-center" do %>
-          物品の新規登録
+        <%= link_to new_item_path, class: "inline-flex items-center px-4 py-2 bg-blue-500 text-white text-sm font-medium rounded-lg hover:bg-blue-600 transition" do %>
+          <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+          </svg>
+          新規登録
         <% end %>
       </div>
 
@@ -84,8 +91,8 @@
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                       <div class="flex space-x-2">
-                        <%= link_to '編集', edit_item_path(item), class: "text-green-600 hover:text-green-900" %>
-                                                                                                                        <%= form_with url: item_path(item), method: :delete, local: true, style: "display: inline;" do |f| %>
+                        <%= link_to '編集', edit_item_path(item), class: "text-blue-600 hover:text-blue-900" %>
+                        <%= form_with url: item_path(item), method: :delete, local: true, style: "display: inline;" do |f| %>
                           <%= f.submit '削除',
                               data: {
                                 controller: "delete-confirmation",
@@ -124,6 +131,6 @@
           <button class="px-3 py-2 text-sm text-slate-500 hover:text-slate-700">次→</button>
         </nav>
       </div>
-    </main>
+    </div>
   </div>
 </div>

@@ -18,9 +18,9 @@ class ItemsController < ApplicationController
     @item = current_user.company.items.build(item_params)
 
     if @item.save
-      redirect_to @item, notice: '商品が正常に作成されました。'
+      redirect_to items_path, notice: '物品が正常に作成されました。'
     else
-      flash.now[:alert] = '商品の作成に失敗しました。'
+      flash.now[:alert] = '物品の作成に失敗しました。'
       render :new, status: :unprocessable_entity
     end
   end
@@ -30,9 +30,9 @@ class ItemsController < ApplicationController
 
   def update
     if @item.update(item_params)
-      redirect_to @item, notice: '商品が正常に更新されました。'
+      redirect_to @item, notice: '物品が正常に更新されました。'
     else
-      flash.now[:alert] = '商品の更新に失敗しました。'
+      flash.now[:alert] = '物品の更新に失敗しました。'
       render :edit, status: :unprocessable_entity
     end
   end
@@ -41,9 +41,9 @@ class ItemsController < ApplicationController
     item_name = @item.name
 
     if @item.destroy
-      redirect_to items_url, notice: "「#{item_name}」が正常に削除されました。"
+      redirect_to items_path, notice: "「#{item_name}」が正常に削除されました。"
     else
-      redirect_to items_url, alert: "「#{item_name}」の削除に失敗しました。"
+      redirect_to items_path, alert: "「#{item_name}」の削除に失敗しました。"
     end
   end
 

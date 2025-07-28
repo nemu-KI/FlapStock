@@ -1,0 +1,78 @@
+<div class="min-h-screen h-screen flex flex-col bg-slate-50">
+  <%= render 'layouts/dashboard_header' %>
+  <div class="flex flex-1 min-h-0">
+    <%= render 'layouts/dashboard_sidebar' %>
+
+    <!-- コンテンツエリア -->
+    <div class="flex-1 p-6">
+      <!-- フラッシュメッセージ（自動消去なし） -->
+      <%= render 'shared/flash_messages_persistent' %>
+
+      <!-- ページタイトルと新規登録ボタン -->
+      <div class="flex justify-between items-center mb-6">
+        <h1 class="text-2xl font-bold text-slate-800">保管場所一覧</h1>
+        <%= link_to new_location_path, class: "inline-flex items-center px-4 py-2 bg-blue-500 text-white text-sm font-medium rounded-lg hover:bg-blue-600 transition" do %>
+          <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+          </svg>
+          新規登録
+        <% end %>
+      </div>
+
+      <!-- 保管場所一覧テーブル -->
+      <div class="bg-white rounded-lg shadow-sm border border-slate-200 overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="min-w-full divide-y divide-slate-200">
+            <thead class="bg-slate-50">
+              <tr>
+                <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">保管場所名</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">保管物品数</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">説明</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">操作</th>
+              </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-slate-200">
+              <% @locations.each do |location| %>
+                <tr class="hover:bg-slate-50">
+                  <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">
+                    <%= location.name %>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">
+                    <%= location.items.count %>件
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">
+                    <%= truncate(location.description, length: 50) if location.description.present? %>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                    <div class="flex space-x-2">
+                      <%= link_to edit_location_path(location), class: "text-blue-600 hover:text-blue-900" do %>
+                        編集
+                      <% end %>
+                      <%= form_with url: location_path(location), method: :delete, local: true, style: "display: inline;" do |f| %>
+                        <%= f.submit '削除',
+                            data: {
+                              controller: "delete-confirmation",
+                              action: "click->delete-confirmation#confirm",
+                              confirm: "「#{location.name}」を削除しますか？\n\nこの操作は取り消せません。\n関連する物品も削除されます。"
+                            },
+                            class: "text-red-600 hover:text-red-900 bg-transparent border-0 p-0 cursor-pointer" %>
+                      <% end %>
+                    </div>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- データがない場合のメッセージ -->
+        <% if @locations.empty? %>
+          <div class="text-center py-8">
+            <p class="text-slate-500">保管場所が登録されていません</p>
+            <%= link_to "最初の保管場所を登録", new_location_path, class: "mt-2 inline-flex items-center px-4 py-2 bg-blue-500 text-white text-sm font-medium rounded-lg hover:bg-blue-600 transition" %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

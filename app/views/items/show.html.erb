@@ -3,6 +3,9 @@
   <div class="flex flex-1 min-h-0">
     <%= render 'layouts/dashboard_sidebar' %>
     <main class="flex-1 p-6 min-h-0 h-full overflow-auto">
+      <!-- フラッシュメッセージ（自動消去なし） -->
+      <%= render 'shared/flash_messages_persistent' %>
+
       <!-- ヘッダー部分 -->
       <div class="flex justify-between items-center mb-6">
         <div class="flex items-center space-x-4">
