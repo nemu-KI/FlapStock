@@ -1,4 +1,11 @@
 class Supplier < ApplicationRecord
   belongs_to :company
   has_many :items
+
+  validates :name, presence: true, length: { maximum: 100 }
+  validates :email, format: { with: URI::MailTo::EMAIL_REGEXP }, allow_blank: true
+  validates :phone, length: { maximum: 20 }
+  validates :contact_person, length: { maximum: 100 }
+  validates :address, length: { maximum: 200 }
+  validates :note, length: { maximum: 1000 }
 end

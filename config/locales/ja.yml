@@ -1,6 +1,14 @@
 ja:
   hello: "こんにちは"
 
+  # エラーメッセージのヘッダー
+  errors:
+    template:
+      header:
+        one: "1件のエラーにより%{model}を保存できませんでした："
+        other: "%{count}件のエラーにより%{model}を保存できませんでした："
+      body: "以下の問題を確認してください"
+
   # バリデーションエラーメッセージ
   errors:
     messages:
@@ -44,14 +52,21 @@ ja:
 
       category:
         name: "分類名"
+        description: "説明"
         company: "会社"
 
       location:
         name: "保管場所名"
+        description: "説明"
         company: "会社"
 
       supplier:
         name: "発注先名"
+        email: "メールアドレス"
+        phone: "電話番号"
+        address: "住所"
+        contact_person: "担当者名"
+        note: "備考"
         company: "会社"
 
       user:
@@ -92,3 +107,38 @@ ja:
             max_stock:
               not_a_number: "最大在庫は数値で入力してください"
               greater_than_or_equal_to: "最大在庫は0以上の値で入力してください"
+
+        category:
+          attributes:
+            name:
+              required: "分類名を入力してください"
+              blank: "分類名を入力してください"
+              too_long: "分類名は%{count}文字以下で入力してください"
+            description:
+              too_long: "説明は%{count}文字以下で入力してください"
+
+        location:
+          attributes:
+            name:
+              required: "保管場所名を入力してください"
+              blank: "保管場所名を入力してください"
+              too_long: "保管場所名は%{count}文字以下で入力してください"
+            description:
+              too_long: "説明は%{count}文字以下で入力してください"
+
+        supplier:
+          attributes:
+            name:
+              required: "発注先名を入力してください"
+              blank: "発注先名を入力してください"
+              too_long: "発注先名は%{count}文字以下で入力してください"
+            email:
+              invalid: "メールアドレスの形式が正しくありません"
+            phone:
+              too_long: "電話番号は%{count}文字以下で入力してください"
+            contact_person:
+              too_long: "担当者名は%{count}文字以下で入力してください"
+            address:
+              too_long: "住所は%{count}文字以下で入力してください"
+            note:
+              too_long: "備考は%{count}文字以下で入力してください"

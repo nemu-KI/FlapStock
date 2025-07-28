@@ -1,0 +1,191 @@
+<div class="min-h-screen h-screen flex flex-col bg-slate-50">
+  <%= render 'layouts/dashboard_header' %>
+  <div class="flex flex-1 min-h-0">
+    <%= render 'layouts/dashboard_sidebar' %>
+    <main class="flex-1 p-6 min-h-0 h-full overflow-auto">
+      <!-- フラッシュメッセージ（自動消去なし） -->
+      <%= render 'shared/flash_messages_persistent' %>
+
+      <!-- ヘッダー部分 -->
+      <div class="flex justify-between items-center mb-6">
+        <div class="flex items-center space-x-4">
+          <h1 class="text-2xl font-bold text-slate-800">発注先詳細</h1>
+          <%= link_to suppliers_path, class: "text-blue-600 hover:text-blue-800 transition" do %>
+            <i class="fas fa-arrow-left mr-2"></i>発注先一覧に戻る
+          <% end %>
+        </div>
+        <div class="flex space-x-3">
+          <%= link_to edit_supplier_path(@supplier), class: "bg-blue-400 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded transition flex items-center justify-center" do %>
+            編集
+          <% end %>
+          <%= form_with url: supplier_path(@supplier), method: :delete, local: true, style: "display: inline;" do |f| %>
+            <%= f.submit '削除',
+                data: {
+                  controller: "delete-confirmation",
+                  action: "click->delete-confirmation#confirm",
+                  confirm: "「#{@supplier.name}」を削除しますか？\n\nこの操作は取り消せません。\n関連する物品も削除されます。"
+                },
+                class: "bg-red-400 hover:bg-red-600 text-white font-bold py-2 px-4 rounded transition flex items-center justify-center" %>
+          <% end %>
+        </div>
+      </div>
+
+      <!-- メインコンテンツ -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- 左側：基本情報 -->
+        <div class="lg:col-span-2 space-y-6">
+          <!-- 基本情報カード -->
+          <div class="bg-white rounded-lg shadow p-6">
+            <h2 class="text-xl font-semibold text-slate-800 mb-4 flex items-center">
+              <i class="fas fa-info-circle mr-2 text-blue-500"></i>基本情報
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-500 mb-1">発注先名</label>
+                <p class="text-lg text-slate-800 font-medium"><%= @supplier.name %></p>
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-500 mb-1">担当者</label>
+                <p class="text-lg text-slate-800"><%= @supplier.contact_person.present? ? @supplier.contact_person : '未設定' %></p>
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-500 mb-1">メールアドレス</label>
+                <p class="text-lg text-slate-800">
+                  <% if @supplier.email.present? %>
+                    <a href="mailto:<%= @supplier.email %>" class="text-blue-600 hover:text-blue-800"><%= @supplier.email %></a>
+                  <% else %>
+                    未設定
+                  <% end %>
+                </p>
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-500 mb-1">電話番号</label>
+                <p class="text-lg text-slate-800">
+                  <% if @supplier.phone.present? %>
+                    <a href="tel:<%= @supplier.phone %>" class="text-blue-600 hover:text-blue-800"><%= @supplier.phone %></a>
+                  <% else %>
+                    未設定
+                  <% end %>
+                </p>
+              </div>
+            </div>
+            <% if @supplier.address.present? %>
+              <div class="mt-4">
+                <label class="block text-sm font-medium text-gray-500 mb-1">住所</label>
+                <p class="text-slate-800"><%= @supplier.address %></p>
+              </div>
+            <% end %>
+            <% if @supplier.note.present? %>
+              <div class="mt-4">
+                <label class="block text-sm font-medium text-gray-500 mb-1">備考</label>
+                <p class="text-slate-800 whitespace-pre-wrap"><%= @supplier.note %></p>
+              </div>
+            <% end %>
+          </div>
+
+          <!-- 関連物品情報カード -->
+          <div class="bg-white rounded-lg shadow p-6">
+            <h2 class="text-xl font-semibold text-slate-800 mb-4 flex items-center">
+              <i class="fas fa-boxes mr-2 text-green-500"></i>関連物品情報
+            </h2>
+            <div class="text-center">
+              <label class="block text-sm font-medium text-gray-500 mb-1">登録物品数</label>
+              <p class="text-3xl font-bold text-slate-800"><%= @supplier.items.count %></p>
+              <p class="text-sm text-gray-500">件</p>
+            </div>
+
+            <!-- 物品一覧 -->
+            <% if @supplier.items.any? %>
+              <div class="mt-6">
+                <h3 class="text-lg font-medium text-slate-800 mb-3">登録物品一覧</h3>
+                <div class="overflow-x-auto">
+                  <table class="min-w-full divide-y divide-slate-200">
+                    <thead class="bg-slate-50">
+                      <tr>
+                        <th class="px-4 py-2 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">物品名</th>
+                        <th class="px-4 py-2 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">在庫数</th>
+                        <th class="px-4 py-2 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">分類</th>
+                        <th class="px-4 py-2 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">保管場所</th>
+                      </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-slate-200">
+                      <% @supplier.items.limit(5).each do |item| %>
+                        <tr class="hover:bg-slate-50">
+                          <td class="px-4 py-2 whitespace-nowrap text-sm font-medium text-slate-900">
+                            <%= link_to item.name, item_path(item), class: "text-blue-600 hover:text-blue-900" %>
+                          </td>
+                          <td class="px-4 py-2 whitespace-nowrap text-sm text-slate-500">
+                            <%= item.stock_quantity %> <%= item.unit %>
+                          </td>
+                          <td class="px-4 py-2 whitespace-nowrap text-sm text-slate-500">
+                            <%= item.category&.name || '未設定' %>
+                          </td>
+                          <td class="px-4 py-2 whitespace-nowrap text-sm text-slate-500">
+                            <%= item.location&.name || '未設定' %>
+                          </td>
+                        </tr>
+                      <% end %>
+                    </tbody>
+                  </table>
+                </div>
+                <% if @supplier.items.count > 5 %>
+                  <div class="mt-3 text-center">
+                    <p class="text-sm text-gray-500">他 <%= @supplier.items.count - 5 %> 件の物品があります</p>
+                  </div>
+                <% end %>
+              </div>
+            <% else %>
+              <div class="text-center py-8 text-gray-500">
+                <i class="fas fa-box-open text-4xl mb-4"></i>
+                <p>この発注先に関連する物品はありません</p>
+              </div>
+            <% end %>
+          </div>
+
+          <!-- 発注履歴（後で実装予定） -->
+          <div class="bg-white rounded-lg shadow p-6">
+            <h2 class="text-xl font-semibold text-slate-800 mb-4 flex items-center">
+              <i class="fas fa-history mr-2 text-purple-500"></i>発注履歴
+            </h2>
+            <div class="text-center py-8 text-gray-500">
+              <i class="fas fa-clock text-4xl mb-4"></i>
+              <p>発注履歴機能は後ほど実装予定です</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 右側：サイドバー -->
+        <div class="space-y-6">
+          <!-- クイックアクション -->
+          <div class="bg-white rounded-lg shadow p-6">
+            <h3 class="text-lg font-semibold text-slate-800 mb-4">クイックアクション</h3>
+            <div class="space-y-3">
+              <button class="w-full bg-green-400 hover:bg-green-600 text-white font-bold py-3 px-4 rounded transition flex items-center justify-center">
+                新規発注
+              </button>
+            </div>
+          </div>
+
+          <!-- メタ情報 -->
+          <div class="bg-white rounded-lg shadow p-6">
+            <h3 class="text-lg font-semibold text-slate-800 mb-4">メタ情報</h3>
+            <div class="space-y-3 text-sm">
+              <div class="flex justify-between">
+                <span class="text-gray-500">作成日</span>
+                <span class="text-slate-800"><%= @supplier.created_at.strftime('%Y年%m月%d日') %></span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-gray-500">更新日</span>
+                <span class="text-slate-800"><%= @supplier.updated_at.strftime('%Y年%m月%d日') %></span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-gray-500">ID</span>
+                <span class="text-slate-800">#<%= @supplier.id %></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
