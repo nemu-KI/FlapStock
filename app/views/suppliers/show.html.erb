@@ -15,17 +15,21 @@
           <% end %>
         </div>
         <div class="flex space-x-3">
-          <%= link_to edit_supplier_path(@supplier), class: "bg-blue-400 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded transition flex items-center justify-center" do %>
-            編集
+          <% if policy(@supplier).update? %>
+            <%= link_to edit_supplier_path(@supplier), class: "bg-blue-400 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded transition flex items-center justify-center" do %>
+              編集
+            <% end %>
           <% end %>
-          <%= form_with url: supplier_path(@supplier), method: :delete, local: true, style: "display: inline;" do |f| %>
-            <%= f.submit '削除',
+          <% if policy(@supplier).destroy? %>
+            <%= form_with url: supplier_path(@supplier), method: :delete, local: true, style: "display: inline;" do |f| %>
+                          <%= f.submit '削除',
                 data: {
                   controller: "delete-confirmation",
                   action: "click->delete-confirmation#confirm",
-                  confirm: "「#{@supplier.name}」を削除しますか？\n\nこの操作は取り消せません。\n関連する物品も削除されます。"
+                  confirm: "「#{@supplier.name}」を削除しますか？\n\nこの操作は取り消せません。\n関連する物品がある場合は削除できません。"
                 },
                 class: "bg-red-400 hover:bg-red-600 text-white font-bold py-2 px-4 rounded transition flex items-center justify-center" %>
+            <% end %>
           <% end %>
         </div>
       </div>
