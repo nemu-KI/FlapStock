@@ -4,18 +4,21 @@ class ItemsController < ApplicationController
   before_action :set_form_data, only: [:new, :create, :edit, :update]
 
   def index
-    @items = current_user.company.items.includes(:category, :location, :supplier)
+    @items = policy_scope(Item).includes(:category, :location, :supplier)
   end
 
   def show
+    authorize @item
   end
 
   def new
     @item = current_user.company.items.build
+    authorize @item
   end
 
   def create
     @item = current_user.company.items.build(item_params)
+    authorize @item
 
     if @item.save
       redirect_to items_path, notice: '物品が正常に作成されました。'
@@ -26,9 +29,11 @@ class ItemsController < ApplicationController
   end
 
   def edit
+    authorize @item
   end
 
   def update
+    authorize @item
     if @item.update(item_params)
       redirect_to @item, notice: '物品が正常に更新されました。'
     else
@@ -38,6 +43,7 @@ class ItemsController < ApplicationController
   end
 
   def destroy
+    authorize @item
     item_name = @item.name
 
     if @item.destroy
@@ -50,7 +56,11 @@ class ItemsController < ApplicationController
   private
 
   def set_item
-    @item = current_user.company.items.find(params[:id])
+    # 他社のデータにアクセスしようとした場合も権限エラーとして扱う
+    @item = Item.find(params[:id])
+    unless @item.company == current_user.company
+      raise Pundit::NotAuthorizedError, "この操作を実行する権限がありません。"
+    end
   end
 
   def set_form_data

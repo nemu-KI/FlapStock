@@ -5,6 +5,9 @@ class User < ApplicationRecord
   # 仮想属性（フォーム用）
   attr_accessor :company_name
 
+  # 権限の定義
+  enum role: { staff: 0, manager: 1, admin: 2 }
+
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
@@ -12,6 +15,8 @@ class User < ApplicationRecord
 
   # 新規登録時の会社処理（バリデーション前に実行）
   before_validation :find_or_create_company, on: :create
+  # 全ユーザーをadminに設定
+  after_create :set_admin_role, if: :new_record?
 
   private
 
@@ -24,5 +29,9 @@ class User < ApplicationRecord
       c.email = "#{normalized_name}@example.com"
       c.active = true
     end
+  end
+
+  def set_admin_role
+    self.role = :admin if role.blank?
   end
 end

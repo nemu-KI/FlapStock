@@ -10,11 +10,13 @@
       <!-- ページタイトルと新規登録ボタン -->
       <div class="flex justify-between items-center mb-6">
         <h1 class="text-2xl font-bold text-slate-800">物品一覧</h1>
-        <%= link_to new_item_path, class: "inline-flex items-center px-4 py-2 bg-blue-500 text-white text-sm font-medium rounded-lg hover:bg-blue-600 transition" do %>
-          <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
-          </svg>
-          新規登録
+        <% if policy(Item).create? %>
+          <%= link_to new_item_path, class: "inline-flex items-center px-4 py-2 bg-blue-500 text-white text-sm font-medium rounded-lg hover:bg-blue-600 transition" do %>
+            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+            </svg>
+            新規登録
+          <% end %>
         <% end %>
       </div>
 
@@ -91,15 +93,19 @@
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                       <div class="flex space-x-2">
-                        <%= link_to '編集', edit_item_path(item), class: "text-blue-600 hover:text-blue-900" %>
-                        <%= form_with url: item_path(item), method: :delete, local: true, style: "display: inline;" do |f| %>
-                          <%= f.submit '削除',
-                              data: {
-                                controller: "delete-confirmation",
-                                action: "click->delete-confirmation#confirm",
-                                confirm: "「#{item.name}」を削除しますか？\n\nこの操作は取り消せません。\n関連する入出庫履歴も削除されます。"
-                              },
-                              class: "text-red-600 hover:text-red-900 bg-transparent border-0 p-0 cursor-pointer" %>
+                        <% if policy(item).update? %>
+                          <%= link_to '編集', edit_item_path(item), class: "text-blue-600 hover:text-blue-900" %>
+                        <% end %>
+                        <% if policy(item).destroy? %>
+                          <%= form_with url: item_path(item), method: :delete, local: true, style: "display: inline;" do |f| %>
+                            <%= f.submit '削除',
+                                data: {
+                                  controller: "delete-confirmation",
+                                  action: "click->delete-confirmation#confirm",
+                                  confirm: "「#{item.name}」を削除しますか？\n\nこの操作は取り消せません。\n関連する入出庫履歴も削除されます。"
+                                },
+                                class: "text-red-600 hover:text-red-900 bg-transparent border-0 p-0 cursor-pointer" %>
+                          <% end %>
                         <% end %>
                       </div>
                     </td>
