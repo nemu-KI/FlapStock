@@ -4,7 +4,8 @@ class ItemsController < ApplicationController
   before_action :set_form_data, only: [:new, :create, :edit, :update]
 
   def index
-    @items = policy_scope(Item).includes(:category, :location, :supplier)
+    @q = policy_scope(Item).includes(:category, :location, :supplier).ransack(params[:q])
+    @items = @q.result(distinct: true)
   end
 
   def show

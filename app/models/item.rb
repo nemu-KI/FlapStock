@@ -13,6 +13,16 @@ class Item < ApplicationRecord
   validates :max_stock, numericality: { greater_than_or_equal_to: 0 }, allow_nil: true
   validate :max_stock_greater_than_min_stock, if: -> { min_stock.present? && max_stock.present? }
 
+  # Ransackの検索可能な属性を定義
+  def self.ransackable_attributes(auth_object = nil)
+    %w[name sku stock_quantity unit description min_stock max_stock created_at updated_at]
+  end
+
+  # Ransackの検索可能な関連を定義
+  def self.ransackable_associations(auth_object = nil)
+    %w[category location supplier]
+  end
+
   private
 
   def max_stock_greater_than_min_stock

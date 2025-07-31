@@ -23,6 +23,10 @@ gem "devise"                      # 認証（ログイン機能）
 gem "pundit"                      # 権限管理
 gem "devise-i18n"                # Devise日本語化
 
+# --- 検索・ソート ---
+gem "ransack", "~> 4.1"           # 検索・ソート機能
+# gem "kaminari", "~> 1.2"          # ページネーション機能
+
 # --- OS依存 ---
 gem "tzinfo-data", platforms: %i[ windows jruby ]  # Windows用タイムゾーン
 
@@ -47,5 +51,3 @@ end
 
 # --- 画像アップロード（必要なら有効化） ---
 # gem "image_processing", "~> 1.2"
-
-gem "cssbundling-rails", "~> 1.4"
