@@ -34,4 +34,14 @@ class User < ApplicationRecord
   def set_admin_role
     self.role = :admin if role.blank?
   end
+
+  # Ransackの検索可能な属性を定義
+  def self.ransackable_attributes(auth_object = nil)
+    %w[id email role company_id created_at updated_at]
+  end
+
+  # Ransackの検索可能な関連を定義
+  def self.ransackable_associations(auth_object = nil)
+    %w[company stock_movements]
+  end
 end

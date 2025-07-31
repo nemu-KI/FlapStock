@@ -13,7 +13,7 @@ services:
 
   web:
     build: .
-    command: bin/dev
+    command: bash -c "bundle install && bin/dev"
     tty: true
     stdin_open: true
     volumes:
