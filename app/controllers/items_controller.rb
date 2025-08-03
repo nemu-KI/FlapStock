@@ -5,7 +5,7 @@ class ItemsController < ApplicationController
 
   def index
     @q = policy_scope(Item).includes(:category, :location, :supplier).ransack(params[:q])
-    @items = @q.result(distinct: true)
+    @items = @q.result(distinct: true).page(params[:page])
   end
 
   def show

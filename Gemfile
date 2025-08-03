@@ -25,7 +25,7 @@ gem "devise-i18n"                # Devise日本語化
 
 # --- 検索・ソート ---
 gem "ransack", "~> 4.1"           # 検索・ソート機能
-# gem "kaminari", "~> 1.2"          # ページネーション機能
+gem "kaminari", "~> 1.2"          # ページネーション機能
 
 # --- OS依存 ---
 gem "tzinfo-data", platforms: %i[ windows jruby ]  # Windows用タイムゾーン
