@@ -1,4 +1,21 @@
 ja:
+  views:
+    pagination:
+      first: "最初"
+      last: "最後"
+      previous: "前"
+      next: "次"
+      truncate: "..."
+  helpers:
+    page_entries_info:
+      one_page:
+        display_entries:
+          zero: "表示件数: 0件"
+          one: "表示件数: 1件"
+          other: "表示件数: %{count}件"
+      more_pages:
+        display_entries: "全%{total}件中 %{first}&nbsp;-&nbsp;%{last}件を表示"
+
   hello: "こんにちは"
 
   # エラーメッセージのヘッダー
@@ -8,6 +25,15 @@ ja:
         one: "1件のエラーにより%{model}を保存できませんでした："
         other: "%{count}件のエラーにより%{model}を保存できませんでした："
       body: "以下の問題を確認してください"
+
+  # ActiveRecordのエラーメッセージ
+  activerecord:
+    errors:
+      messages:
+        record_invalid: "バリデーションに失敗しました: %{errors}"
+        restrict_dependent_destroy:
+          has_one: "%{record}が存在するため、削除できません"
+          has_many: "%{record}が存在するため、削除できません"
 
   # バリデーションエラーメッセージ
   errors:
@@ -73,6 +99,15 @@ ja:
         name: "ユーザー名"
         email: "メールアドレス"
         password: "パスワード"
+        company: "会社"
+
+      stock_movement:
+        quantity: "数量"
+        movement_category: "操作種別"
+        reason: "理由"
+        note: "備考"
+        item: "物品"
+        user: "操作者"
         company: "会社"
 
       company:
@@ -142,3 +177,23 @@ ja:
               too_long: "住所は%{count}文字以下で入力してください"
             note:
               too_long: "備考は%{count}文字以下で入力してください"
+
+        stock_movement:
+          attributes:
+            quantity:
+              required: "数量を入力してください"
+              blank: "数量を入力してください"
+              not_a_number: "数量は数値で入力してください"
+              greater_than: "数量は0より大きい値を入力してください"
+              insufficient_stock: "現在の在庫数（%{current_stock}%{unit}）を超える出庫はできません"
+            movement_category:
+              required: "操作種別を選択してください"
+              blank: "操作種別を選択してください"
+            reason:
+              required: "理由を入力してください"
+              blank: "理由を入力してください"
+              too_long: "理由は%{count}文字以下で入力してください"
+            note:
+              too_long: "備考は%{count}文字以下で入力してください"
+          base:
+            adjustment_deletion_not_allowed: "調整操作は削除できません"

@@ -1,0 +1,38 @@
+<%= paginator.render do %>
+  <nav class="flex items-center justify-between">
+    <div class="flex-1 flex justify-between sm:hidden">
+      <%= first_page_tag unless current_page.first? %>
+      <%= prev_page_tag unless current_page.first? %>
+      <%= next_page_tag unless current_page.last? %>
+      <%= last_page_tag unless current_page.last? %>
+    </div>
+    <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+      <div>
+        <p class="text-sm text-gray-700">
+          <span class="font-medium">
+            <% if defined?(@stock_movements) && @stock_movements.respond_to?(:total_count) %>
+              全<%= @stock_movements.total_count %>件中 <%= @stock_movements.offset_value + 1 %>-<%= @stock_movements.offset_value + @stock_movements.length %>件を表示
+            <% elsif defined?(@items) && @items.respond_to?(:total_count) %>
+              全<%= @items.total_count %>件中 <%= @items.offset_value + 1 %>-<%= @items.offset_value + @items.length %>件を表示
+            <% end %>
+          </span>
+        </p>
+      </div>
+      <div>
+        <ul class="flex items-center space-x-1">
+          <%= first_page_tag unless current_page.first? %>
+          <%= prev_page_tag unless current_page.first? %>
+          <% each_page do |page| %>
+            <% if page.display_tag? %>
+              <%= page_tag page %>
+            <% elsif !page.was_truncated? %>
+              <%= gap_tag %>
+            <% end %>
+          <% end %>
+          <%= next_page_tag unless current_page.last? %>
+          <%= last_page_tag unless current_page.last? %>
+        </ul>
+      </div>
+    </div>
+  </nav>
+<% end %>

@@ -1,0 +1,200 @@
+<div class="min-h-screen h-screen flex flex-col bg-slate-50">
+  <%= render 'layouts/dashboard_header' %>
+  <div class="flex flex-1 min-h-0">
+    <%= render 'layouts/dashboard_sidebar' %>
+    <main class="flex-1 p-6 min-h-0 h-full overflow-auto">
+      <!-- フラッシュメッセージ（自動消去なし） -->
+      <%= render 'shared/flash_messages_persistent' %>
+
+      <!-- ヘッダー部分 -->
+      <div class="flex justify-between items-center mb-6">
+        <div class="flex items-center space-x-4">
+          <h1 class="text-2xl font-bold text-slate-800">
+            <% if @item %>
+              <%= @item.name %> の入出庫履歴
+            <% else %>
+              入出庫履歴一覧
+            <% end %>
+          </h1>
+          <% if @item %>
+            <%= link_to item_path(@item), class: "text-blue-600 hover:text-blue-800 transition" do %>
+              <i class="fas fa-arrow-left mr-2"></i>物品詳細に戻る
+            <% end %>
+          <% else %>
+            <%= link_to items_path, class: "text-blue-600 hover:text-blue-800 transition" do %>
+              <i class="fas fa-arrow-left mr-2"></i>物品一覧に戻る
+            <% end %>
+          <% end %>
+        </div>
+        <% if @item && policy(StockMovement.new).create? %>
+          <div class="flex space-x-3">
+            <%= link_to new_item_stock_movement_path(@item), class: "bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition flex items-center" do %>
+              <i class="fas fa-plus mr-2"></i>入出庫記録
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+
+      <!-- 検索フォーム -->
+      <div class="bg-white shadow rounded-lg p-6 mb-6">
+        <%= search_form_for @q, url: @item ? item_stock_movements_path(@item) : stock_movements_path, class: "space-y-4" do |f| %>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div>
+              <%= f.label :with_movement_category, "操作種別", class: "block text-sm font-medium text-gray-700 mb-1" %>
+              <%= f.select :with_movement_category,
+                  options_for_select([
+                    ['すべて', ''],
+                    ['入庫', 'inbound'],
+                    ['出庫', 'outbound'],
+                    ['調整', 'adjustment']
+                  ], params.dig(:q, :with_movement_category)),
+                  {},
+                  { class: "w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" } %>
+            </div>
+            <div>
+              <%= f.label :reason_cont, "理由", class: "block text-sm font-medium text-gray-700 mb-1" %>
+              <%= f.text_field :reason_cont,
+                  placeholder: "理由で検索...",
+                  class: "w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" %>
+            </div>
+            <div>
+              <%= f.label :created_at_gteq, "日付（以降）", class: "block text-sm font-medium text-gray-700 mb-1" %>
+              <%= f.date_field :created_at_gteq,
+                  class: "w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" %>
+            </div>
+          </div>
+          <div class="flex gap-2">
+            <%= f.submit "検索", class: "bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition" %>
+            <%= link_to "クリア", @item ? item_stock_movements_path(@item) : stock_movements_path,
+                class: "bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded transition" %>
+          </div>
+        <% end %>
+      </div>
+
+      <!-- 履歴一覧 -->
+      <div class="bg-white shadow rounded-lg overflow-hidden">
+        <div class="px-6 py-4 border-b border-gray-200">
+          <h2 class="text-lg font-semibold text-gray-900">履歴一覧</h2>
+        </div>
+
+        <% if @stock_movements.any? %>
+          <div class="overflow-x-auto">
+            <table class="w-full table-fixed divide-y divide-gray-200">
+              <thead class="bg-gray-50">
+                <tr>
+                  <th class="w-32 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    日時
+                  </th>
+                  <% unless @item %>
+                    <th class="w-40 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      物品名
+                    </th>
+                  <% end %>
+                  <th class="w-24 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    操作種別
+                  </th>
+                  <th class="w-20 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    数量
+                  </th>
+                  <th class="w-32 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    理由
+                  </th>
+                  <th class="w-24 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    操作者
+                  </th>
+                  <th class="w-32 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    備考
+                  </th>
+                  <th class="w-20 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    操作
+                  </th>
+                </tr>
+              </thead>
+              <tbody class="bg-white divide-y divide-gray-200">
+                <% @stock_movements.each do |movement| %>
+                  <tr class="hover:bg-gray-50">
+                    <td class="w-32 px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                      <%= movement.created_at.strftime('%Y/%m/%d %H:%M') %>
+                    </td>
+                    <% unless @item %>
+                      <td class="w-40 px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        <%= link_to movement.item.name, item_path(movement.item), class: "text-blue-600 hover:text-blue-800" %>
+                      </td>
+                    <% end %>
+                    <td class="w-24 px-6 py-4 whitespace-nowrap">
+                      <% case movement.movement_category %>
+                      <% when 'inbound' %>
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                          <i class="fas fa-plus mr-1"></i>入庫
+                        </span>
+                      <% when 'outbound' %>
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                          <i class="fas fa-minus mr-1"></i>出庫
+                        </span>
+                      <% when 'adjustment' %>
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                          <i class="fas fa-edit mr-1"></i>調整
+                        </span>
+                      <% end %>
+                    </td>
+                    <td class="w-20 px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                      <%= movement.quantity %> <%= movement.item.unit %>
+                    </td>
+                    <td class="w-32 px-6 py-4 text-sm text-gray-900 truncate">
+                      <%= movement.reason %>
+                    </td>
+                    <td class="w-24 px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                      <%= movement.user&.name || 'Unknown' %>
+                    </td>
+                    <td class="w-32 px-6 py-4 text-sm text-gray-500 truncate">
+                      <%= movement.note.present? ? movement.note : '-' %>
+                    </td>
+                    <td class="w-20 px-6 py-4 whitespace-nowrap text-sm font-medium">
+                      <% if policy(movement).destroy? && movement.movement_category != 'adjustment' %>
+                        <%= form_with url: stock_movement_path(movement), method: :delete, local: true, style: "display: inline;" do |f| %>
+                          <%= f.submit '取り消し',
+                              data: {
+                                controller: "delete-confirmation",
+                                action: "click->delete-confirmation#confirm",
+                                confirm: "この入出庫操作を取り消しますか？\n\n在庫数が元に戻されます。\nこの操作は取り消せません。"
+                              },
+                              class: "text-red-600 hover:text-red-900 bg-transparent border-0 p-0 cursor-pointer text-sm" %>
+                        <% end %>
+                      <% elsif movement.movement_category == 'adjustment' %>
+                        <span class="text-gray-400 text-sm">取り消し不可</span>
+                      <% else %>
+                        <span class="text-gray-400 text-sm">権限なし</span>
+                      <% end %>
+                    </td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- ページネーション -->
+          <div class="bg-white px-4 py-3 border-t border-gray-200 sm:px-6">
+            <div class="flex flex-col items-center space-y-4">
+              <div>
+                <p class="text-sm text-gray-700 text-center">
+                  <span class="font-medium">
+                    全<%= @stock_movements.total_count %>件中 <%= @stock_movements.offset_value + 1 %>-<%= @stock_movements.offset_value + @stock_movements.length %>件を表示
+                  </span>
+                </p>
+              </div>
+              <div class="flex justify-center">
+                <%= paginate @stock_movements %>
+              </div>
+            </div>
+          </div>
+        <% else %>
+          <div class="text-center py-12">
+            <i class="fas fa-history text-4xl text-gray-400 mb-4"></i>
+            <h3 class="text-lg font-medium text-gray-900 mb-2">入出庫履歴がありません</h3>
+            <p class="text-gray-500">入出庫操作を行うと、ここに履歴が表示されます。</p>
+          </div>
+        <% end %>
+      </div>
+    </main>
+  </div>
+</div>

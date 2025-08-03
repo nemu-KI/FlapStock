@@ -1,5 +1,8 @@
 Rails.application.routes.draw do
-  resources :items, only: [:index, :show, :new, :create, :edit, :update, :destroy]
+  resources :items, only: [:index, :show, :new, :create, :edit, :update, :destroy] do
+    resources :stock_movements, only: [:index, :new, :create]
+  end
+  resources :stock_movements, only: [:index, :show, :edit, :update, :destroy]
   resources :categories, only: [:index, :new, :create, :edit, :update, :destroy]
   resources :locations, only: [:index, :new, :create, :edit, :update, :destroy]
   resources :suppliers, only: [:index, :show, :new, :create, :edit, :update, :destroy]
