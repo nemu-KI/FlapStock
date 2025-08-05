@@ -14,6 +14,11 @@ Rails.application.routes.draw do
   # 認証
   devise_for :users
 
+  # LetterOpenerWeb（開発環境のみ）
+  if Rails.env.development?
+    mount LetterOpenerWeb::Engine, at: "/letter_opener"
+  end
+
   # ホーム
   get 'home/index'
 

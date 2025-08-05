@@ -39,6 +39,7 @@ end
 # --- 開発専用 ---
 group :development do
   gem "web-console"                               # ブラウザでのデバッグ
+  gem "letter_opener_web", "~> 2.0"              # メール確認用
   # gem "rack-mini-profiler"                      # パフォーマンス計測
   # gem "spring"                                  # コマンド高速化
 end
