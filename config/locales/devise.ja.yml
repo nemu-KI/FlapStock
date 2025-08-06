@@ -31,7 +31,7 @@ ja:
     passwords:
       no_token: "パスワード再設定メールからアクセスしないとこのページは利用できません。メールのURLが正しいかご確認ください。"
       send_instructions: "数分以内にパスワード再設定の手順が記載されたメールが届きます。"
-      send_paranoid_instructions: "もしメールアドレスが登録されていれば、数分以内にパスワード再設定用のリンクが届きます。"
+      send_paranoid_instructions: "メールアドレスを確認しました。登録されている場合は数分以内にパスワード再設定用のリンクが届きます。"
       updated: "パスワードが正常に変更されました。ログインしました。"
       updated_not_active: "パスワードが正常に変更されました。"
     registrations:
