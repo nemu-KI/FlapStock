@@ -12,7 +12,7 @@
       <div class="flex justify-between items-center mb-6">
         <h1 class="text-2xl font-bold text-slate-800">分類一覧</h1>
         <% if policy(Category).create? %>
-          <%= link_to new_category_path, class: "inline-flex items-center px-4 py-2 bg-blue-500 text-white text-sm font-medium rounded-lg hover:bg-blue-600 transition" do %>
+          <%= link_to new_category_path, class: button_classes(:primary, :md) + " inline-flex items-center" do %>
             <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
             </svg>
@@ -75,7 +75,7 @@
         <% if @categories.empty? %>
           <div class="text-center py-8">
             <p class="text-slate-500">分類が登録されていません</p>
-            <%= link_to "最初の分類を登録", new_category_path, class: "mt-2 inline-flex items-center px-4 py-2 bg-blue-500 text-white text-sm font-medium rounded-lg hover:bg-blue-600 transition" %>
+            <%= link_to "最初の分類を登録", new_category_path, class: button_classes(:primary, :md) + " mt-2 inline-flex items-center" %>
           </div>
         <% end %>
       </div>

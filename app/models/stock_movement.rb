@@ -33,6 +33,11 @@ class StockMovement < ApplicationRecord
     where(movement_category: category) if category.present?
   }
 
+  # 日本語化メソッド
+  def movement_category_i18n
+    I18n.t("activerecord.enums.stock_movement.movement_category.#{movement_category}")
+  end
+
   private
 
   def check_stock_availability
