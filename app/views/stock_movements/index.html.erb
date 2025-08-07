@@ -37,8 +37,8 @@
 
       <!-- 検索フォーム -->
       <div class="bg-white shadow rounded-lg p-6 mb-6">
-        <%= search_form_for @q, url: @item ? item_stock_movements_path(@item) : stock_movements_path, class: "space-y-4" do |f| %>
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <%= search_form_for @q, url: @item ? item_stock_movements_path(@item) : stock_movements_path do |f| %>
+          <div class="grid grid-cols-1 md:grid-cols-5 gap-4 items-end">
             <div>
               <%= f.label :with_movement_category, "操作種別", class: "block text-sm font-medium text-gray-700 mb-1" %>
               <%= f.select :with_movement_category,
@@ -62,11 +62,11 @@
               <%= f.date_field :created_at_gteq,
                   class: "w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" %>
             </div>
-          </div>
-          <div class="flex gap-2">
-            <%= f.submit "検索", class: "bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition" %>
-            <%= link_to "クリア", @item ? item_stock_movements_path(@item) : stock_movements_path,
-                class: "bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded transition" %>
+            <div class="flex gap-2">
+              <%= f.submit "検索", class: button_classes(:primary, :md) %>
+              <%= link_to "クリア", @item ? item_stock_movements_path(@item) : stock_movements_path,
+                  class: button_classes(:secondary, :md) %>
+            </div>
           </div>
         <% end %>
       </div>

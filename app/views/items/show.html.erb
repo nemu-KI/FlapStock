@@ -16,9 +16,9 @@
         </div>
         <div class="flex space-x-3">
           <% if policy(@item).update? %>
-            <%= link_to edit_item_path(@item), class: "bg-blue-400 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded transition flex items-center justify-center" do %>
-              編集
-            <% end %>
+                      <%= link_to edit_item_path(@item), class: button_classes(:primary, :md) do %>
+            編集
+          <% end %>
           <% end %>
           <% if policy(@item).destroy? %>
             <%= form_with url: item_path(@item), method: :delete, local: true, style: "display: inline;" do |f| %>
@@ -26,9 +26,9 @@
                   data: {
                     controller: "delete-confirmation",
                     action: "click->delete-confirmation#confirm",
-                    confirm: "「#{@item.name}」を削除しますか？\n\nこの操作は取り消せません。\n関連する入出庫履歴も削除されます。"
+                    confirm: "「#{@item.name}」を削除しますか？\n\nこの操作は取り消せません。\n※調整履歴がある場合は削除できません。"
                   },
-                  class: "bg-red-400 hover:bg-red-600 text-white font-bold py-2 px-4 rounded transition flex items-center justify-center" %>
+                  class: button_classes(:danger, :md) %>
             <% end %>
           <% end %>
         </div>
@@ -103,7 +103,7 @@
                 <% if @item.min_stock.present? && @item.stock_quantity.to_i <= @item.min_stock %>
                   <div class="w-3 h-3 bg-red-500 rounded-full"></div>
                   <span class="text-red-600 font-medium">在庫不足</span>
-                <% elsif @item.max_stock.present? && @item.stock_quantity.to_i >= @item.max_stock %>
+                <% elsif @item.max_stock.present? && @item.stock_quantity.to_i > @item.max_stock %>
                   <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
                   <span class="text-yellow-600 font-medium">在庫過剰</span>
                 <% else %>
@@ -193,7 +193,7 @@
             <% end %>
           </div>
 
-          <!-- クイックアクション -->
+                    <!-- クイックアクション -->
           <div class="bg-white rounded-lg shadow p-6">
             <h3 class="text-lg font-semibold text-slate-800 mb-4">クイックアクション</h3>
             <div class="space-y-3">
@@ -234,10 +234,7 @@
                 <span class="text-gray-500">更新日</span>
                 <span class="text-slate-800"><%= @item.updated_at.strftime('%Y年%m月%d日') %></span>
               </div>
-              <div class="flex justify-between">
-                <span class="text-gray-500">ID</span>
-                <span class="text-slate-800">#<%= @item.id %></span>
-              </div>
+
             </div>
           </div>
         </div>

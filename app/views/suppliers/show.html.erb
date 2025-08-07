@@ -16,7 +16,7 @@
         </div>
         <div class="flex space-x-3">
           <% if policy(@supplier).update? %>
-            <%= link_to edit_supplier_path(@supplier), class: "bg-blue-400 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded transition flex items-center justify-center" do %>
+            <%= link_to edit_supplier_path(@supplier), class: button_classes(:primary, :md) do %>
               編集
             <% end %>
           <% end %>
@@ -28,7 +28,7 @@
                   action: "click->delete-confirmation#confirm",
                   confirm: "「#{@supplier.name}」を削除しますか？\n\nこの操作は取り消せません。\n関連する物品がある場合は削除できません。"
                 },
-                class: "bg-red-400 hover:bg-red-600 text-white font-bold py-2 px-4 rounded transition flex items-center justify-center" %>
+                  class: button_classes(:danger, :md) %>
             <% end %>
           <% end %>
         </div>
@@ -182,10 +182,7 @@
                 <span class="text-gray-500">更新日</span>
                 <span class="text-slate-800"><%= @supplier.updated_at.strftime('%Y年%m月%d日') %></span>
               </div>
-              <div class="flex justify-between">
-                <span class="text-gray-500">ID</span>
-                <span class="text-slate-800">#<%= @supplier.id %></span>
-              </div>
+
             </div>
           </div>
         </div>
