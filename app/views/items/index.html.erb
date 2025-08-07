@@ -11,7 +11,7 @@
       <div class="flex justify-between items-center mb-6">
         <h1 class="text-2xl font-bold text-slate-800">物品一覧</h1>
         <% if policy(Item).create? %>
-          <%= link_to new_item_path, class: "inline-flex items-center px-4 py-2 bg-blue-500 text-white text-sm font-medium rounded-lg hover:bg-blue-600 transition" do %>
+          <%= link_to new_item_path, class: button_classes(:primary, :md) + " inline-flex items-center" do %>
             <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
             </svg>
@@ -54,8 +54,8 @@
             <%= f.number_field :stock_quantity_lteq, placeholder: "例: 50", class: "w-full border border-slate-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" %>
           </div>
           <div class="flex gap-2">
-            <%= f.submit "検索", class: "bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition" %>
-            <%= link_to "クリア", items_path, class: "bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded transition" %>
+            <%= f.submit "検索", class: button_classes(:primary, :md) %>
+            <%= link_to "クリア", items_path, class: button_classes(:secondary, :md) %>
           </div>
         <% end %>
       </div>
@@ -112,11 +112,11 @@
                     <td class="w-20 px-6 py-4 whitespace-nowrap text-sm text-slate-900">
                       <% if policy(StockMovement.new).create? %>
                         <%= link_to new_item_stock_movement_path(item, movement_category: 'inbound'),
-                            class: "text-green-600 hover:text-green-800 px-2 py-1 rounded border border-green-300 hover:bg-green-50", title: "入庫" do %>
+                            class: button_classes(:success, :sm), title: "入庫" do %>
                           入庫
                         <% end %>
                       <% else %>
-                        <span class="text-gray-400 px-2 py-1 rounded border border-gray-300 bg-gray-50" title="権限がありません">
+                        <span class="<%= button_classes(:secondary, :sm) %> opacity-50 cursor-not-allowed" title="権限がありません">
                           権限なし
                         </span>
                       <% end %>
@@ -124,11 +124,11 @@
                     <td class="w-20 px-6 py-4 whitespace-nowrap text-sm text-slate-900">
                       <% if policy(StockMovement.new).create? %>
                         <%= link_to new_item_stock_movement_path(item, movement_category: 'outbound'),
-                            class: "text-red-600 hover:text-red-800 px-2 py-1 rounded border border-red-300 hover:bg-red-50", title: "出庫" do %>
+                            class: button_classes(:danger, :sm), title: "出庫" do %>
                           出庫
                         <% end %>
                       <% else %>
-                        <span class="text-gray-400 px-2 py-1 rounded border border-gray-300 bg-gray-50" title="権限がありません">
+                        <span class="<%= button_classes(:secondary, :sm) %> opacity-50 cursor-not-allowed" title="権限がありません">
                           権限なし
                         </span>
                       <% end %>
@@ -144,7 +144,7 @@
                                 data: {
                                   controller: "delete-confirmation",
                                   action: "click->delete-confirmation#confirm",
-                                  confirm: "「#{item.name}」を削除しますか？\n\nこの操作は取り消せません。\n関連する入出庫履歴も削除されます。"
+                                  confirm: "「#{item.name}」を削除しますか？\n\nこの操作は取り消せません。\n※調整履歴がある場合は削除できません。"
                                 },
                                 class: "text-red-600 hover:text-red-900 bg-transparent border-0 p-0 cursor-pointer" %>
                           <% end %>

@@ -310,4 +310,9 @@ Devise.setup do |config|
   # When set to false, does not sign a user in automatically after their password is
   # changed. Defaults to true, so a user is signed in automatically after changing a password.
   # config.sign_in_after_change_password = true
+
+  # ==> Flash messages configuration
+  # Configure the flash messages that Devise will use for authentication failures.
+  # By default, Devise will use the flash keys :alert and :notice.
+  # config.flash_keys = [:alert, :notice]
 end

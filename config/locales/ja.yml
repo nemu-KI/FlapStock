@@ -18,8 +18,23 @@ ja:
 
   hello: "こんにちは"
 
-  # エラーメッセージのヘッダー
+  # エラーメッセージの設定
   errors:
+    format: "%{attribute}%{message}"
+    messages:
+      required: "を入力してください"
+      blank: "を入力してください"
+      taken: "は既に使用されています"
+      too_short: "は%{count}文字以上で入力してください"
+      too_long: "は%{count}文字以下で入力してください"
+      not_a_number: "は数値で入力してください"
+      greater_than: "は%{count}より大きい値で入力してください"
+      greater_than_or_equal_to: "は%{count}以上の値で入力してください"
+      less_than: "は%{count}より小さい値で入力してください"
+      less_than_or_equal_to: "は%{count}以下の値で入力してください"
+      confirmation: "が一致しません"
+
+    # エラーメッセージのヘッダー
     template:
       header:
         one: "1件のエラーにより%{model}を保存できませんでした："
@@ -35,19 +50,7 @@ ja:
           has_one: "%{record}が存在するため、削除できません"
           has_many: "%{record}が存在するため、削除できません"
 
-  # バリデーションエラーメッセージ
-  errors:
-    messages:
-      required: "を入力してください"
-      blank: "を入力してください"
-      taken: "は既に使用されています"
-      too_short: "は%{count}文字以上で入力してください"
-      too_long: "は%{count}文字以下で入力してください"
-      not_a_number: "は数値で入力してください"
-      greater_than: "は%{count}より大きい値で入力してください"
-      greater_than_or_equal_to: "は%{count}以上の値で入力してください"
-      less_than: "は%{count}より小さい値で入力してください"
-      less_than_or_equal_to: "は%{count}以下の値で入力してください"
+
 
   # モデル名
   activerecord:
@@ -99,6 +102,7 @@ ja:
         name: "ユーザー名"
         email: "メールアドレス"
         password: "パスワード"
+        password_confirmation: "パスワード（確認用）"
         company: "会社"
 
       stock_movement:
@@ -197,3 +201,21 @@ ja:
               too_long: "備考は%{count}文字以下で入力してください"
           base:
             adjustment_deletion_not_allowed: "調整操作は削除できません"
+
+
+
+        user:
+          attributes:
+            name:
+              required: "ユーザー名を入力してください"
+              blank: "ユーザー名を入力してください"
+            password_confirmation:
+              confirmation: "パスワードが一致しません"
+
+    # enumの日本語化
+    enums:
+      stock_movement:
+        movement_category:
+          inbound: "入庫"
+          outbound: "出庫"
+          adjustment: "調整"

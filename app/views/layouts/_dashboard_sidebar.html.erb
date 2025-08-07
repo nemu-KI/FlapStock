@@ -1,7 +1,7 @@
-<aside class="w-64 bg-white border-r flex flex-col py-6 px-4 min-h-0 h-full">
+<aside class="w-64 bg-white border-r border-gray-200 flex flex-col py-6 px-4 min-h-0 h-full">
   <nav class="flex-1 min-h-0">
     <ul class="space-y-2">
-      <li><a href="#" class="block px-3 py-2 rounded hover:bg-slate-200 font-bold">ダッシュボード</a></li>
+      <li><%= link_to 'ダッシュボード', dashboard_path, class: "block px-3 py-2 rounded hover:bg-slate-200" %></li>
       <li class="mt-4 mb-1 text-xs text-gray-500">在庫管理</li>
       <li><%= link_to '物品一覧', items_path, class: "block px-3 py-2 rounded hover:bg-slate-200" %></li>
       <li><%= link_to '分類', categories_path, class: "block px-3 py-2 rounded hover:bg-slate-200" %></li>

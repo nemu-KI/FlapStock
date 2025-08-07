@@ -8,6 +8,9 @@ class User < ApplicationRecord
   # 権限の定義
   enum role: { staff: 0, manager: 1, admin: 2 }
 
+  # バリデーション
+  validates :name, presence: true
+
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
