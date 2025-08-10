@@ -3,6 +3,9 @@
   <div class="flex flex-1 min-h-0">
     <%= render 'layouts/dashboard_sidebar' %>
     <main class="flex-1 p-6 min-h-0 h-full overflow-auto">
+      <!-- フラッシュメッセージ -->
+      <%= render 'shared/flash_messages_persistent' %>
+
       <!-- ページタイトル -->
       <div class="mb-6">
         <h1 class="text-2xl font-bold text-gray-900">ダッシュボード</h1>
