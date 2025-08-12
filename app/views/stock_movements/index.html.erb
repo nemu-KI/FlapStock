@@ -153,11 +153,7 @@
                       <% if policy(movement).destroy? && movement.movement_category != 'adjustment' %>
                         <%= form_with url: stock_movement_path(movement), method: :delete, local: true, style: "display: inline;" do |f| %>
                           <%= f.submit '取り消し',
-                              data: {
-                                controller: "delete-confirmation",
-                                action: "click->delete-confirmation#confirm",
-                                confirm: "この入出庫操作を取り消しますか？\n\n在庫数が元に戻されます。\nこの操作は取り消せません。"
-                              },
+                              onclick: "return confirm('この入出庫操作を取り消しますか？\\n\\n在庫数が元に戻されます。\\nこの操作は取り消せません。')",
                               class: "text-red-600 hover:text-red-900 bg-transparent border-0 p-0 cursor-pointer text-sm" %>
                         <% end %>
                       <% elsif movement.movement_category == 'adjustment' %>
