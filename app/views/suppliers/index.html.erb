@@ -63,11 +63,7 @@
                       <% if policy(supplier).destroy? %>
                         <%= form_with url: supplier_path(supplier), method: :delete, local: true, style: "display: inline;" do |f| %>
                           <%= f.submit '削除',
-                              data: {
-                                controller: "delete-confirmation",
-                                action: "click->delete-confirmation#confirm",
-                                confirm: "「#{supplier.name}」を削除しますか？\n\nこの操作は取り消せません。\n関連する物品がある場合は削除できません。"
-                              },
+                              onclick: "return confirm('「#{supplier.name}」を削除しますか？\\n\\nこの操作は取り消せません。\\n関連する物品がある場合は削除できません。')",
                               class: "text-red-600 hover:text-red-900 bg-transparent border-0 p-0 cursor-pointer" %>
                         <% end %>
                       <% end %>
