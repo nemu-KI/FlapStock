@@ -74,8 +74,7 @@
         <!-- データがない場合のメッセージ -->
         <% if @locations.empty? %>
           <div class="text-center py-8">
-            <p class="text-slate-500">保管場所が登録されていません</p>
-            <%= link_to "最初の保管場所を登録", new_location_path, class: button_classes(:primary, :md) + " mt-2 inline-flex items-center" %>
+            <p class="text-slate-500">新規登録ボタンから保管場所を追加してください</p>
           </div>
         <% end %>
       </div>
