@@ -13,7 +13,7 @@ Rails.application.configure do
   config.eager_load = true
 
   # Full error reports are disabled and caching is turned on.
-  config.consider_all_requests_local = false
+  config.consider_all_requests_local = true
   config.action_controller.perform_caching = true
 
   # Ensures that a master key has been made available in ENV["RAILS_MASTER_KEY"], config/master.key, or an environment
@@ -73,9 +73,31 @@ Rails.application.configure do
 
   config.action_mailer.perform_caching = false
 
-  # Ignore bad email addresses and do not raise email delivery errors.
-  # Set this to true and configure the email server for immediate delivery to raise delivery errors.
-  # config.action_mailer.raise_delivery_errors = false
+  # メール送信設定
+  config.action_mailer.perform_deliveries = true
+  config.action_mailer.raise_delivery_errors = true
+  config.action_mailer.delivery_method = :smtp
+
+  # デバッグ用設定（一時的に）
+  config.action_mailer.logger = Rails.logger
+  config.action_mailer.verbose = true
+
+  # SMTP設定
+  config.action_mailer.smtp_settings = {
+    address: ENV['SMTP_ADDRESS'],
+    port: ENV['SMTP_PORT'] || 587,
+    domain: ENV['SMTP_DOMAIN'],
+    user_name: ENV['SMTP_USERNAME'],
+    password: ENV['SMTP_PASSWORD'],
+    authentication: 'plain',
+    enable_starttls_auto: true
+  }
+
+  # メールのデフォルトURL設定
+  config.action_mailer.default_url_options = {
+    host: ENV['APP_HOST'] || 'flapstock.onrender.com',
+    protocol: 'https'
+  }
 
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
   # the I18n.default_locale when a translation cannot be found).
