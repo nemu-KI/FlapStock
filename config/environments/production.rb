@@ -80,7 +80,6 @@ Rails.application.configure do
 
   # デバッグ用設定（一時的に）
   config.action_mailer.logger = Rails.logger
-  config.action_mailer.verbose = true
 
   # SMTP設定
   config.action_mailer.smtp_settings = {
