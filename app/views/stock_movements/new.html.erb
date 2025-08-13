@@ -1,106 +1,122 @@
-<div class="max-w-4xl mx-auto px-4 py-8">
-  <div class="mb-6">
-    <h1 class="text-3xl font-bold text-gray-900 mb-2">入出庫記録</h1>
-    <p class="text-gray-600">
-      <%= link_to @item.name, item_path(@item), class: "text-blue-600 hover:text-blue-800" %> の入出庫を記録します
-    </p>
-  </div>
+<div class="min-h-screen flex flex-col bg-slate-50">
+  <%= render 'layouts/dashboard_header' %>
+  <div class="flex flex-1 min-h-0">
+    <%= render 'layouts/dashboard_sidebar' %>
+    <main class="flex-1 p-6 min-h-0 overflow-auto">
+      <!-- フラッシュメッセージ -->
+      <%= render 'shared/flash_messages_persistent' %>
 
-  <div class="bg-white shadow rounded-lg p-6">
-    <%= form_with model: [@item, @stock_movement], local: true, class: "space-y-6" do |f| %>
-      <% if @stock_movement.errors.any? %>
-        <div class="bg-red-50 border border-red-200 rounded-md p-4">
-          <div class="flex">
-            <div class="flex-shrink-0">
-              <svg class="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
-                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
-              </svg>
-            </div>
-            <div class="ml-3">
-              <h3 class="text-sm font-medium text-red-800">
-                エラーが<%= @stock_movement.errors.count %>件あります
-              </h3>
-              <div class="mt-2 text-sm text-red-700">
-                <ul class="list-disc pl-5 space-y-1">
+      <!-- ヘッダー部分 -->
+      <div class="flex justify-between items-center mb-6">
+        <div class="flex items-center space-x-4">
+          <h1 class="text-2xl font-bold text-slate-800">入出庫記録</h1>
+          <%= link_to item_path(@item), class: "text-blue-600 hover:text-blue-800 transition" do %>
+            <i class="fas fa-arrow-left mr-2"></i><%= @item.name %>の詳細に戻る
+          <% end %>
+        </div>
+      </div>
+
+      <!-- フォーム -->
+      <div class="max-w-4xl">
+        <div class="bg-white rounded-lg shadow p-8">
+          <%= form_with model: [@item, @stock_movement], local: true, class: "space-y-6" do |f| %>
+            <% if @stock_movement.errors.any? %>
+              <div class="w-full bg-red-100 border border-red-400 text-red-700 px-4 py-3 mb-6 rounded-lg" role="alert">
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center">
+                    <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+                    </svg>
+                    <span class="font-medium">
+                      エラーが<%= @stock_movement.errors.count %>件あります
+                    </span>
+                  </div>
+                </div>
+                <ul class="mt-2 text-sm">
                   <% @stock_movement.errors.full_messages.each do |message| %>
-                    <li><%= message %></li>
+                    <li class="flex items-center">
+                      <svg class="w-4 h-4 mr-2 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                      </svg>
+                      <%= message.gsub(/(.+)\1/, '\1') %>
+                    </li>
                   <% end %>
                 </ul>
               </div>
+            <% end %>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">
+                  物品名
+                </label>
+                <div class="bg-gray-50 border border-gray-300 rounded-md px-3 py-2 text-gray-900">
+                  <%= @item.name %>
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">
+                  現在の在庫数
+                </label>
+                <div class="bg-gray-50 border border-gray-300 rounded-md px-3 py-2 text-gray-900">
+                  <%= @item.stock_quantity %> <%= @item.unit %>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-      <% end %>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div>
-          <label class="block text-sm font-medium text-gray-700 mb-2">
-            物品名
-          </label>
-          <div class="bg-gray-50 border border-gray-300 rounded-md px-3 py-2 text-gray-900">
-            <%= @item.name %>
-          </div>
-        </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <%= f.label :movement_category, "操作種別", class: "block text-sm font-medium text-gray-700 mb-2" %>
+                <%= f.select :movement_category,
+                    options_for_select([
+                      ['入庫', 'inbound'],
+                      ['出庫', 'outbound'],
+                      ['調整', 'adjustment']
+                    ], @stock_movement.movement_category),
+                    { prompt: '操作種別を選択してください' },
+                    { class: "w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" } %>
+              </div>
 
-        <div>
-          <label class="block text-sm font-medium text-gray-700 mb-2">
-            現在の在庫数
-          </label>
-          <div class="bg-gray-50 border border-gray-300 rounded-md px-3 py-2 text-gray-900">
-            <%= @item.stock_quantity %> <%= @item.unit %>
-          </div>
-        </div>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div>
-          <%= f.label :movement_category, "操作種別", class: "block text-sm font-medium text-gray-700 mb-2" %>
-          <%= f.select :movement_category,
-              options_for_select([
-                ['入庫', 'inbound'],
-                ['出庫', 'outbound'],
-                ['調整', 'adjustment']
-              ], @stock_movement.movement_category),
-              { prompt: '操作種別を選択してください' },
-              { class: "w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" } %>
-        </div>
-
-        <div>
-          <%= f.label :quantity, "数量", class: "block text-sm font-medium text-gray-700 mb-2" %>
-          <div class="relative">
-            <%= f.number_field :quantity,
-                min: 1,
-                step: 1,
-                placeholder: "数量を入力",
-                class: "w-full border border-gray-300 rounded-md px-3 py-2 pr-12 focus:outline-none focus:ring-2 focus:ring-blue-400" %>
-            <div class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500">
-              <%= @item.unit %>
+              <div>
+                <%= f.label :quantity, "数量", class: "block text-sm font-medium text-gray-700 mb-2" %>
+                <div class="relative">
+                  <%= f.number_field :quantity,
+                      min: 1,
+                      step: 1,
+                      placeholder: "数量を入力",
+                      class: "w-full border border-gray-300 rounded-md px-3 py-2 pr-12 focus:outline-none focus:ring-2 focus:ring-blue-400" %>
+                  <div class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500">
+                    <%= @item.unit %>
+                  </div>
+                </div>
+              </div>
             </div>
-          </div>
+
+            <div>
+              <%= f.label :reason, "操作理由", class: "block text-sm font-medium text-gray-700 mb-2" %>
+              <%= f.text_field :reason,
+                  placeholder: "例：入荷、出荷、棚卸し調整など",
+                  class: "w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" %>
+            </div>
+
+            <div>
+              <%= f.label :note, "備考", class: "block text-sm font-medium text-gray-700 mb-2" %>
+              <%= f.text_area :note,
+                  rows: 3,
+                  placeholder: "詳細な備考があれば入力してください",
+                  class: "w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" %>
+            </div>
+
+            <div class="flex justify-end space-x-4 pt-6 border-t border-gray-200">
+              <%= link_to "キャンセル", item_path(@item),
+                  class: "px-6 py-3 border border-gray-300 rounded-lg text-gray-700 font-medium hover:bg-gray-50 transition" %>
+              <%= f.submit "入出庫を記録",
+                  class: "px-6 py-3 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-600 transition" %>
+            </div>
+          <% end %>
         </div>
       </div>
-
-      <div>
-        <%= f.label :reason, "操作理由", class: "block text-sm font-medium text-gray-700 mb-2" %>
-        <%= f.text_field :reason,
-            placeholder: "例：入荷、出荷、棚卸し調整など",
-            class: "w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" %>
-      </div>
-
-      <div>
-        <%= f.label :note, "備考", class: "block text-sm font-medium text-gray-700 mb-2" %>
-        <%= f.text_area :note,
-            rows: 3,
-            placeholder: "詳細な備考があれば入力してください",
-            class: "w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" %>
-      </div>
-
-      <div class="flex justify-end space-x-4 pt-6">
-        <%= link_to "キャンセル", item_path(@item),
-            class: "px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-400" %>
-        <%= f.submit "入出庫を記録",
-            class: "px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400" %>
-      </div>
-    <% end %>
+    </main>
   </div>
 </div>

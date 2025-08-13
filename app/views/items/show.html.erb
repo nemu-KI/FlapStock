@@ -1,8 +1,8 @@
-<div class="min-h-screen h-screen flex flex-col bg-slate-50">
+<div class="min-h-screen flex flex-col bg-slate-50">
   <%= render 'layouts/dashboard_header' %>
   <div class="flex flex-1 min-h-0">
     <%= render 'layouts/dashboard_sidebar' %>
-    <main class="flex-1 p-6 min-h-0 h-full overflow-auto">
+    <main class="flex-1 p-6 min-h-0 overflow-auto">
       <!-- フラッシュメッセージ（自動消去なし） -->
       <%= render 'shared/flash_messages_persistent' %>
 
@@ -96,7 +96,7 @@
               </div>
             </div>
 
-            <!-- 在庫状況インジケーター -->
+            <!-- 在庫状況 -->
             <div class="mt-6">
               <label class="block text-sm font-medium text-gray-500 mb-2">在庫状況</label>
               <div class="flex items-center space-x-2">
@@ -224,7 +224,7 @@
 
           <!-- メタ情報 -->
           <div class="bg-white rounded-lg shadow p-6">
-            <h3 class="text-lg font-semibold text-slate-800 mb-4">メタ情報</h3>
+            <h3 class="text-lg font-semibold text-slate-800 mb-4">情報</h3>
             <div class="space-y-3 text-sm">
               <div class="flex justify-between">
                 <span class="text-gray-500">作成日</span>

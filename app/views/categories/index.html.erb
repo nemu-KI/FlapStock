@@ -1,10 +1,10 @@
-<div class="min-h-screen h-screen flex flex-col bg-slate-50">
+<div class="min-h-screen flex flex-col bg-slate-50">
   <%= render 'layouts/dashboard_header' %>
   <div class="flex flex-1 min-h-0">
     <%= render 'layouts/dashboard_sidebar' %>
 
     <!-- コンテンツエリア -->
-    <div class="flex-1 p-6">
+    <div class="flex-1 p-6 overflow-auto">
       <!-- フラッシュメッセージ（自動消去なし） -->
       <%= render 'shared/flash_messages_persistent' %>
 
