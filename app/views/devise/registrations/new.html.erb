@@ -1,8 +1,35 @@
-<div class="h-screen flex items-center justify-center bg-slate-50">
-  <div class="w-full max-w-xl p-10 bg-white rounded-xl shadow-lg flex flex-col items-center">
-    <%= image_tag 'FlapStock_logo.png', alt: 'FlapStock', class: 'w-56 mb-8' %>
-<%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
-  <%= render "devise/shared/error_messages", resource: resource %>
+<div class="min-h-screen flex items-center justify-center bg-slate-50 overflow-y-auto">
+  <div class="w-full max-w-xl p-4 sm:p-6 md:p-8 lg:p-10 bg-white rounded-xl shadow-lg flex flex-col items-center">
+    <%= image_tag 'FlapStock_logo.png', alt: 'FlapStock', class: 'w-32 sm:w-40 md:w-48 lg:w-56 mb-4 sm:mb-6 md:mb-8' %>
+
+    <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { class: "w-full" }) do |f| %>
+      <% if resource.errors.any? %>
+        <div class="w-full bg-red-100 border border-red-400 text-red-700 px-4 py-3 mb-6 rounded-lg" role="alert">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center">
+              <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+              </svg>
+              <span class="font-medium">
+                <%= I18n.t("errors.messages.not_saved",
+                          count: resource.errors.count,
+                          resource: resource.class.model_name.human.downcase) %>
+              </span>
+            </div>
+          </div>
+          <ul class="mt-2 text-sm">
+            <% resource.errors.full_messages.each do |message| %>
+              <li class="flex items-center">
+                <svg class="w-4 h-4 mr-2 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                </svg>
+                <%= message %>
+              </li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
       <div class="mb-6 w-full">
         <%= f.label :name, 'ユーザー名', class: 'block text-gray-700 mb-2 text-lg' %>
         <%= f.text_field :name, autofocus: true, autocomplete: "name", class: 'w-full border border-slate-300 rounded px-5 py-3 focus:outline-none focus:ring-2 focus:ring-blue-400 text-lg' %>
@@ -14,24 +41,24 @@
       <div class="mb-6 w-full">
         <%= f.label :email, 'メールアドレス', class: 'block text-gray-700 mb-2 text-lg' %>
         <%= f.email_field :email, autocomplete: "email", class: 'w-full border border-slate-300 rounded px-5 py-3 focus:outline-none focus:ring-2 focus:ring-blue-400 text-lg' %>
-  </div>
+      </div>
       <div class="mb-6 w-full">
         <%= f.label :password, 'パスワード', class: 'block text-gray-700 mb-2 text-lg' %>
-    <% if @minimum_password_length %>
+        <% if @minimum_password_length %>
           <em class="text-sm text-gray-500">（<%= @minimum_password_length %>文字以上）</em>
         <% end %>
         <%= f.password_field :password, autocomplete: "new-password", class: 'w-full border border-slate-300 rounded px-5 py-3 focus:outline-none focus:ring-2 focus:ring-blue-400 text-lg mt-1' %>
-  </div>
+      </div>
       <div class="mb-8 w-full">
         <%= f.label :password_confirmation, 'パスワード（確認）', class: 'block text-gray-700 mb-2 text-lg' %>
         <%= f.password_field :password_confirmation, autocomplete: "new-password", class: 'w-full border border-slate-300 rounded px-5 py-3 focus:outline-none focus:ring-2 focus:ring-blue-400 text-lg' %>
-  </div>
+      </div>
       <div class="mb-6 w-full flex justify-center">
         <%= f.submit '新規登録', class: 'w-40 bg-blue-500 text-white font-bold py-3 px-6 rounded hover:bg-blue-700 transition text-lg' %>
-  </div>
-<% end %>
+      </div>
+    <% end %>
     <div class="mt-4 text-center">
-<%= render "devise/shared/links" %>
+      <%= render "devise/shared/links" %>
     </div>
   </div>
 </div>

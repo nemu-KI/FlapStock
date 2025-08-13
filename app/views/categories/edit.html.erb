@@ -1,10 +1,10 @@
-<div class="min-h-screen h-screen flex flex-col bg-slate-50">
+<div class="min-h-screen flex flex-col bg-slate-50">
   <%= render 'layouts/dashboard_header' %>
   <div class="flex flex-1 min-h-0">
     <%= render 'layouts/dashboard_sidebar' %>
 
     <!-- コンテンツエリア -->
-    <div class="flex-1 p-6">
+    <div class="flex-1 p-6 overflow-auto">
       <!-- ページタイトルと戻るリンク -->
       <div class="flex items-center mb-6">
         <h1 class="text-2xl font-bold text-slate-800">分類編集</h1>
@@ -22,13 +22,25 @@
       <div class="bg-white rounded-lg shadow-sm border border-slate-200 p-6">
         <%= form_with model: @category, local: true do |f| %>
           <% if @category.errors.any? %>
-            <div class="mb-4 p-4 bg-red-50 border border-red-200 rounded-lg">
-              <h2 class="text-sm font-medium text-red-800 mb-2">
-                <%= pluralize(@category.errors.count, "件のエラーにより分類を保存できませんでした") %>：
-              </h2>
-              <ul class="text-sm text-red-700">
+            <div class="w-full bg-red-100 border border-red-400 text-red-700 px-4 py-3 mb-6 rounded-lg" role="alert">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                  <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+                  </svg>
+                  <span class="font-medium">
+                    <%= pluralize(@category.errors.count, "件のエラーにより分類を保存できませんでした") %>：
+                  </span>
+                </div>
+              </div>
+              <ul class="mt-2 text-sm">
                 <% @category.errors.full_messages.each do |message| %>
-                  <li><%= message %></li>
+                  <li class="flex items-center">
+                    <svg class="w-4 h-4 mr-2 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                    </svg>
+                    <%= message.gsub(/(.+)\1/, '\1') %>
+                  </li>
                 <% end %>
               </ul>
             </div>
@@ -40,7 +52,7 @@
               <%= f.text_field :name, class: 'w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent' %>
             </div>
 
-<div>
+            <div>
               <%= f.label :description, '説明', class: 'block text-sm font-medium text-gray-700 mb-2' %>
               <%= f.text_area :description, rows: 4, class: 'w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent' %>
             </div>
