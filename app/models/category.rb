@@ -1,6 +1,6 @@
 class Category < ApplicationRecord
   belongs_to :company
-  has_many :items
+  has_many :items, dependent: :destroy
 
   validates :name, presence: true, length: { maximum: 100 }
   validates :description, length: { maximum: 500 }

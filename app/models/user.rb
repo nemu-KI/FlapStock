@@ -1,6 +1,6 @@
 class User < ApplicationRecord
   belongs_to :company
-  has_many :stock_movements
+  has_many :stock_movements, dependent: :destroy
 
   # 仮想属性（フォーム用）
   attr_accessor :company_name

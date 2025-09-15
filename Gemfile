@@ -46,8 +46,13 @@ end
 
 # --- テスト専用 ---
 group :test do
-  gem "capybara"                                 # E2Eテスト
-  gem "selenium-webdriver"                       # ブラウザ自動操作
+  gem "rspec-rails"                             # RSpecテストフレームワーク
+  gem "factory_bot_rails"                       # テストデータファクトリ
+  gem "faker"                                   # ダミーデータ生成
+  gem "capybara"                                # E2Eテスト
+  gem "selenium-webdriver"                      # ブラウザ自動操作
+  gem "shoulda-matchers"                        # テストマッチャー
+  gem "database_cleaner-active_record"          # テストDBクリーンアップ
 end
 
 # --- 画像アップロード（必要なら有効化） ---

@@ -1,6 +1,6 @@
 class Supplier < ApplicationRecord
   belongs_to :company
-  has_many :items
+  has_many :items, dependent: :destroy
 
   validates :name, presence: true, length: { maximum: 100 }
   validates :email, format: { with: URI::MailTo::EMAIL_REGEXP }, allow_blank: true
