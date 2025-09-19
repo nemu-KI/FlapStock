@@ -22,7 +22,7 @@ RSpec.describe DashboardsController, type: :controller do
       # テストデータを作成
       create(:item, company: company, category: category, location: location, supplier: supplier)
       create(:item, company: company, category: category, location: location, supplier: supplier)
-      
+
       get :index
       expect(assigns(:total_items)).to eq(2)
     end
@@ -33,7 +33,7 @@ RSpec.describe DashboardsController, type: :controller do
       movement1 = create(:stock_movement, item: item, user: user, company: company, created_at: 1.day.ago)
       movement2 = create(:stock_movement, item: item, user: user, company: company, created_at: 2.days.ago)
       movement3 = create(:stock_movement, item: item, user: user, company: company, created_at: 3.days.ago)
-      
+
       get :index
       expect(assigns(:recent_movements)).to include(movement1, movement2, movement3)
       expect(assigns(:recent_movements).count).to eq(3)
@@ -42,11 +42,11 @@ RSpec.describe DashboardsController, type: :controller do
     it '今月の統計が正しく計算される' do
       # 今月のデータを作成
       item = create(:item, company: company, category: category, location: location, supplier: supplier)
-      create(:stock_movement, item: item, user: user, company: company, 
+      create(:stock_movement, item: item, user: user, company: company,
              movement_category: 'inbound', created_at: Date.current)
-      create(:stock_movement, item: item, user: user, company: company, 
+      create(:stock_movement, item: item, user: user, company: company,
              movement_category: 'outbound', created_at: Date.current)
-      
+
       get :index
       expect(assigns(:monthly_inbound_count)).to eq(1)
       expect(assigns(:monthly_outbound_count)).to eq(1)
@@ -56,11 +56,11 @@ RSpec.describe DashboardsController, type: :controller do
       # テストデータを作成
       category1 = create(:category, name: 'カテゴリ1', company: company)
       category2 = create(:category, name: 'カテゴリ2', company: company)
-      
+
       create(:item, company: company, category: category1, location: location, supplier: supplier)
       create(:item, company: company, category: category1, location: location, supplier: supplier)
       create(:item, company: company, category: category2, location: location, supplier: supplier)
-      
+
       get :index
       expect(assigns(:items_by_category)).to include(['カテゴリ1', 2], ['カテゴリ2', 1])
     end
@@ -69,11 +69,11 @@ RSpec.describe DashboardsController, type: :controller do
       # テストデータを作成
       location1 = create(:location, name: '場所1', company: company)
       location2 = create(:location, name: '場所2', company: company)
-      
+
       create(:item, company: company, category: category, location: location1, supplier: supplier)
       create(:item, company: company, category: category, location: location1, supplier: supplier)
       create(:item, company: company, category: category, location: location2, supplier: supplier)
-      
+
       get :index
       expect(assigns(:items_by_location)).to include(['場所1', 2], ['場所2', 1])
     end
@@ -84,7 +84,7 @@ RSpec.describe DashboardsController, type: :controller do
       other_user = create(:user, company: other_company)
       other_item = create(:item, company: other_company)
       create(:stock_movement, item: other_item, user: other_user, company: other_company)
-      
+
       get :index
       expect(assigns(:total_items)).to eq(0)
       expect(assigns(:recent_movements)).to be_empty
