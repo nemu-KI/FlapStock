@@ -16,7 +16,7 @@ RSpec.describe ItemsController, type: :controller do
     it '商品一覧が表示される' do
       # テストデータを作成
       create(:item, company: company, category: category, location: location, supplier: supplier)
-      
+
       get :index
       expect(response).to have_http_status(:success)
       expect(assigns(:items)).to be_present
@@ -25,7 +25,7 @@ RSpec.describe ItemsController, type: :controller do
     it '検索機能が動作する' do
       item1 = create(:item, name: 'テスト商品1', company: company)
       item2 = create(:item, name: 'サンプル商品2', company: company)
-      
+
       get :index, params: { q: { name_cont: 'テスト' } }
       expect(response).to have_http_status(:success)
       expect(assigns(:items)).to include(item1)
@@ -46,7 +46,7 @@ RSpec.describe ItemsController, type: :controller do
       other_location = create(:location, company: other_company)
       other_supplier = create(:supplier, company: other_company)
       other_item = create(:item, company: other_company, category: other_category, location: other_location, supplier: other_supplier)
-      
+
       # パラメータを設定してset_itemメソッドをテスト
       controller.params[:id] = other_item.id
       expect {
@@ -85,7 +85,7 @@ RSpec.describe ItemsController, type: :controller do
             }
           }
         }.to change(Item, :count).by(1)
-        
+
         expect(response).to redirect_to(items_path)
         expect(flash[:notice]).to eq('物品が正常に作成されました。')
       end
@@ -101,7 +101,7 @@ RSpec.describe ItemsController, type: :controller do
             }
           }
         }.not_to change(Item, :count)
-        
+
         expect(response).to have_http_status(:unprocessable_entity)
         expect(flash[:alert]).to eq('物品の作成に失敗しました。')
       end
@@ -124,7 +124,7 @@ RSpec.describe ItemsController, type: :controller do
       other_location = create(:location, company: other_company)
       other_supplier = create(:supplier, company: other_company)
       other_item = create(:item, company: other_company, category: other_category, location: other_location, supplier: other_supplier)
-      
+
       # パラメータを設定してset_itemメソッドをテスト
       controller.params[:id] = other_item.id
       expect {
@@ -143,7 +143,7 @@ RSpec.describe ItemsController, type: :controller do
             stock_quantity: 150
           }
         }
-        
+
         expect(response).to redirect_to(item_path(item))
         expect(flash[:notice]).to eq('物品が正常に更新されました。')
         expect(item.reload.name).to eq('更新された商品名')
@@ -160,7 +160,7 @@ RSpec.describe ItemsController, type: :controller do
             stock_quantity: -1
           }
         }
-        
+
         expect(response).to have_http_status(:unprocessable_entity)
         expect(flash[:alert]).to eq('物品の更新に失敗しました。')
       end
@@ -172,7 +172,7 @@ RSpec.describe ItemsController, type: :controller do
       other_location = create(:location, company: other_company)
       other_supplier = create(:supplier, company: other_company)
       other_item = create(:item, company: other_company, category: other_category, location: other_location, supplier: other_supplier)
-      
+
       # パラメータを設定してset_itemメソッドをテスト
       controller.params[:id] = other_item.id
       expect {
@@ -187,7 +187,7 @@ RSpec.describe ItemsController, type: :controller do
       expect {
         delete :destroy, params: { id: item.id }
       }.to change(Item, :count).by(-1)
-      
+
       expect(response).to redirect_to(items_path)
       expect(flash[:notice]).to eq("「#{item_name}」が正常に削除されました。")
     end
@@ -198,7 +198,7 @@ RSpec.describe ItemsController, type: :controller do
       other_location = create(:location, company: other_company)
       other_supplier = create(:supplier, company: other_company)
       other_item = create(:item, company: other_company, category: other_category, location: other_location, supplier: other_supplier)
-      
+
       # パラメータを設定してset_itemメソッドをテスト
       controller.params[:id] = other_item.id
       expect {
