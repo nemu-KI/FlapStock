@@ -30,7 +30,11 @@ class StockMovement < ApplicationRecord
   end
 
   scope :with_movement_category, ->(category) {
-    where(movement_category: category) if category.present?
+    if category.present?
+      where(movement_category: category)
+    else
+      all
+    end
   }
 
   # 日本語化メソッド

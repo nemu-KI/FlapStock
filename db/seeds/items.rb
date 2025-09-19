@@ -2,7 +2,7 @@
 puts "📦 物品データを作成中..."
 
 # 企業とマスターデータを取得
-company = Company.find_by(name: "サンプル株式会社")
+company = Company.find_by(name: "FlapStock開発用")
 categories = company.categories
 locations = company.locations
 suppliers = company.suppliers

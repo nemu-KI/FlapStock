@@ -53,6 +53,7 @@ group :test do
   gem "selenium-webdriver"                      # ブラウザ自動操作
   gem "shoulda-matchers"                        # テストマッチャー
   gem "database_cleaner-active_record"          # テストDBクリーンアップ
+  gem "rails-controller-testing"                # コントローラーテスト用
 end
 
 # --- 画像アップロード（必要なら有効化） ---
