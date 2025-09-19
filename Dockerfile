@@ -12,7 +12,17 @@ RUN apt-get update -qq \
         build-essential \
         libpq-dev \
         git \
-        python3
+        python3 \
+        wget \
+        unzip
+
+# Chrome と ChromeDriver のインストール
+RUN wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | apt-key add - \
+    && echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list \
+    && apt-get update -qq \
+    && apt-get install -y google-chrome-stable \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
 # Node.js 18 (NodeSource公式推奨のsetupスクリプトを利用)
 RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash -
