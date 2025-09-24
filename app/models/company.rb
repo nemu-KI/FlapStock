@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# Company
 class Company < ApplicationRecord
   has_many :categories, dependent: :destroy
   has_many :locations, dependent: :destroy
@@ -10,12 +13,12 @@ class Company < ApplicationRecord
   validates :email, presence: true
 
   # Ransackの検索可能な属性を定義
-  def self.ransackable_attributes(auth_object = nil)
+  def self.ransackable_attributes(_auth_object = nil)
     %w[id name email active created_at updated_at]
   end
 
   # Ransackの検索可能な関連を定義
-  def self.ransackable_associations(auth_object = nil)
+  def self.ransackable_associations(_auth_object = nil)
     %w[categories locations suppliers items users stock_movements]
   end
 end

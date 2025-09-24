@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# ApplicationPolicy
 class ApplicationPolicy
   attr_reader :user, :record
 
@@ -40,9 +41,11 @@ class ApplicationPolicy
 
   def same_company?
     return true unless record.respond_to?(:company)
+
     record.company == user.company
   end
 
+  # ApplicationPolicy::Scope
   class Scope
     def initialize(user, scope)
       @user = user

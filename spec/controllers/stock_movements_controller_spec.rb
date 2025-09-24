@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe StockMovementsController, type: :controller do
@@ -7,7 +9,9 @@ RSpec.describe StockMovementsController, type: :controller do
   let(:location) { create(:location, company: company) }
   let(:supplier) { create(:supplier, company: company) }
   let(:item) { create(:item, company: company, category: category, location: location, supplier: supplier) }
-  let(:stock_movement) { create(:stock_movement, item: item, user: user, company: company, movement_category: 'inbound', quantity: 10) }
+  let(:stock_movement) do
+    create(:stock_movement, item: item, user: user, company: company, movement_category: :inbound, quantity: 10)
+  end
 
   before do
     sign_in user
@@ -17,7 +21,7 @@ RSpec.describe StockMovementsController, type: :controller do
     context '物品指定なしの場合' do
       it '在庫移動一覧が表示される' do
         # テストデータを作成
-        create(:stock_movement, item: item, user: user, company: company)
+        create(:stock_movement, item: item, user: user, company: company, movement_category: :inbound)
 
         get :index
         expect(response).to have_http_status(:success)
@@ -25,8 +29,10 @@ RSpec.describe StockMovementsController, type: :controller do
       end
 
       it '検索機能が動作する' do
-        movement1 = create(:stock_movement, item: item, user: user, company: company, reason: 'テスト理由1', movement_category: 'inbound')
-        movement2 = create(:stock_movement, item: item, user: user, company: company, reason: 'サンプル理由2', movement_category: 'outbound')
+        movement1 = create(:stock_movement, item: item, user: user, company: company, reason: 'テスト理由1',
+                                            movement_category: :inbound)
+        movement2 = create(:stock_movement, item: item, user: user, company: company, reason: 'サンプル理由2',
+                                            movement_category: :outbound)
 
         get :index, params: { q: { reason_cont: 'テスト' } }
         expect(response).to have_http_status(:success)
@@ -38,7 +44,7 @@ RSpec.describe StockMovementsController, type: :controller do
     context '物品指定ありの場合' do
       it '物品別の在庫移動履歴が表示される' do
         # テストデータを作成
-        create(:stock_movement, item: item, user: user, company: company)
+        create(:stock_movement, item: item, user: user, company: company, movement_category: :inbound)
 
         get :index, params: { item_id: item.id }
         expect(response).to have_http_status(:success)
@@ -60,14 +66,14 @@ RSpec.describe StockMovementsController, type: :controller do
       end
 
       it '入出庫区分が指定されている場合' do
-        get :new, params: { item_id: item.id, movement_category: 'inbound' }
+        get :new, params: { item_id: item.id, movement_category: :inbound }
         expect(response).to have_http_status(:success)
         expect(assigns(:stock_movement).movement_category).to eq('inbound')
       end
     end
 
     it '存在しない物品にアクセスするとリダイレクトされる' do
-      get :new, params: { item_id: 99999 }
+      get :new, params: { item_id: 99_999 }
       expect(response).to redirect_to(items_path)
       expect(flash[:alert]).to eq('指定された物品が見つかりません。')
     end
@@ -76,17 +82,17 @@ RSpec.describe StockMovementsController, type: :controller do
   describe 'POST #create' do
     context '有効なパラメータの場合' do
       it '入庫が作成される' do
-        expect {
+        expect do
           post :create, params: {
             item_id: item.id,
             stock_movement: {
-              movement_category: 'inbound',
+              movement_category: :inbound,
               quantity: 50,
               reason: 'テスト入庫',
               note: 'テスト用の入庫です'
             }
           }
-        }.to change(StockMovement, :count).by(1)
+        end.to change(StockMovement, :count).by(1)
 
         expect(response).to redirect_to(item_path(item))
         expect(flash[:notice]).to eq('入出庫が正常に記録されました。')
@@ -103,17 +109,17 @@ RSpec.describe StockMovementsController, type: :controller do
         # 在庫を確保
         item.update!(stock_quantity: 100)
 
-        expect {
+        expect do
           post :create, params: {
             item_id: item.id,
             stock_movement: {
-              movement_category: 'outbound',
+              movement_category: :outbound,
               quantity: 30,
               reason: 'テスト出庫',
               note: 'テスト用の出庫です'
             }
           }
-        }.to change(StockMovement, :count).by(1)
+        end.to change(StockMovement, :count).by(1)
 
         expect(response).to redirect_to(item_path(item))
         expect(flash[:notice]).to eq('入出庫が正常に記録されました。')
@@ -122,15 +128,15 @@ RSpec.describe StockMovementsController, type: :controller do
 
     context '無効なパラメータの場合' do
       it '在庫移動が作成されない' do
-        expect {
+        expect do
           post :create, params: {
             item_id: item.id,
             stock_movement: {
-              movement_category: '',
+              movement_category: nil,
               quantity: -1
             }
           }
-        }.not_to change(StockMovement, :count)
+        end.not_to change(StockMovement, :count)
 
         expect(response).to have_http_status(:unprocessable_entity)
       end
@@ -140,16 +146,16 @@ RSpec.describe StockMovementsController, type: :controller do
       it '出庫が作成されない' do
         item.update!(stock_quantity: 10)
 
-        expect {
+        expect do
           post :create, params: {
             item_id: item.id,
             stock_movement: {
-              movement_category: 'outbound',
+              movement_category: :outbound,
               quantity: 50,
               reason: '在庫不足テスト'
             }
           }
-        }.not_to change(StockMovement, :count)
+        end.not_to change(StockMovement, :count)
 
         expect(response).to have_http_status(:unprocessable_entity)
       end
@@ -185,9 +191,9 @@ RSpec.describe StockMovementsController, type: :controller do
       controller.params[:id] = stock_movement.id
       controller.send(:set_stock_movement)
 
-      expect {
+      expect do
         delete :destroy, params: { id: stock_movement.id }
-      }.to change(StockMovement, :count).by(-1)
+      end.to change(StockMovement, :count).by(-1)
 
       expect(response).to redirect_to(stock_movements_path)
       expect(flash[:notice]).to eq('入出庫記録が正常に削除されました。')

@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# UserPolicy
 class UserPolicy < ApplicationPolicy
   def index?
     user.admin?
@@ -23,9 +26,11 @@ class UserPolicy < ApplicationPolicy
     user.admin? && same_company? && record != user
   end
 
+  # UserPolicy::Scope
   class Scope < ApplicationPolicy::Scope
     def resolve
       return User.none unless user.admin?
+
       scope.where(company: user.company)
     end
   end

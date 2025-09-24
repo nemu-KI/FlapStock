@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Shoulda Matchersの設定
 require 'shoulda/matchers'
 

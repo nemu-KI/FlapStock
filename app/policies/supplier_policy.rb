@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# SupplierPolicy
 class SupplierPolicy < ApplicationPolicy
   def index?
     user.present?
@@ -19,9 +22,11 @@ class SupplierPolicy < ApplicationPolicy
     user.admin?
   end
 
+  # SupplierPolicy::Scope
   class Scope < ApplicationPolicy::Scope
     def resolve
       return Supplier.none unless user.present?
+
       scope.where(company: user.company)
     end
   end

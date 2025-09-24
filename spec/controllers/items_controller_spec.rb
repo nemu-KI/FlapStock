@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe ItemsController, type: :controller do
@@ -45,13 +47,14 @@ RSpec.describe ItemsController, type: :controller do
       other_category = create(:category, company: other_company)
       other_location = create(:location, company: other_company)
       other_supplier = create(:supplier, company: other_company)
-      other_item = create(:item, company: other_company, category: other_category, location: other_location, supplier: other_supplier)
+      other_item = create(:item, company: other_company, category: other_category, location: other_location,
+                                 supplier: other_supplier)
 
       # パラメータを設定してset_itemメソッドをテスト
       controller.params[:id] = other_item.id
-      expect {
+      expect do
         controller.send(:set_item)
-      }.to raise_error(Pundit::NotAuthorizedError, "この操作を実行する権限がありません。")
+      end.to raise_error(Pundit::NotAuthorizedError, 'この操作を実行する権限がありません。')
     end
   end
 
@@ -69,7 +72,7 @@ RSpec.describe ItemsController, type: :controller do
   describe 'POST #create' do
     context '有効なパラメータの場合' do
       it '商品が作成される' do
-        expect {
+        expect do
           post :create, params: {
             item: {
               name: 'テスト商品',
@@ -84,7 +87,7 @@ RSpec.describe ItemsController, type: :controller do
               max_stock: 200
             }
           }
-        }.to change(Item, :count).by(1)
+        end.to change(Item, :count).by(1)
 
         expect(response).to redirect_to(items_path)
         expect(flash[:notice]).to eq('物品が正常に作成されました。')
@@ -93,14 +96,14 @@ RSpec.describe ItemsController, type: :controller do
 
     context '無効なパラメータの場合' do
       it '商品が作成されない' do
-        expect {
+        expect do
           post :create, params: {
             item: {
               name: '',
               stock_quantity: -1
             }
           }
-        }.not_to change(Item, :count)
+        end.not_to change(Item, :count)
 
         expect(response).to have_http_status(:unprocessable_entity)
         expect(flash[:alert]).to eq('物品の作成に失敗しました。')
@@ -123,13 +126,14 @@ RSpec.describe ItemsController, type: :controller do
       other_category = create(:category, company: other_company)
       other_location = create(:location, company: other_company)
       other_supplier = create(:supplier, company: other_company)
-      other_item = create(:item, company: other_company, category: other_category, location: other_location, supplier: other_supplier)
+      other_item = create(:item, company: other_company, category: other_category, location: other_location,
+                                 supplier: other_supplier)
 
       # パラメータを設定してset_itemメソッドをテスト
       controller.params[:id] = other_item.id
-      expect {
+      expect do
         controller.send(:set_item)
-      }.to raise_error(Pundit::NotAuthorizedError, "この操作を実行する権限がありません。")
+      end.to raise_error(Pundit::NotAuthorizedError, 'この操作を実行する権限がありません。')
     end
   end
 
@@ -171,22 +175,23 @@ RSpec.describe ItemsController, type: :controller do
       other_category = create(:category, company: other_company)
       other_location = create(:location, company: other_company)
       other_supplier = create(:supplier, company: other_company)
-      other_item = create(:item, company: other_company, category: other_category, location: other_location, supplier: other_supplier)
+      other_item = create(:item, company: other_company, category: other_category, location: other_location,
+                                 supplier: other_supplier)
 
       # パラメータを設定してset_itemメソッドをテスト
       controller.params[:id] = other_item.id
-      expect {
+      expect do
         controller.send(:set_item)
-      }.to raise_error(Pundit::NotAuthorizedError, "この操作を実行する権限がありません。")
+      end.to raise_error(Pundit::NotAuthorizedError, 'この操作を実行する権限がありません。')
     end
   end
 
   describe 'DELETE #destroy' do
     it '商品が削除される' do
       item_name = item.name
-      expect {
+      expect do
         delete :destroy, params: { id: item.id }
-      }.to change(Item, :count).by(-1)
+      end.to change(Item, :count).by(-1)
 
       expect(response).to redirect_to(items_path)
       expect(flash[:notice]).to eq("「#{item_name}」が正常に削除されました。")
@@ -197,13 +202,14 @@ RSpec.describe ItemsController, type: :controller do
       other_category = create(:category, company: other_company)
       other_location = create(:location, company: other_company)
       other_supplier = create(:supplier, company: other_company)
-      other_item = create(:item, company: other_company, category: other_category, location: other_location, supplier: other_supplier)
+      other_item = create(:item, company: other_company, category: other_category, location: other_location,
+                                 supplier: other_supplier)
 
       # パラメータを設定してset_itemメソッドをテスト
       controller.params[:id] = other_item.id
-      expect {
+      expect do
         controller.send(:set_item)
-      }.to raise_error(Pundit::NotAuthorizedError, "この操作を実行する権限がありません。")
+      end.to raise_error(Pundit::NotAuthorizedError, 'この操作を実行する権限がありません。')
     end
   end
 

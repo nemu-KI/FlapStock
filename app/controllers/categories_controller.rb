@@ -1,6 +1,9 @@
+# frozen_string_literal: true
+
+# CategoriesController
 class CategoriesController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_category, only: [:show, :edit, :update, :destroy]
+  before_action :set_category, only: %i[show edit update destroy]
 
   def index
     @categories = policy_scope(Category).includes(:items)
@@ -61,9 +64,9 @@ class CategoriesController < ApplicationController
   def set_category
     # 他社のデータにアクセスしようとした場合も権限エラーとして扱う
     @category = Category.find(params[:id])
-    unless @category.company == current_user.company
-      raise Pundit::NotAuthorizedError, "この操作を実行する権限がありません。"
-    end
+    return if @category.company == current_user.company
+
+    raise Pundit::NotAuthorizedError, 'この操作を実行する権限がありません。'
   end
 
   def category_params

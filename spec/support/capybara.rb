@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Capybaraの設定
 require 'capybara/rails'
 require 'capybara/rspec'

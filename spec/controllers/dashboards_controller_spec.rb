@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe DashboardsController, type: :controller do
@@ -30,9 +32,12 @@ RSpec.describe DashboardsController, type: :controller do
     it '最近の入出庫履歴が表示される' do
       # テストデータを作成
       item = create(:item, company: company, category: category, location: location, supplier: supplier)
-      movement1 = create(:stock_movement, item: item, user: user, company: company, created_at: 1.day.ago)
-      movement2 = create(:stock_movement, item: item, user: user, company: company, created_at: 2.days.ago)
-      movement3 = create(:stock_movement, item: item, user: user, company: company, created_at: 3.days.ago)
+      movement1 = create(:stock_movement, item: item, user: user, company: company,
+                                          movement_category: :inbound, created_at: 1.day.ago)
+      movement2 = create(:stock_movement, item: item, user: user, company: company,
+                                          movement_category: :outbound, created_at: 2.days.ago)
+      movement3 = create(:stock_movement, item: item, user: user, company: company,
+                                          movement_category: :adjustment, created_at: 3.days.ago)
 
       get :index
       expect(assigns(:recent_movements)).to include(movement1, movement2, movement3)
@@ -43,9 +48,9 @@ RSpec.describe DashboardsController, type: :controller do
       # 今月のデータを作成
       item = create(:item, company: company, category: category, location: location, supplier: supplier)
       create(:stock_movement, item: item, user: user, company: company,
-             movement_category: 'inbound', created_at: Date.current)
+                              movement_category: :inbound, created_at: Date.current)
       create(:stock_movement, item: item, user: user, company: company,
-             movement_category: 'outbound', created_at: Date.current)
+                              movement_category: :outbound, created_at: Date.current)
 
       get :index
       expect(assigns(:monthly_inbound_count)).to eq(1)

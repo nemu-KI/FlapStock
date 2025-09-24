@@ -1,6 +1,9 @@
+# frozen_string_literal: true
+
+# LocationsController
 class LocationsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_location, only: [:show, :edit, :update, :destroy]
+  before_action :set_location, only: %i[show edit update destroy]
 
   def index
     @locations = policy_scope(Location).includes(:items)
@@ -61,9 +64,9 @@ class LocationsController < ApplicationController
   def set_location
     # 他社のデータにアクセスしようとした場合も権限エラーとして扱う
     @location = Location.find(params[:id])
-    unless @location.company == current_user.company
-      raise Pundit::NotAuthorizedError, "この操作を実行する権限がありません。"
-    end
+    return if @location.company == current_user.company
+
+    raise Pundit::NotAuthorizedError, 'この操作を実行する権限がありません。'
   end
 
   def location_params

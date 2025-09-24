@@ -1,16 +1,19 @@
+# frozen_string_literal: true
+
+# StockMovementsController
 class StockMovementsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_stock_movement, only: [:show, :edit, :update, :destroy]
-  before_action :set_item, only: [:index, :new, :create]
+  before_action :set_stock_movement, only: %i[show edit update destroy]
+  before_action :set_item, only: %i[index new create]
 
   def index
-    if @item
-      # 物品別の履歴表示
-      @q = policy_scope(StockMovement).where(item: @item).includes(:user).ransack(params[:q])
-    else
-      # 全体の履歴表示
-      @q = policy_scope(StockMovement).includes(:item, :user).ransack(params[:q])
-    end
+    @q = if @item
+           # 物品別の履歴表示
+           policy_scope(StockMovement).where(item: @item).includes(:user).ransack(params[:q])
+         else
+           # 全体の履歴表示
+           policy_scope(StockMovement).includes(:item, :user).ransack(params[:q])
+         end
     @stock_movements = @q.result(distinct: true).order(created_at: :desc).page(params[:page])
   end
 
@@ -58,7 +61,7 @@ class StockMovementsController < ApplicationController
     begin
       @stock_movement.destroy
       redirect_to stock_movements_path, notice: '入出庫記録が正常に削除されました。'
-    rescue => e
+    rescue StandardError
       redirect_to @stock_movement, alert: '入出庫記録の削除に失敗しました。'
     end
   end

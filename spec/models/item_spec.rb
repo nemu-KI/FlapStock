@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe Item, type: :model do
@@ -16,25 +18,23 @@ RSpec.describe Item, type: :model do
       context '最小在庫数と最大在庫数が両方設定されている場合' do
         it '最大在庫数が最小在庫数より大きい場合は有効である' do
           item = build(:item,
-            company: company,
-            category: category,
-            location: location,
-            supplier: supplier,
-            min_stock: 10,
-            max_stock: 20
-          )
+                       company: company,
+                       category: category,
+                       location: location,
+                       supplier: supplier,
+                       min_stock: 10,
+                       max_stock: 20)
           expect(item).to be_valid
         end
 
         it '最大在庫数が最小在庫数以下の場合は無効である' do
           item = build(:item,
-            company: company,
-            category: category,
-            location: location,
-            supplier: supplier,
-            min_stock: 20,
-            max_stock: 10
-          )
+                       company: company,
+                       category: category,
+                       location: location,
+                       supplier: supplier,
+                       min_stock: 20,
+                       max_stock: 10)
           expect(item).not_to be_valid
           expect(item.errors[:max_stock]).to include('は最小在庫より大きい値で入力してください')
         end
@@ -43,25 +43,23 @@ RSpec.describe Item, type: :model do
       context '最小在庫数または最大在庫数がnilの場合' do
         it '最小在庫数がnilの場合は有効である' do
           item = build(:item,
-            company: company,
-            category: category,
-            location: location,
-            supplier: supplier,
-            min_stock: nil,
-            max_stock: 20
-          )
+                       company: company,
+                       category: category,
+                       location: location,
+                       supplier: supplier,
+                       min_stock: nil,
+                       max_stock: 20)
           expect(item).to be_valid
         end
 
         it '最大在庫数がnilの場合は有効である' do
           item = build(:item,
-            company: company,
-            category: category,
-            location: location,
-            supplier: supplier,
-            min_stock: 10,
-            max_stock: nil
-          )
+                       company: company,
+                       category: category,
+                       location: location,
+                       supplier: supplier,
+                       min_stock: 10,
+                       max_stock: nil)
           expect(item).to be_valid
         end
       end

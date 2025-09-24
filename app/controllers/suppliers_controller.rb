@@ -1,6 +1,9 @@
+# frozen_string_literal: true
+
+# SuppliersController
 class SuppliersController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_supplier, only: [:show, :edit, :update, :destroy]
+  before_action :set_supplier, only: %i[show edit update destroy]
 
   def index
     @suppliers = policy_scope(Supplier).includes(:items)
@@ -61,9 +64,9 @@ class SuppliersController < ApplicationController
   def set_supplier
     # 他社のデータにアクセスしようとした場合も権限エラーとして扱う
     @supplier = Supplier.find(params[:id])
-    unless @supplier.company == current_user.company
-      raise Pundit::NotAuthorizedError, "この操作を実行する権限がありません。"
-    end
+    return if @supplier.company == current_user.company
+
+    raise Pundit::NotAuthorizedError, 'この操作を実行する権限がありません。'
   end
 
   def supplier_params

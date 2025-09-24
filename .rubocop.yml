@@ -1,0 +1,87 @@
+# Rubocop設定ファイル
+# Rails 7 + RSpec プロジェクト用
+
+# 継承する設定
+inherit_from: .rubocop_todo.yml
+
+# 対象ファイル
+AllCops:
+  NewCops: enable
+  TargetRubyVersion: 3.2
+  Exclude:
+    - 'db/schema.rb'
+    - 'db/migrate/*'
+    - 'bin/*'
+    - 'config/boot.rb'
+    - 'config/environment.rb'
+    - 'config/initializers/*'
+    - 'vendor/**/*'
+    - 'node_modules/**/*'
+    - 'tmp/**/*'
+    - 'log/**/*'
+
+# 行の長さ
+Layout/LineLength:
+  Max: 120
+  Exclude:
+    - 'config/routes.rb'
+
+# 文字列の引用符
+Style/StringLiterals:
+  EnforcedStyle: single_quotes
+
+# ハッシュの記法
+Style/HashSyntax:
+  EnforcedStyle: ruby19
+
+# メソッドの引数
+Style/MethodDefParentheses:
+  EnforcedStyle: require_parentheses
+
+# クラスとモジュールの長さ
+Metrics/ClassLength:
+  Max: 150
+
+# メソッドの長さ
+Metrics/MethodLength:
+  Max: 20
+
+# ブロックの長さ
+Metrics/BlockLength:
+  Max: 30
+  Exclude:
+    - 'spec/**/*'
+    - 'config/routes.rb'
+    - 'config/environments/**/*'
+
+# ファイルの長さ
+Metrics/AbcSize:
+  Max: 20
+
+# 循環的複雑度
+Metrics/CyclomaticComplexity:
+  Max: 8
+
+# ネストの深さ
+Metrics/BlockNesting:
+  Max: 3
+
+# 空行
+Layout/EmptyLinesAroundMethodBody:
+  Enabled: true
+
+# 末尾の空白
+Layout/TrailingWhitespace:
+  Enabled: true
+
+# インデント
+Layout/IndentationWidth:
+  Width: 2
+
+# 改行
+Layout/EndOfLine:
+  EnforcedStyle: lf
+
+# RSpec用設定は rubocop-rspec gem で管理
+
+# Rails用設定は rubocop-rails gem で管理

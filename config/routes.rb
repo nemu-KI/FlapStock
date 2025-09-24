@@ -1,11 +1,13 @@
+# frozen_string_literal: true
+
 Rails.application.routes.draw do
-  resources :items, only: [:index, :show, :new, :create, :edit, :update, :destroy] do
-    resources :stock_movements, only: [:index, :new, :create]
+  resources :items, only: %i[index show new create edit update destroy] do
+    resources :stock_movements, only: %i[index new create]
   end
-  resources :stock_movements, only: [:index, :show, :edit, :update, :destroy]
-  resources :categories, only: [:index, :new, :create, :edit, :update, :destroy]
-  resources :locations, only: [:index, :new, :create, :edit, :update, :destroy]
-  resources :suppliers, only: [:index, :show, :new, :create, :edit, :update, :destroy]
+  resources :stock_movements, only: %i[index show edit update destroy]
+  resources :categories, only: %i[index new create edit update destroy]
+  resources :locations, only: %i[index new create edit update destroy]
+  resources :suppliers, only: %i[index show new create edit update destroy]
 
   # ダッシュボード
   get 'dashboards/index'
@@ -15,11 +17,7 @@ Rails.application.routes.draw do
   devise_for :users
 
   # LetterOpenerWeb（開発環境のみ）
-  if Rails.env.development?
-    mount LetterOpenerWeb::Engine, at: "/letter_opener"
-  end
-
-
+  mount LetterOpenerWeb::Engine, at: '/letter_opener' if Rails.env.development?
 
   # ルート
   root 'dashboards#index'

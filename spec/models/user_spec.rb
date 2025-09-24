@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe User, type: :model do
@@ -75,14 +77,14 @@ RSpec.describe User, type: :model do
   describe 'Ransack検索可能な属性' do
     it '正しい検索可能な属性を返す' do
       expected_attributes = %w[id email role company_id created_at updated_at]
-      expect(User.ransackable_attributes).to match_array(expected_attributes)
+      expect(User.send(:ransackable_attributes)).to match_array(expected_attributes)
     end
   end
 
   describe 'Ransack検索可能な関連' do
     it '正しい検索可能な関連を返す' do
       expected_associations = %w[company stock_movements]
-      expect(User.ransackable_associations).to match_array(expected_associations)
+      expect(User.send(:ransackable_associations)).to match_array(expected_associations)
     end
   end
 end

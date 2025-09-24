@@ -11,7 +11,7 @@
       <div class="flex justify-between items-center mb-6">
         <h1 class="text-2xl font-bold text-slate-800">物品一覧</h1>
         <% if policy(Item).create? %>
-          <%= link_to new_item_path, class: button_classes(:primary, :md) + " inline-flex items-center" do %>
+          <%= link_to new_item_path, class: button_classes(variant: :primary, size: :md) + " inline-flex items-center" do %>
             <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
             </svg>
@@ -54,8 +54,8 @@
             <%= f.number_field :stock_quantity_lteq, placeholder: "例: 50", class: "w-full border border-slate-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" %>
           </div>
           <div class="flex gap-2">
-            <%= f.submit "検索", class: button_classes(:primary, :md) %>
-            <%= link_to "クリア", items_path, class: button_classes(:secondary, :md) %>
+            <%= f.submit "検索", class: button_classes(variant: :primary, size: :md) %>
+            <%= link_to "クリア", items_path, class: button_classes(variant: :secondary, size: :md) %>
           </div>
         <% end %>
       </div>
@@ -112,11 +112,11 @@
                     <td class="w-20 px-6 py-4 whitespace-nowrap text-sm text-slate-900">
                       <% if policy(StockMovement.new).create? %>
                         <%= link_to new_item_stock_movement_path(item, movement_category: 'inbound'),
-                            class: button_classes(:success, :sm), title: "入庫" do %>
+                            class: button_classes(variant: :success, size: :sm), title: "入庫" do %>
                           入庫
                         <% end %>
                       <% else %>
-                        <span class="<%= button_classes(:secondary, :sm) %> opacity-50 cursor-not-allowed" title="権限がありません">
+                        <span class="<%= button_classes(variant: :secondary, size: :sm) %> opacity-50 cursor-not-allowed" title="権限がありません">
                           権限なし
                         </span>
                       <% end %>
@@ -124,11 +124,11 @@
                     <td class="w-20 px-6 py-4 whitespace-nowrap text-sm text-slate-900">
                       <% if policy(StockMovement.new).create? %>
                         <%= link_to new_item_stock_movement_path(item, movement_category: 'outbound'),
-                            class: button_classes(:danger, :sm), title: "出庫" do %>
+                            class: button_classes(variant: :danger, size: :sm), title: "出庫" do %>
                           出庫
                         <% end %>
                       <% else %>
-                        <span class="<%= button_classes(:secondary, :sm) %> opacity-50 cursor-not-allowed" title="権限がありません">
+                        <span class="<%= button_classes(variant: :secondary, size: :sm) %> opacity-50 cursor-not-allowed" title="権限がありません">
                           権限なし
                         </span>
                       <% end %>
