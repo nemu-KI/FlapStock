@@ -12,5 +12,40 @@
 
   <body class="m-0 p-0">
     <%= yield %>
+
+    <!-- フッター -->
+    <footer class="bg-gray-800 text-white py-8 mt-16">
+      <div class="max-w-6xl mx-auto px-4">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div>
+            <h3 class="text-lg font-semibold mb-4">FlapStock</h3>
+            <p class="text-gray-300 text-sm">
+              在庫管理システム
+            </p>
+          </div>
+
+          <div>
+            <h4 class="text-md font-semibold mb-4">サービス</h4>
+            <ul class="space-y-2 text-sm">
+              <li><%= link_to "ダッシュボード", dashboard_path, class: "text-gray-300 hover:text-white" %></li>
+              <li><%= link_to "物品管理", items_path, class: "text-gray-300 hover:text-white" %></li>
+              <li><%= link_to "入出庫履歴", stock_movements_path, class: "text-gray-300 hover:text-white" %></li>
+            </ul>
+          </div>
+
+          <div>
+            <h4 class="text-md font-semibold mb-4">サポート</h4>
+            <ul class="space-y-2 text-sm">
+              <li><%= link_to "プライバシーポリシー", privacy_policy_path, class: "text-gray-300 hover:text-white" %></li>
+              <li><a href="mailto:support@flapstock.com" class="text-gray-300 hover:text-white">お問い合わせ</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="border-t border-gray-700 mt-8 pt-8 text-center text-sm text-gray-400">
+          <p>&copy; <%= Date.current.year %> FlapStock. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
   </body>
 </html>
