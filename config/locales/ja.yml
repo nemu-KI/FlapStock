@@ -18,6 +18,13 @@ ja:
 
   hello: "こんにちは"
 
+  # ActiveSupport翻訳
+  support:
+    array:
+      words_connector: "、"
+      two_words_connector: "と"
+      last_word_connector: "、"
+
   # エラーメッセージの設定
   errors:
     format: "%{attribute}%{message}"
@@ -46,9 +53,15 @@ ja:
     errors:
       messages:
         record_invalid: "バリデーションに失敗しました: %{errors}"
+        adjustment_deletion_not_allowed: "調整レコードは削除できません"
         restrict_dependent_destroy:
           has_one: "%{record}が存在するため、削除できません"
           has_many: "%{record}が存在するため、削除できません"
+      models:
+        stock_movement:
+          attributes:
+            base:
+              adjustment_deletion_not_allowed: "調整レコードは削除できません"
 
 
 
