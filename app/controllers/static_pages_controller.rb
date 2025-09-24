@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# StaticPagesController
 class StaticPagesController < ApplicationController
   # プライバシーポリシーは認証不要でアクセス可能
   skip_before_action :authenticate_user!, only: [:privacy_policy]
