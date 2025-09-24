@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# StockMovement
 class StockMovement < ApplicationRecord
   belongs_to :company
   belongs_to :user
@@ -16,20 +19,20 @@ class StockMovement < ApplicationRecord
   after_destroy :revert_item_stock
 
   # Ransack対応
-  def self.ransackable_attributes(auth_object = nil)
+  def self.ransackable_attributes(_auth_object = nil)
     %w[id quantity reason note created_at updated_at]
   end
 
-  def self.ransackable_associations(auth_object = nil)
+  def self.ransackable_associations(_auth_object = nil)
     %w[item user company]
   end
 
   # カスタム検索メソッド
-  def self.ransackable_scopes(auth_object = nil)
+  def self.ransackable_scopes(_auth_object = nil)
     %w[with_movement_category]
   end
 
-  scope :with_movement_category, ->(category) {
+  scope :with_movement_category, lambda { |category|
     if category.present?
       where(movement_category: category)
     else
@@ -45,16 +48,16 @@ class StockMovement < ApplicationRecord
   private
 
   def check_stock_availability
-    if outbound? && item.stock_quantity < quantity
-      errors.add(:quantity, :insufficient_stock, current_stock: item.stock_quantity, unit: item.unit)
-    end
+    return unless outbound? && item.stock_quantity < quantity
+
+    errors.add(:quantity, :insufficient_stock, current_stock: item.stock_quantity, unit: item.unit)
   end
 
   def check_adjustment_deletion
-    if movement_category == 'adjustment'
-      errors.add(:base, :adjustment_deletion_not_allowed)
-      throw(:abort)
-    end
+    return unless movement_category == 'adjustment'
+
+    errors.add(:base, :adjustment_deletion_not_allowed)
+    throw(:abort)
   end
 
   def update_item_stock

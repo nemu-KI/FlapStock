@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# Supplier
 class Supplier < ApplicationRecord
   belongs_to :company
   has_many :items, dependent: :destroy
@@ -10,12 +13,12 @@ class Supplier < ApplicationRecord
   validates :note, length: { maximum: 1000 }
 
   # Ransackの検索可能な属性を定義
-  def self.ransackable_attributes(auth_object = nil)
+  def self.ransackable_attributes(_auth_object = nil)
     %w[id name email phone contact_person address note company_id created_at updated_at]
   end
 
   # Ransackの検索可能な関連を定義
-  def self.ransackable_associations(auth_object = nil)
+  def self.ransackable_associations(_auth_object = nil)
     %w[company items]
   end
 end

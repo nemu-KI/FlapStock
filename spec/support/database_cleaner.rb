@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Database Cleanerの設定
 require 'database_cleaner/active_record'
 

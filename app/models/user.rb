@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# User
 class User < ApplicationRecord
   belongs_to :company
   has_many :stock_movements, dependent: :destroy
@@ -25,7 +28,7 @@ class User < ApplicationRecord
 
   private
 
-    def find_or_create_company
+  def find_or_create_company
     return unless company_name.present?
 
     # 正規化して検索（前後の空白除去、連続空白を単一空白に）
@@ -34,10 +37,10 @@ class User < ApplicationRecord
       c.email = "#{normalized_name}@example.com"
       c.active = true
     end
-  rescue => e
+  rescue StandardError => e
     # 会社作成に失敗した場合のエラーハンドリング
     Rails.logger.error "Company creation failed: #{e.message}"
-    errors.add(:company_name, "会社の作成に失敗しました")
+    errors.add(:company_name, '会社の作成に失敗しました')
   end
 
   def set_admin_role
@@ -49,19 +52,21 @@ class User < ApplicationRecord
 
   def ensure_admin_role
     # フォールバック: 権限が設定されていない場合はadminに設定
-    if role.blank? || role == 'staff'
-      Rails.logger.info "Ensuring admin role for user: #{email}"
-      update_column(:role, :admin)
-    end
+    return unless role.blank? || role == 'staff'
+
+    Rails.logger.info "Ensuring admin role for user: #{email}"
+    update_column(:role, :admin)
   end
 
   # Ransackの検索可能な属性を定義
-  def self.ransackable_attributes(auth_object = nil)
+  def self.ransackable_attributes(_auth_object = nil)
     %w[id email role company_id created_at updated_at]
   end
 
   # Ransackの検索可能な関連を定義
-  def self.ransackable_associations(auth_object = nil)
+  def self.ransackable_associations(_auth_object = nil)
     %w[company stock_movements]
   end
+
+  private_class_method :ransackable_attributes, :ransackable_associations
 end

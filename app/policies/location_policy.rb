@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# LocationPolicy
 class LocationPolicy < ApplicationPolicy
   def index?
     user.present?
@@ -19,9 +22,11 @@ class LocationPolicy < ApplicationPolicy
     user.admin?
   end
 
+  # LocationPolicy::Scope
   class Scope < ApplicationPolicy::Scope
     def resolve
       return Location.none unless user.present?
+
       scope.where(company: user.company)
     end
   end

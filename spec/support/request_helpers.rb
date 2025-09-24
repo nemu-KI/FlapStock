@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # リクエストテスト用のヘルパーメソッド
 module RequestHelpers
   def sign_in(user)

@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# ItemPolicy
 class ItemPolicy < ApplicationPolicy
   def index?
     user.present?
@@ -19,9 +22,11 @@ class ItemPolicy < ApplicationPolicy
     user.admin?
   end
 
+  # ItemPolicy::Scope
   class Scope < ApplicationPolicy::Scope
     def resolve
       return Item.none unless user.present?
+
       scope.where(company: user.company)
     end
   end

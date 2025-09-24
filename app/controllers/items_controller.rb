@@ -1,7 +1,10 @@
+# frozen_string_literal: true
+
+# ItemsController
 class ItemsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_item, only: [:show, :edit, :update, :destroy]
-  before_action :set_form_data, only: [:new, :create, :edit, :update]
+  before_action :set_item, only: %i[show edit update destroy]
+  before_action :set_form_data, only: %i[new create edit update]
 
   def index
     @q = policy_scope(Item).includes(:category, :location, :supplier).ransack(params[:q])
@@ -59,9 +62,9 @@ class ItemsController < ApplicationController
   def set_item
     # 他社のデータにアクセスしようとした場合も権限エラーとして扱う
     @item = Item.find(params[:id])
-    unless @item.company == current_user.company
-      raise Pundit::NotAuthorizedError, "この操作を実行する権限がありません。"
-    end
+    return if @item.company == current_user.company
+
+    raise Pundit::NotAuthorizedError, 'この操作を実行する権限がありません。'
   end
 
   def set_form_data
@@ -71,6 +74,7 @@ class ItemsController < ApplicationController
   end
 
   def item_params
-    params.require(:item).permit(:name, :stock_quantity, :unit, :category_id, :location_id, :supplier_id, :description, :sku, :image_url, :min_stock, :max_stock, :image)
+    params.require(:item).permit(:name, :stock_quantity, :unit, :category_id, :location_id, :supplier_id, :description,
+                                 :sku, :image_url, :min_stock, :max_stock, :image)
   end
 end

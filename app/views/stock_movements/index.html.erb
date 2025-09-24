@@ -63,9 +63,9 @@
                   class: "w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" %>
             </div>
             <div class="flex gap-2">
-              <%= f.submit "検索", class: button_classes(:primary, :md) %>
+              <%= f.submit "検索", class: button_classes(variant: :primary, size: :md) %>
               <%= link_to "クリア", @item ? item_stock_movements_path(@item) : stock_movements_path,
-                  class: button_classes(:secondary, :md) %>
+                  class: button_classes(variant: :secondary, size: :md) %>
             </div>
           </div>
         <% end %>
