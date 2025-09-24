@@ -53,6 +53,21 @@
         <%= f.label :password_confirmation, 'パスワード（確認）', class: 'block text-gray-700 mb-2 text-lg' %>
         <%= f.password_field :password_confirmation, autocomplete: "new-password", class: 'w-full border border-slate-300 rounded px-5 py-3 focus:outline-none focus:ring-2 focus:ring-blue-400 text-lg' %>
       </div>
+
+      <!-- プライバシーポリシー同意チェック -->
+      <div class="mb-6 w-full">
+        <div class="flex items-start">
+          <div class="flex items-center h-5">
+            <%= check_box_tag :privacy_policy_agreement, '1', false, class: 'w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2' %>
+          </div>
+          <div class="ml-3 text-sm">
+            <label for="privacy_policy_agreement" class="text-gray-700">
+              <%= link_to 'プライバシーポリシー', privacy_policy_path, class: 'text-blue-600 hover:text-blue-800 underline' %>に同意します
+            </label>
+          </div>
+        </div>
+      </div>
+
       <div class="mb-6 w-full flex justify-center">
         <%= f.submit '新規登録', class: 'w-40 bg-blue-500 text-white font-bold py-3 px-6 rounded hover:bg-blue-700 transition text-lg' %>
       </div>
