@@ -38,12 +38,17 @@ jobs:
 
     - name: Set up database
       run: |
-        bundle exec rails db:create
-        bundle exec rails db:migrate
+        RAILS_ENV=test bundle exec rails db:create
+        RAILS_ENV=test bundle exec rails db:migrate
+      env:
+        DATABASE_HOST: localhost
+        DATABASE_USERNAME: postgres
+        DATABASE_PASSWORD: password
 
     - name: Run RSpec
       run: bundle exec rspec
       env:
+        RAILS_ENV: test
         DATABASE_HOST: localhost
         DATABASE_USERNAME: postgres
         DATABASE_PASSWORD: password
