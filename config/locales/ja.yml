@@ -1,4 +1,8 @@
 ja:
+  # 基本的な翻訳
+  hello: "こんにちは"
+
+  # ページネーション
   views:
     pagination:
       first: "最初"
@@ -6,6 +10,8 @@ ja:
       previous: "前"
       next: "次"
       truncate: "..."
+
+  # ヘルパー
   helpers:
     page_entries_info:
       one_page:
@@ -16,9 +22,14 @@ ja:
       more_pages:
         display_entries: "全%{total}件中 %{first}&nbsp;-&nbsp;%{last}件を表示"
 
-  hello: "こんにちは"
+  # ActiveSupport翻訳
+  support:
+    array:
+      words_connector: "、"
+      two_words_connector: "と"
+      last_word_connector: "、"
 
-  # エラーメッセージの設定
+  # エラーメッセージの基本設定
   errors:
     format: "%{attribute}%{message}"
     messages:
@@ -34,26 +45,9 @@ ja:
       less_than_or_equal_to: "は%{count}以下の値で入力してください"
       confirmation: "が一致しません"
 
-    # エラーメッセージのヘッダー
-    template:
-      header:
-        one: "1件のエラーにより%{model}を保存できませんでした："
-        other: "%{count}件のエラーにより%{model}を保存できませんでした："
-      body: "以下の問題を確認してください"
-
-  # ActiveRecordのエラーメッセージ
+  # ActiveRecordの翻訳
   activerecord:
-    errors:
-      messages:
-        record_invalid: "バリデーションに失敗しました: %{errors}"
-        restrict_dependent_destroy:
-          has_one: "%{record}が存在するため、削除できません"
-          has_many: "%{record}が存在するため、削除できません"
-
-
-
-  # モデル名
-  activerecord:
+    # モデル名
     models:
       item: "物品"
       category: "分類"
@@ -120,98 +114,6 @@ ja:
         phone: "電話番号"
         active: "有効状態"
 
-    # エラーメッセージ
-    errors:
-      models:
-        item:
-          attributes:
-            name:
-              required: "物品名を入力してください"
-              blank: "物品名を入力してください"
-            category:
-              required: "分類を選択してください"
-              blank: "分類を選択してください"
-            location:
-              required: "保管場所を選択してください"
-              blank: "保管場所を選択してください"
-            supplier:
-              required: "発注先を選択してください"
-              blank: "発注先を選択してください"
-            stock_quantity:
-              not_a_number: "在庫数は数値で入力してください"
-              greater_than_or_equal_to: "在庫数は0以上の値で入力してください"
-            min_stock:
-              not_a_number: "最小在庫は数値で入力してください"
-              greater_than_or_equal_to: "最小在庫は0以上の値で入力してください"
-            max_stock:
-              not_a_number: "最大在庫は数値で入力してください"
-              greater_than_or_equal_to: "最大在庫は0以上の値で入力してください"
-
-        category:
-          attributes:
-            name:
-              required: "分類名を入力してください"
-              blank: "分類名を入力してください"
-              too_long: "分類名は%{count}文字以下で入力してください"
-            description:
-              too_long: "説明は%{count}文字以下で入力してください"
-
-        location:
-          attributes:
-            name:
-              required: "保管場所名を入力してください"
-              blank: "保管場所名を入力してください"
-              too_long: "保管場所名は%{count}文字以下で入力してください"
-            description:
-              too_long: "説明は%{count}文字以下で入力してください"
-
-        supplier:
-          attributes:
-            name:
-              required: "発注先名を入力してください"
-              blank: "発注先名を入力してください"
-              too_long: "発注先名は%{count}文字以下で入力してください"
-            email:
-              invalid: "メールアドレスの形式が正しくありません"
-            phone:
-              too_long: "電話番号は%{count}文字以下で入力してください"
-            contact_person:
-              too_long: "担当者名は%{count}文字以下で入力してください"
-            address:
-              too_long: "住所は%{count}文字以下で入力してください"
-            note:
-              too_long: "備考は%{count}文字以下で入力してください"
-
-        stock_movement:
-          attributes:
-            quantity:
-              required: "数量を入力してください"
-              blank: "数量を入力してください"
-              not_a_number: "数量は数値で入力してください"
-              greater_than: "数量は0より大きい値を入力してください"
-              insufficient_stock: "現在の在庫数（%{current_stock}%{unit}）を超える出庫はできません"
-            movement_category:
-              required: "操作種別を選択してください"
-              blank: "操作種別を選択してください"
-            reason:
-              required: "理由を入力してください"
-              blank: "理由を入力してください"
-              too_long: "理由は%{count}文字以下で入力してください"
-            note:
-              too_long: "備考は%{count}文字以下で入力してください"
-          base:
-            adjustment_deletion_not_allowed: "調整操作は削除できません"
-
-
-
-        user:
-          attributes:
-            name:
-              required: "ユーザー名を入力してください"
-              blank: "ユーザー名を入力してください"
-            password_confirmation:
-              confirmation: "パスワードが一致しません"
-
     # enumの日本語化
     enums:
       stock_movement:
@@ -219,3 +121,17 @@ ja:
           inbound: "入庫"
           outbound: "出庫"
           adjustment: "調整"
+
+    # エラーメッセージ
+    errors:
+      messages:
+        record_invalid: "バリデーションに失敗しました: %{errors}"
+        adjustment_deletion_not_allowed: "調整レコードは削除できません"
+        insufficient_stock: "現在の在庫数（%{current_stock}%{unit}）を超える出庫はできません"
+      models:
+        stock_movement:
+          attributes:
+            base:
+              adjustment_deletion_not_allowed: "調整レコードは削除できません"
+            quantity:
+              insufficient_stock: "現在の在庫数（%{current_stock}%{unit}）を超える出庫はできません"
