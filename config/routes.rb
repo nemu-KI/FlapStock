@@ -17,7 +17,10 @@ Rails.application.routes.draw do
   get 'dashboard', to: 'dashboards#index'
 
   # 認証
-  devise_for :users
+  devise_for :users, controllers: {
+    sessions: 'users/sessions',
+    registrations: 'users/registrations'
+  }
 
   # LetterOpenerWeb（開発環境のみ）
   mount LetterOpenerWeb::Engine, at: '/letter_opener' if Rails.env.development?

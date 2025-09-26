@@ -2,6 +2,15 @@
 
 # ApplicationHelper
 module ApplicationHelper
+  # OGPタグを生成する
+  def ogp_tags(page_title = nil, page_description = nil)
+    title = page_title || default_ogp_title
+    description = page_description || default_ogp_description
+    image_url = default_ogp_image_url
+
+    ogp_meta_tags(title, description, image_url) + twitter_meta_tags(title, description, image_url)
+  end
+
   # ボタンスタイルの統一
   def button_classes(variant: :primary, size: :md, full_width: false)
     base_classes = 'font-medium rounded-lg transition duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2'
@@ -13,6 +22,34 @@ module ApplicationHelper
   end
 
   private
+
+  def default_ogp_title
+    'FlapStock - 在庫管理システム'
+  end
+
+  def default_ogp_description
+    'FlapStockは、効率的な在庫管理を実現するWebアプリケーションです。物品の入出庫管理、在庫状況の把握、発注先管理などの機能を提供します。'
+  end
+
+  def default_ogp_image_url
+    "#{request.base_url}#{asset_path('ogp/default-ogp-image.png')}"
+  end
+
+  def ogp_meta_tags(title, description, image_url)
+    content_tag(:meta, nil, property: 'og:title', content: title) +
+      content_tag(:meta, nil, property: 'og:description', content: description) +
+      content_tag(:meta, nil, property: 'og:image', content: image_url) +
+      content_tag(:meta, nil, property: 'og:url', content: request.url) +
+      content_tag(:meta, nil, property: 'og:type', content: 'website') +
+      content_tag(:meta, nil, property: 'og:site_name', content: 'FlapStock')
+  end
+
+  def twitter_meta_tags(title, description, image_url)
+    content_tag(:meta, nil, name: 'twitter:card', content: 'summary_large_image') +
+      content_tag(:meta, nil, name: 'twitter:title', content: title) +
+      content_tag(:meta, nil, name: 'twitter:description', content: description) +
+      content_tag(:meta, nil, name: 'twitter:image', content: image_url)
+  end
 
   def size_classes_for(size)
     case size
