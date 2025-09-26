@@ -2,11 +2,25 @@
 
 # DashboardsController
 class DashboardsController < ApplicationController
-  before_action :authenticate_user!
+  before_action :authenticate_user!, except: [:root]
 
   def index
     @company = current_user.company
     load_dashboard_data
+  end
+
+  def root
+    # ルートページ用のOGPタグを設定
+    @page_title = 'FlapStock - 在庫管理システム'
+    @page_description = 'FlapStockは、効率的な在庫管理を実現するWebアプリケーションです。物品の入出庫管理、在庫状況の把握、発注先管理などの機能を提供します。'
+
+    # ログイン済みの場合はダッシュボードにリダイレクト
+    if user_signed_in?
+      redirect_to dashboard_path
+    else
+      # 未ログインの場合はログイン画面にリダイレクト
+      redirect_to new_user_session_path
+    end
   end
 
   private
