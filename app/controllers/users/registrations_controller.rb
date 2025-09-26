@@ -11,7 +11,7 @@ module Users
 
     def set_ogp_tags
       @page_title = '新規登録 - FlapStock'
-      @page_description = 'FlapStockの在庫管理システムに新規登録してください。'
+      @page_description = 'FlapStockは、効率的な在庫管理を実現するWebアプリケーションです。'
     end
   end
 end
