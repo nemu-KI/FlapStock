@@ -2,13 +2,16 @@
 
 # Users::RegistrationsController
 # Deviseの登録コントローラーをカスタマイズ
-class Users::RegistrationsController < Devise::RegistrationsController
-  before_action :set_ogp_tags, only: [:new]
+module Users
+  # RegistrationsController
+  class RegistrationsController < Devise::RegistrationsController
+    before_action :set_ogp_tags, only: [:new]
 
-  private
+    private
 
-  def set_ogp_tags
-    @page_title = '新規登録 - FlapStock'
-    @page_description = 'FlapStockの在庫管理システムに新規登録してください。'
+    def set_ogp_tags
+      @page_title = '新規登録 - FlapStock'
+      @page_description = 'FlapStockの在庫管理システムに新規登録してください。'
+    end
   end
 end

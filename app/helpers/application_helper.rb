@@ -8,16 +8,7 @@ module ApplicationHelper
     description = page_description || default_ogp_description
     image_url = default_ogp_image_url
 
-    content_tag(:meta, nil, property: 'og:title', content: title) +
-    content_tag(:meta, nil, property: 'og:description', content: description) +
-    content_tag(:meta, nil, property: 'og:image', content: image_url) +
-    content_tag(:meta, nil, property: 'og:url', content: request.url) +
-    content_tag(:meta, nil, property: 'og:type', content: 'website') +
-    content_tag(:meta, nil, property: 'og:site_name', content: 'FlapStock') +
-    content_tag(:meta, nil, name: 'twitter:card', content: 'summary_large_image') +
-    content_tag(:meta, nil, name: 'twitter:title', content: title) +
-    content_tag(:meta, nil, name: 'twitter:description', content: description) +
-    content_tag(:meta, nil, name: 'twitter:image', content: image_url)
+    ogp_meta_tags(title, description, image_url) + twitter_meta_tags(title, description, image_url)
   end
 
   # ボタンスタイルの統一
@@ -42,6 +33,22 @@ module ApplicationHelper
 
   def default_ogp_image_url
     "#{request.base_url}#{asset_path('ogp/default-ogp-image.png')}"
+  end
+
+  def ogp_meta_tags(title, description, image_url)
+    content_tag(:meta, nil, property: 'og:title', content: title) +
+      content_tag(:meta, nil, property: 'og:description', content: description) +
+      content_tag(:meta, nil, property: 'og:image', content: image_url) +
+      content_tag(:meta, nil, property: 'og:url', content: request.url) +
+      content_tag(:meta, nil, property: 'og:type', content: 'website') +
+      content_tag(:meta, nil, property: 'og:site_name', content: 'FlapStock')
+  end
+
+  def twitter_meta_tags(title, description, image_url)
+    content_tag(:meta, nil, name: 'twitter:card', content: 'summary_large_image') +
+      content_tag(:meta, nil, name: 'twitter:title', content: title) +
+      content_tag(:meta, nil, name: 'twitter:description', content: description) +
+      content_tag(:meta, nil, name: 'twitter:image', content: image_url)
   end
 
   def size_classes_for(size)
