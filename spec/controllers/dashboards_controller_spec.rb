@@ -32,10 +32,12 @@ RSpec.describe DashboardsController, type: :controller do
     it '最近の入出庫履歴が表示される' do
       # テストデータを作成
       item = create(:item, company: company, category: category, location: location, supplier: supplier)
+      # まず入庫して在庫を増やす
       movement1 = create(:stock_movement, item: item, user: user, company: company,
-                                          movement_category: :inbound, created_at: 1.day.ago)
+                                          movement_category: :inbound, quantity: 20, created_at: 1.day.ago)
+      # その後出庫
       movement2 = create(:stock_movement, item: item, user: user, company: company,
-                                          movement_category: :outbound, created_at: 2.days.ago)
+                                          movement_category: :outbound, quantity: 5, created_at: 2.days.ago)
       movement3 = create(:stock_movement, item: item, user: user, company: company,
                                           movement_category: :adjustment, created_at: 3.days.ago)
 
