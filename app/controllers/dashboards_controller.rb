@@ -9,6 +9,7 @@ class DashboardsController < ApplicationController
     load_dashboard_data
   end
 
+
   private
 
   def load_dashboard_data
