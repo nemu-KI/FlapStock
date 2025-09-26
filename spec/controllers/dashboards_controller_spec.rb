@@ -47,10 +47,12 @@ RSpec.describe DashboardsController, type: :controller do
     it '今月の統計が正しく計算される' do
       # 今月のデータを作成
       item = create(:item, company: company, category: category, location: location, supplier: supplier)
+      # まず入庫して在庫を増やす
       create(:stock_movement, item: item, user: user, company: company,
-                              movement_category: :inbound, created_at: Date.current)
+                              movement_category: :inbound, quantity: 10, created_at: Date.current)
+      # その後出庫
       create(:stock_movement, item: item, user: user, company: company,
-                              movement_category: :outbound, created_at: Date.current)
+                              movement_category: :outbound, quantity: 5, created_at: Date.current)
 
       get :index
       expect(assigns(:monthly_inbound_count)).to eq(1)

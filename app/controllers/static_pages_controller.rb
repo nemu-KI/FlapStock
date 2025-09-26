@@ -3,7 +3,7 @@
 # StaticPagesController
 class StaticPagesController < ApplicationController
   # プライバシーポリシーと利用規約は認証不要でアクセス可能
-  skip_before_action :authenticate_user!, only: [:privacy_policy, :terms_of_service]
+  skip_before_action :authenticate_user!, only: %i[privacy_policy terms_of_service]
 
   def privacy_policy
     # ログイン状態に応じてレイアウトとビューを切り替え
