@@ -6,6 +6,9 @@ class StaticPagesController < ApplicationController
   skip_before_action :authenticate_user!, only: %i[privacy_policy terms_of_service]
 
   def privacy_policy
+    @page_title = 'プライバシーポリシー - FlapStock'
+    @page_description = 'FlapStockの個人情報の取り扱いについて説明します。'
+
     # ログイン状態に応じてレイアウトとビューを切り替え
     if user_signed_in?
       render layout: 'application'
@@ -15,6 +18,9 @@ class StaticPagesController < ApplicationController
   end
 
   def terms_of_service
+    @page_title = '利用規約 - FlapStock'
+    @page_description = 'FlapStockの利用規約について説明します。'
+
     # ログイン状態に応じてレイアウトとビューを切り替え
     if user_signed_in?
       render layout: 'application'
