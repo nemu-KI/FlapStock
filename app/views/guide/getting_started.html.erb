@@ -1,0 +1,137 @@
+<% content_for :title, "はじめに - ガイド" %>
+
+<div class="min-h-screen bg-gray-50">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <!-- パンくずリスト -->
+    <nav class="flex mb-8" aria-label="Breadcrumb">
+      <ol class="inline-flex items-center space-x-1 md:space-x-3">
+        <li class="inline-flex items-center">
+          <%= link_to "ガイド", guide_path, class: "text-gray-700 hover:text-blue-600" %>
+        </li>
+        <li>
+          <div class="flex items-center">
+            <i class="fas fa-chevron-right text-gray-400 mx-2"></i>
+            <span class="text-gray-500">はじめに</span>
+          </div>
+        </li>
+      </ol>
+    </nav>
+
+    <!-- メインコンテンツ -->
+    <div class="bg-white rounded-lg shadow-md p-8">
+      <h1 class="text-3xl font-bold text-gray-900 mb-6">はじめに</h1>
+
+      <!-- FlapStockとは -->
+      <section class="mb-8">
+        <h2 class="text-2xl font-semibold text-gray-900 mb-4">FlapStockとは</h2>
+        <p class="text-gray-700 mb-4">
+          FlapStockは、中小企業や個人事業主向けのシンプルで使いやすい在庫管理システムです。
+          複雑な設定は不要で、すぐに在庫管理を始めることができます。
+        </p>
+        <div class="bg-blue-50 rounded-lg p-6">
+          <h3 class="text-lg font-semibold text-blue-900 mb-3">主な特徴</h3>
+          <ul class="space-y-2 text-blue-800">
+            <li class="flex items-center">
+              <i class="fas fa-check text-blue-600 mr-2"></i>
+              直感的で分かりやすいインターフェース
+            </li>
+            <li class="flex items-center">
+              <i class="fas fa-check text-blue-600 mr-2"></i>
+              物品の入庫・出庫・調整の簡単な管理
+            </li>
+            <li class="flex items-center">
+              <i class="fas fa-check text-blue-600 mr-2"></i>
+              在庫状況のリアルタイム表示
+            </li>
+            <li class="flex items-center">
+              <i class="fas fa-check text-blue-600 mr-2"></i>
+              入出庫履歴の詳細な記録
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- 基本的な概念 -->
+      <section class="mb-8">
+        <h2 class="text-2xl font-semibold text-gray-900 mb-4">基本的な概念</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="bg-gray-50 rounded-lg p-6">
+            <h3 class="text-lg font-semibold text-gray-900 mb-3">物品（Item）</h3>
+            <p class="text-gray-700 mb-3">
+              在庫管理の対象となる物品です。物品名、型式、在庫数、最小・最大在庫などの情報を管理します。
+            </p>
+            <div class="text-sm text-gray-600">
+              <strong>含まれる情報：</strong> 物品名、型式、在庫数、単位、説明、最小在庫、最大在庫
+            </div>
+          </div>
+
+          <div class="bg-gray-50 rounded-lg p-6">
+            <h3 class="text-lg font-semibold text-gray-900 mb-3">在庫移動（Stock Movement）</h3>
+            <p class="text-gray-700 mb-3">
+              物品の在庫数が変動する操作です。入庫、出庫、調整の3つの種類があります。
+            </p>
+            <div class="text-sm text-gray-600">
+              <strong>種類：</strong> 入庫（在庫増加）、出庫（在庫減少）、調整（在庫修正）
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 基本的な流れ -->
+      <section class="mb-8">
+        <h2 class="text-2xl font-semibold text-gray-900 mb-4">基本的な流れ</h2>
+        <div class="space-y-6">
+          <div class="flex items-start">
+            <div class="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-bold mr-4 flex-shrink-0">1</div>
+            <div>
+              <h3 class="text-lg font-semibold text-gray-900 mb-2">物品を登録する</h3>
+              <p class="text-gray-700">
+                まずは管理したい物品を登録します。物品名、型式、初期在庫数などを設定します。
+              </p>
+            </div>
+          </div>
+
+          <div class="flex items-start">
+            <div class="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-bold mr-4 flex-shrink-0">2</div>
+            <div>
+              <h3 class="text-lg font-semibold text-gray-900 mb-2">在庫を管理する</h3>
+              <p class="text-gray-700">
+                物品の入庫・出庫・調整を行い、在庫数を適切に管理します。
+              </p>
+            </div>
+          </div>
+
+          <div class="flex items-start">
+            <div class="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-bold mr-4 flex-shrink-0">3</div>
+            <div>
+              <h3 class="text-lg font-semibold text-gray-900 mb-2">状況を確認する</h3>
+              <p class="text-gray-700">
+                ダッシュボードで在庫状況を確認し、必要に応じて発注や調整を行います。
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 次のステップ -->
+      <section class="bg-green-50 rounded-lg p-6">
+        <h2 class="text-xl font-semibold text-green-900 mb-4">次のステップ</h2>
+        <p class="text-green-800 mb-4">
+          基本的な概念を理解できました。次は実際の機能の使い方を学習しましょう。
+        </p>
+        <div class="flex flex-wrap gap-4 mb-4">
+          <%= link_to "マスターデータ管理を学習", guide_master_data_path,
+              class: "inline-flex items-center px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors" %>
+          <%= link_to "物品管理を学習", guide_items_path,
+              class: "inline-flex items-center px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors" %>
+          <%= link_to "在庫管理を学習", guide_stock_path,
+              class: "inline-flex items-center px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors" %>
+        </div>
+        <div class="border-t border-green-200 pt-4">
+          <%= link_to "ガイドトップに戻る", guide_path,
+              class: "inline-flex items-center px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 transition-colors" %>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>

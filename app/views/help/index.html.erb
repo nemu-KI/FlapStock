@@ -1,0 +1,86 @@
+<% content_for :title, "ヘルプ" %>
+
+<div class="min-h-screen bg-gray-50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <!-- ヘッダー -->
+    <div class="text-center mb-12">
+      <h1 class="text-4xl font-bold text-gray-900 mb-4">ヘルプセンター</h1>
+      <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+        よくある質問やトラブルシューティング情報をまとめています。
+        問題が解決しない場合は、お気軽にお問い合わせください。
+      </p>
+    </div>
+
+    <!-- ヘルプメニュー -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+      <!-- よくある質問 -->
+      <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
+        <div class="text-center">
+          <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <i class="fas fa-question-circle text-2xl text-blue-600"></i>
+          </div>
+          <h3 class="text-xl font-semibold text-gray-900 mb-2">よくある質問</h3>
+          <p class="text-gray-600 mb-4">ユーザーからよく寄せられる質問と回答をまとめています</p>
+          <%= link_to "確認する", help_faq_path,
+              class: "inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors" %>
+        </div>
+      </div>
+
+      <!-- トラブルシューティング -->
+      <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
+        <div class="text-center">
+          <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <i class="fas fa-tools text-2xl text-red-600"></i>
+          </div>
+          <h3 class="text-xl font-semibold text-gray-900 mb-2">トラブルシューティング</h3>
+          <p class="text-gray-600 mb-4">エラーや問題の解決方法を詳しく説明しています</p>
+          <%= link_to "確認する", help_troubleshooting_path,
+              class: "inline-flex items-center px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors" %>
+        </div>
+      </div>
+
+      <!-- お問い合わせ -->
+      <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
+        <div class="text-center">
+          <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <i class="fas fa-envelope text-2xl text-green-600"></i>
+          </div>
+          <h3 class="text-xl font-semibold text-gray-900 mb-2">お問い合わせ</h3>
+          <p class="text-gray-600 mb-4">サポートチームへの連絡方法をご案内します</p>
+          <%= link_to "連絡する", help_contact_path,
+              class: "inline-flex items-center px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors" %>
+        </div>
+      </div>
+    </div>
+
+    <!-- 人気の質問 -->
+    <div class="bg-white rounded-lg shadow-md p-8 mb-12">
+      <h2 class="text-2xl font-bold text-gray-900 mb-6">人気の質問</h2>
+      <div class="space-y-4">
+        <div class="border-l-4 border-blue-500 pl-4">
+          <h3 class="font-semibold text-gray-900 mb-2">マスターデータを登録するには？</h3>
+          <p class="text-gray-600">サイドバーの分類、保管場所、発注先から新規登録できます。物品登録前に設定しておきましょう。</p>
+        </div>
+        <div class="border-l-4 border-blue-500 pl-4">
+          <h3 class="font-semibold text-gray-900 mb-2">物品を登録するにはどうすればいいですか？</h3>
+          <p class="text-gray-600">物品一覧ページから「新規登録」ボタンをクリックして、必要な情報を入力してください。</p>
+        </div>
+        <div class="border-l-4 border-blue-500 pl-4">
+          <h3 class="font-semibold text-gray-900 mb-2">在庫数を変更するには？</h3>
+          <p class="text-gray-600">物品一覧ページ、もしくは物品詳細ページの「クイックアクション」から入庫・出庫・調整を選択できます。</p>
+        </div>
+        <div class="border-l-4 border-blue-500 pl-4">
+          <h3 class="font-semibold text-gray-900 mb-2">在庫アラートはどのように設定しますか？</h3>
+          <p class="text-gray-600">物品編集画面で「最小在庫」と「最大在庫」を設定すると、自動的にアラートが表示されます。</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ガイドへのリンク -->
+    <div class="text-center">
+      <p class="text-gray-600 mb-4">基本的な使い方を学習したい場合は、ガイドページをご覧ください</p>
+      <%= link_to "ガイドページへ", guide_path,
+          class: "inline-flex items-center px-6 py-3 bg-gray-600 text-white rounded-md hover:bg-gray-700 transition-colors" %>
+    </div>
+  </div>
+</div>

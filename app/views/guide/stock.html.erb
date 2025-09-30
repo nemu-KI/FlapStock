@@ -1,0 +1,262 @@
+<% content_for :title, "在庫管理 - ガイド" %>
+
+<div class="min-h-screen bg-gray-50">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <!-- パンくずリスト -->
+    <nav class="flex mb-8" aria-label="Breadcrumb">
+      <ol class="inline-flex items-center space-x-1 md:space-x-3">
+        <li class="inline-flex items-center">
+          <%= link_to "ガイド", guide_path, class: "text-gray-700 hover:text-blue-600" %>
+        </li>
+        <li>
+          <div class="flex items-center">
+            <i class="fas fa-chevron-right text-gray-400 mx-2"></i>
+            <span class="text-gray-500">在庫管理</span>
+          </div>
+        </li>
+      </ol>
+    </nav>
+
+    <!-- メインコンテンツ -->
+    <div class="bg-white rounded-lg shadow-md p-8">
+      <h1 class="text-3xl font-bold text-gray-900 mb-6">在庫管理の使い方</h1>
+
+      <!-- 在庫管理の概要 -->
+      <section class="mb-8">
+        <h2 class="text-2xl font-semibold text-gray-900 mb-4">在庫管理とは</h2>
+        <p class="text-gray-700 mb-4">
+          在庫管理では、物品の在庫数を入庫・出庫・調整によって変更できます。
+          すべての在庫変動は履歴として記録され、いつ・誰が・なぜ変更したかを追跡できます。
+        </p>
+        <div class="bg-orange-50 rounded-lg p-6">
+          <h3 class="text-lg font-semibold text-orange-900 mb-3">在庫移動の種類</h3>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="text-center">
+              <div class="w-12 h-12 bg-green-500 text-white rounded-full flex items-center justify-center mx-auto mb-2 text-xl font-bold">+</div>
+              <h4 class="font-semibold text-orange-900">入庫</h4>
+              <p class="text-sm text-orange-800">在庫を増やす</p>
+            </div>
+            <div class="text-center">
+              <div class="w-12 h-12 bg-red-500 text-white rounded-full flex items-center justify-center mx-auto mb-2 text-xl font-bold">-</div>
+              <h4 class="font-semibold text-orange-900">出庫</h4>
+              <p class="text-sm text-orange-800">在庫を減らす</p>
+            </div>
+            <div class="text-center">
+              <div class="w-12 h-12 bg-blue-500 text-white rounded-full flex items-center justify-center mx-auto mb-2 text-xl font-bold">=</div>
+              <h4 class="font-semibold text-orange-900">調整</h4>
+              <p class="text-sm text-orange-800">在庫を修正</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 在庫移動の操作方法 -->
+      <section class="mb-8">
+        <h2 class="text-2xl font-semibold text-gray-900 mb-4">在庫移動の操作方法</h2>
+        <p class="text-gray-700 mb-6">
+          在庫移動は物品詳細ページまたは物品一覧ページから実行できます。どちらの方法でも同じ操作が可能です。
+        </p>
+
+        <!-- 物品詳細ページからの操作 -->
+        <div class="mb-8">
+          <h3 class="text-xl font-semibold text-gray-900 mb-4">方法1：物品詳細ページから操作</h3>
+          <div class="space-y-6">
+            <div class="flex items-start">
+              <div class="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-bold mr-4 flex-shrink-0">1</div>
+              <div>
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">物品詳細ページにアクセス</h3>
+                <p class="text-gray-700 mb-3">物品一覧から在庫を変更したい物品をクリックして、物品詳細ページに移動します。</p>
+              </div>
+            </div>
+
+          <div class="flex items-start">
+            <div class="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-bold mr-4 flex-shrink-0">2</div>
+            <div>
+              <h3 class="text-lg font-semibold text-gray-900 mb-2">クイックアクションを選択</h3>
+              <p class="text-gray-700 mb-3">物品詳細ページの「クイックアクション」セクションから、行いたい操作を選択します。</p>
+              <div class="bg-gray-50 rounded-lg p-4">
+                <h4 class="font-semibold text-gray-900 mb-2">利用可能な操作</h4>
+                <ul class="space-y-2 text-sm text-gray-700">
+                  <li class="flex items-center">
+                    <span class="w-6 h-6 bg-green-500 text-white rounded text-xs flex items-center justify-center mr-2">+</span>
+                    入庫：在庫を増やす場合
+                  </li>
+                  <li class="flex items-center">
+                    <span class="w-6 h-6 bg-red-500 text-white rounded text-xs flex items-center justify-center mr-2">-</span>
+                    出庫：在庫を減らす場合
+                  </li>
+                  <li class="flex items-center">
+                    <span class="w-6 h-6 bg-blue-500 text-white rounded text-xs flex items-center justify-center mr-2">=</span>
+                    調整：実際の在庫数に合わせて修正する場合
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex items-start">
+            <div class="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-bold mr-4 flex-shrink-0">3</div>
+            <div>
+              <h3 class="text-lg font-semibold text-gray-900 mb-2">在庫移動情報を入力</h3>
+              <p class="text-gray-700 mb-3">以下の情報を入力します：</p>
+              <div class="bg-gray-50 rounded-lg p-4">
+                <h4 class="font-semibold text-gray-900 mb-2">必須項目</h4>
+                <ul class="space-y-1 text-sm text-gray-700">
+                  <li>• 数量：移動する在庫数</li>
+                  <li>• 理由：移動の理由（例：発注、売上、棚卸しなど）</li>
+                </ul>
+                <h4 class="font-semibold text-gray-900 mb-2 mt-4">任意項目</h4>
+                <ul class="space-y-1 text-sm text-gray-700">
+                  <li>• 備考：詳細な説明やメモ</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex items-start">
+            <div class="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-bold mr-4 flex-shrink-0">4</div>
+            <div>
+              <h3 class="text-lg font-semibold text-gray-900 mb-2">入出庫を記録</h3>
+              <p class="text-gray-700">「入出庫を記録」ボタンをクリックして在庫移動を完了します。在庫数が自動的に更新され、履歴に記録されます。</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 物品一覧ページからの操作 -->
+        <div class="mb-8">
+          <h3 class="text-xl font-semibold text-gray-900 mb-4">方法2：物品一覧ページから操作</h3>
+          <div class="space-y-6">
+            <div class="flex items-start">
+              <div class="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-bold mr-4 flex-shrink-0">1</div>
+              <div>
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">物品一覧ページにアクセス</h3>
+                <p class="text-gray-700 mb-3">サイドバーの「物品一覧」をクリックして、物品一覧ページに移動します。</p>
+              </div>
+            </div>
+
+            <div class="flex items-start">
+              <div class="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-bold mr-4 flex-shrink-0">2</div>
+              <div>
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">物品の操作ボタンをクリック</h3>
+                <p class="text-gray-700 mb-3">在庫を変更したい物品の行にある「入庫」「出庫」「調整」ボタンをクリックします。</p>
+                <div class="bg-gray-50 rounded-lg p-4">
+                  <h4 class="font-semibold text-gray-900 mb-2">利用可能な操作</h4>
+                  <ul class="space-y-2 text-sm text-gray-700">
+                    <li class="flex items-center">
+                      <span class="w-6 h-6 bg-green-500 text-white rounded text-xs flex items-center justify-center mr-2">+</span>
+                      入庫：在庫を増やす場合
+                    </li>
+                    <li class="flex items-center">
+                      <span class="w-6 h-6 bg-red-500 text-white rounded text-xs flex items-center justify-center mr-2">-</span>
+                      出庫：在庫を減らす場合
+                    </li>
+                    <li class="flex items-center">
+                      <span class="w-6 h-6 bg-blue-500 text-white rounded text-xs flex items-center justify-center mr-2">=</span>
+                      調整：実際の在庫数に合わせて修正する場合
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div class="flex items-start">
+              <div class="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-bold mr-4 flex-shrink-0">3</div>
+              <div>
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">移動情報を入力</h3>
+                <p class="text-gray-700 mb-3">物品詳細ページと同様に、数量、理由、備考を入力します。</p>
+              </div>
+            </div>
+
+            <div class="flex items-start">
+              <div class="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-bold mr-4 flex-shrink-0">4</div>
+              <div>
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">入出庫を記録</h3>
+                <p class="text-gray-700">「入出庫を記録」ボタンをクリックして在庫移動を完了します。操作後は物品一覧ページに戻ります。</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 在庫移動の注意点 -->
+      <section class="mb-8">
+        <h2 class="text-2xl font-semibold text-gray-900 mb-4">在庫移動の注意点</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="bg-yellow-50 rounded-lg p-6">
+            <h3 class="text-lg font-semibold text-yellow-900 mb-3">出庫時の注意</h3>
+            <ul class="space-y-2 text-yellow-800">
+              <li class="flex items-start">
+                <i class="fas fa-exclamation-triangle text-yellow-600 mr-2 mt-1"></i>
+                在庫数が不足している場合は出庫できません
+              </li>
+              <li class="flex items-start">
+                <i class="fas fa-exclamation-triangle text-yellow-600 mr-2 mt-1"></i>
+                出庫前に現在の在庫数を確認しましょう
+              </li>
+            </ul>
+          </div>
+
+          <div class="bg-blue-50 rounded-lg p-6">
+            <h3 class="text-lg font-semibold text-blue-900 mb-3">調整時の注意</h3>
+            <ul class="space-y-2 text-blue-800">
+              <li class="flex items-start">
+                <i class="fas fa-info-circle text-blue-600 mr-2 mt-1"></i>
+                調整は在庫数を直接設定します
+              </li>
+              <li class="flex items-start">
+                <i class="fas fa-info-circle text-blue-600 mr-2 mt-1"></i>
+                棚卸しや在庫修正に使用します
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- 在庫履歴の確認 -->
+      <section class="mb-8">
+        <h2 class="text-2xl font-semibold text-gray-900 mb-4">在庫履歴の確認</h2>
+        <p class="text-gray-700 mb-4">
+          すべての在庫移動は履歴として記録されます。以下の場所で確認できます：
+        </p>
+        <div class="bg-gray-50 rounded-lg p-6">
+          <h3 class="text-lg font-semibold text-gray-900 mb-3">履歴の確認方法</h3>
+          <ul class="space-y-2 text-gray-700">
+            <li class="flex items-center">
+              <i class="fas fa-box text-gray-600 mr-2"></i>
+              物品詳細ページの「入出庫履歴」セクション
+            </li>
+            <li class="flex items-center">
+              <i class="fas fa-list text-gray-600 mr-2"></i>
+              サイドバーの「入出庫履歴」メニュー
+            </li>
+          </ul>
+          <div class="mt-4 p-4 bg-white rounded border">
+            <h4 class="font-semibold text-gray-900 mb-2">履歴に記録される情報</h4>
+            <ul class="text-sm text-gray-600 space-y-1">
+              <li>• 移動日時・実行者</li>
+              <li>• 移動種類（入庫・出庫・調整）</li>
+              <li>• 移動数量・移動後の在庫数</li>
+              <li>• 理由・備考</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- 次のステップ -->
+      <section class="bg-green-50 rounded-lg p-6">
+        <h2 class="text-xl font-semibold text-green-900 mb-4">次のステップ</h2>
+        <p class="text-green-800 mb-4">
+          在庫管理の基本を理解できました。次はダッシュボードで在庫状況を確認する方法を学習しましょう。
+        </p>
+        <div class="flex flex-wrap gap-4 mb-4">
+          <%= link_to "ダッシュボードを学習", guide_dashboard_path,
+              class: "inline-flex items-center px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors" %>
+        </div>
+        <div class="border-t border-green-200 pt-4">
+          <%= link_to "ガイドトップに戻る", guide_path,
+              class: "inline-flex items-center px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 transition-colors" %>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>

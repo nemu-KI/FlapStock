@@ -1,0 +1,291 @@
+<% content_for :title, "トラブルシューティング - ヘルプ" %>
+
+<div class="min-h-screen bg-gray-50">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <!-- パンくずリスト -->
+    <nav class="flex mb-8" aria-label="Breadcrumb">
+      <ol class="inline-flex items-center space-x-1 md:space-x-3">
+        <li class="inline-flex items-center">
+          <%= link_to "ヘルプ", help_path, class: "text-gray-700 hover:text-blue-600" %>
+        </li>
+        <li>
+          <div class="flex items-center">
+            <i class="fas fa-chevron-right text-gray-400 mx-2"></i>
+            <span class="text-gray-500">トラブルシューティング</span>
+          </div>
+        </li>
+      </ol>
+    </nav>
+
+    <!-- メインコンテンツ -->
+    <div class="bg-white rounded-lg shadow-md p-8">
+      <h1 class="text-3xl font-bold text-gray-900 mb-8">トラブルシューティング</h1>
+
+      <!-- よくある問題 -->
+      <section class="mb-8">
+        <h2 class="text-2xl font-semibold text-gray-900 mb-6">よくある問題と解決方法</h2>
+
+        <!-- ログイン関連の問題 -->
+        <div class="mb-8">
+          <h3 class="text-xl font-semibold text-gray-900 mb-4">ログイン関連の問題</h3>
+          <div class="space-y-4">
+            <div class="border border-gray-200 rounded-lg p-6">
+              <h4 class="text-lg font-semibold text-gray-900 mb-3">Q. ログインできない</h4>
+              <div class="text-gray-700">
+                <p class="mb-3">A. 以下の手順で確認してください：</p>
+                <ol class="list-decimal list-inside space-y-2 ml-4">
+                  <li>メールアドレスとパスワードが正しく入力されているか確認</li>
+                  <li>パスワードの大文字・小文字を確認</li>
+                  <li>「パスワードを忘れた方」リンクからパスワードリセットを試行</li>
+                  <li>ブラウザのキャッシュとクッキーをクリア</li>
+                  <li>別のブラウザで試行</li>
+                </ol>
+              </div>
+            </div>
+
+            <div class="border border-gray-200 rounded-lg p-6">
+              <h4 class="text-lg font-semibold text-gray-900 mb-3">Q. パスワードリセットメールが届かない</h4>
+              <div class="text-gray-700">
+                <p class="mb-3">A. 以下の点を確認してください：</p>
+                <ul class="list-disc list-inside space-y-2 ml-4">
+                  <li>迷惑メールフォルダを確認</li>
+                  <li>メールアドレスが正しく入力されているか確認</li>
+                  <li>数分待ってから再度試行</li>
+                  <li>メールサーバーの問題の可能性がある場合は、しばらく時間をおいてから再試行</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- マスターデータ関連の問題 -->
+        <div class="mb-8">
+          <h3 class="text-xl font-semibold text-gray-900 mb-4">マスターデータ関連の問題</h3>
+          <div class="space-y-4">
+            <div class="border border-gray-200 rounded-lg p-6">
+              <h4 class="text-lg font-semibold text-gray-900 mb-3">Q. マスターデータを削除できない</h4>
+              <div class="text-gray-700">
+                <p class="mb-3">A. 以下の原因が考えられます：</p>
+                <ul class="list-disc list-inside space-y-2 ml-4">
+                  <li>そのマスターデータを使用している物品が存在する</li>
+                  <li>管理者権限がない</li>
+                </ul>
+                <div class="mt-3 p-3 bg-blue-50 rounded-lg">
+                  <p class="text-sm text-blue-800">
+                    <strong>解決方法：</strong> 関連する物品を先に削除するか、物品のマスターデータを別のものに変更してから削除してください。
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="border border-gray-200 rounded-lg p-6">
+              <h4 class="text-lg font-semibold text-gray-900 mb-3">Q. 物品登録時にマスターデータが表示されない</h4>
+              <div class="text-gray-700">
+                <p class="mb-3">A. 以下の点を確認してください：</p>
+                <ul class="list-disc list-inside space-y-2 ml-4">
+                  <li>マスターデータが正しく登録されているか</li>
+                  <li>ブラウザのキャッシュをクリア</li>
+                  <li>ページを再読み込み</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 在庫管理関連の問題 -->
+        <div class="mb-8">
+          <h3 class="text-xl font-semibold text-gray-900 mb-4">在庫管理関連の問題</h3>
+          <div class="space-y-4">
+            <div class="border border-gray-200 rounded-lg p-6">
+              <h4 class="text-lg font-semibold text-gray-900 mb-3">Q. 出庫ができない</h4>
+              <div class="text-gray-700">
+                <p class="mb-3">A. 以下の原因が考えられます：</p>
+                <ul class="list-disc list-inside space-y-2 ml-4">
+                  <li><strong>在庫不足：</strong> 出庫数量が現在の在庫数を超えています</li>
+                  <li><strong>権限不足：</strong> 一般ユーザーは在庫操作ができません</li>
+                  <li><strong>入力エラー：</strong> 数量が正しく入力されているか確認</li>
+                </ul>
+                <div class="mt-3 p-3 bg-yellow-50 rounded">
+                  <p class="text-sm text-yellow-800">
+                    <strong>解決方法：</strong> 在庫数を確認し、必要に応じて入庫操作を行ってから出庫を試行してください。
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="border border-gray-200 rounded-lg p-6">
+              <h4 class="text-lg font-semibold text-gray-900 mb-3">Q. 在庫数が正しく表示されない</h4>
+              <div class="text-gray-700">
+                <p class="mb-3">A. 以下の手順で確認してください：</p>
+                <ol class="list-decimal list-inside space-y-2 ml-4">
+                  <li>ページを再読み込み（F5キーまたはCtrl+R）</li>
+                  <li>入出庫履歴で最近の操作を確認</li>
+                  <li>調整操作で在庫数を正しく設定</li>
+                  <li>ブラウザのキャッシュをクリア</li>
+                </ol>
+              </div>
+            </div>
+
+            <div class="border border-gray-200 rounded-lg p-6">
+              <h4 class="text-lg font-semibold text-gray-900 mb-3">Q. 物品が削除できない</h4>
+              <div class="text-gray-700">
+                <p class="mb-3">A. 以下の原因が考えられます：</p>
+                <ul class="list-disc list-inside space-y-2 ml-4">
+                  <li><strong>権限不足：</strong> 管理者権限が必要です</li>
+                  <li><strong>関連データ：</strong> 入出庫履歴がある物品は削除できません</li>
+                </ul>
+                <div class="mt-3 p-3 bg-blue-50 rounded">
+                  <p class="text-sm text-blue-800">
+                    <strong>注意：</strong> 物品を削除すると、関連する入出庫履歴も一緒に削除されます。
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 表示・操作関連の問題 -->
+        <div class="mb-8">
+          <h3 class="text-xl font-semibold text-gray-900 mb-4">表示・操作関連の問題</h3>
+          <div class="space-y-4">
+            <div class="border border-gray-200 rounded-lg p-6">
+              <h4 class="text-lg font-semibold text-gray-900 mb-3">Q. ページが正しく表示されない</h4>
+              <div class="text-gray-700">
+                <p class="mb-3">A. 以下の手順で確認してください：</p>
+                <ol class="list-decimal list-inside space-y-2 ml-4">
+                  <li>ブラウザを最新版に更新</li>
+                  <li>JavaScriptが有効になっているか確認</li>
+                  <li>ブラウザのキャッシュとクッキーをクリア</li>
+                  <li>別のブラウザで試行</li>
+                  <li>インターネット接続を確認</li>
+                </ol>
+              </div>
+            </div>
+
+            <div class="border border-gray-200 rounded-lg p-6">
+              <h4 class="text-lg font-semibold text-gray-900 mb-3">Q. 検索がうまく動作しない</h4>
+              <div class="text-gray-700">
+                <p class="mb-3">A. 以下の点を確認してください：</p>
+                <ul class="list-disc list-inside space-y-2 ml-4">
+                  <li>検索キーワードが正しく入力されているか確認</li>
+                  <li>スペースや特殊文字が含まれていないか確認</li>
+                  <li>フィルタ条件をリセットして再試行</li>
+                  <li>物品名や型式の一部のみで検索</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="border border-gray-200 rounded-lg p-6">
+              <h4 class="text-lg font-semibold text-gray-900 mb-3">Q. 画像がアップロードできない</h4>
+              <div class="text-gray-700">
+                <p class="mb-3">A. 以下の点を確認してください：</p>
+                <ul class="list-disc list-inside space-y-2 ml-4">
+                  <li>ファイル形式がJPG、PNG、GIFのいずれかか確認</li>
+                  <li>ファイルサイズが5MB以下か確認</li>
+                  <li>画像ファイルが破損していないか確認</li>
+                  <li>ブラウザが最新版か確認</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- エラーメッセージの対処法 -->
+      <section class="mb-8">
+        <h2 class="text-2xl font-semibold text-gray-900 mb-6">エラーメッセージの対処法</h2>
+        <div class="space-y-4">
+          <div class="border border-red-200 rounded-lg p-6 bg-red-50">
+            <h3 class="text-lg font-semibold text-red-900 mb-3">「在庫が不足しています」エラー</h3>
+            <p class="text-red-800 mb-3">出庫操作時に表示されるエラーです。</p>
+            <div class="text-red-700">
+              <p class="mb-2"><strong>原因：</strong> 出庫数量が現在の在庫数を超えています</p>
+              <p class="mb-2"><strong>解決方法：</strong></p>
+              <ul class="list-disc list-inside space-y-1 ml-4">
+                <li>現在の在庫数を確認</li>
+                <li>出庫数量を在庫数以下に調整</li>
+                <li>必要に応じて入庫操作を先に実行</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="border border-yellow-200 rounded-lg p-6 bg-yellow-50">
+            <h3 class="text-lg font-semibold text-yellow-900 mb-3">「権限がありません」エラー</h3>
+            <p class="text-yellow-800 mb-3">操作に必要な権限がない場合に表示されるエラーです。</p>
+            <div class="text-yellow-700">
+              <p class="mb-2"><strong>原因：</strong> 一般ユーザーが管理者専用の操作を実行しようとしています</p>
+              <p class="mb-2"><strong>解決方法：</strong></p>
+              <ul class="list-disc list-inside space-y-1 ml-4">
+                <li>管理者に権限の付与を依頼</li>
+                <li>管理者アカウントでログイン</li>
+                <li>閲覧のみ可能な機能を使用</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="border border-blue-200 rounded-lg p-6 bg-blue-50">
+            <h3 class="text-lg font-semibold text-blue-900 mb-3">「サーバーエラーが発生しました」エラー</h3>
+            <p class="text-blue-800 mb-3">システム内部でエラーが発生した場合に表示されるエラーです。</p>
+            <div class="text-blue-700">
+              <p class="mb-2"><strong>原因：</strong> 一時的なサーバー問題またはデータベースエラー</p>
+              <p class="mb-2"><strong>解決方法：</strong></p>
+              <ul class="list-disc list-inside space-y-1 ml-4">
+                <li>数分待ってから再試行</li>
+                <li>ページを再読み込み</li>
+                <li>問題が続く場合はサポートに連絡</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- パフォーマンスの問題 -->
+      <section class="mb-8">
+        <h2 class="text-2xl font-semibold text-gray-900 mb-6">パフォーマンスの問題</h2>
+        <div class="space-y-4">
+          <div class="border border-gray-200 rounded-lg p-6">
+            <h3 class="text-lg font-semibold text-gray-900 mb-3">Q. ページの読み込みが遅い</h3>
+            <div class="text-gray-700">
+              <p class="mb-3">A. 以下の対策を試してください：</p>
+              <ul class="list-disc list-inside space-y-2 ml-4">
+                <li>ブラウザのキャッシュをクリア</li>
+                <li>不要なタブを閉じてメモリを解放</li>
+                <li>インターネット接続速度を確認</li>
+                <li>ブラウザを再起動</li>
+                <li>別のブラウザで試行</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="border border-gray-200 rounded-lg p-6">
+            <h3 class="text-lg font-semibold text-gray-900 mb-3">Q. 検索結果が表示されない</h3>
+            <div class="text-gray-700">
+              <p class="mb-3">A. 以下の点を確認してください：</p>
+              <ul class="list-disc list-inside space-y-2 ml-4">
+                <li>検索条件が適切か確認</li>
+                <li>フィルタをリセットして再試行</li>
+                <li>物品が登録されているか確認</li>
+                <li>ページを再読み込み</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- サポートへの連絡 -->
+      <section class="bg-blue-50 rounded-lg p-6">
+        <h2 class="text-xl font-semibold text-blue-900 mb-4">問題が解決しませんか？</h2>
+        <p class="text-blue-800 mb-4">
+          上記の解決方法で問題が解決しない場合は、サポートチームにお問い合わせください。
+          エラーメッセージや問題の詳細を教えていただけると、より迅速にサポートできます。
+        </p>
+        <div class="flex flex-wrap gap-4">
+          <%= link_to "お問い合わせ", help_contact_path,
+              class: "inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors" %>
+          <%= link_to "よくある質問に戻る", help_faq_path,
+              class: "inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors" %>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>

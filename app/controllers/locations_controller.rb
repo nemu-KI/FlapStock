@@ -54,7 +54,7 @@ class LocationsController < ApplicationController
       else
         redirect_to locations_path, alert: "「#{location_name}」の削除に失敗しました。"
       end
-    rescue ActiveRecord::InvalidForeignKey
+    rescue ActiveRecord::InvalidForeignKey, ActiveRecord::DeleteRestrictionError
       redirect_to locations_path, alert: "「#{location_name}」は使用中のため削除できません。関連する物品を先に削除してください。"
     end
   end

@@ -1,0 +1,187 @@
+<% content_for :title, "マスターデータ管理 - ガイド" %>
+
+<div class="min-h-screen bg-gray-50">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <!-- パンくずリスト -->
+    <nav class="flex mb-8" aria-label="Breadcrumb">
+      <ol class="inline-flex items-center space-x-1 md:space-x-3">
+        <li class="inline-flex items-center">
+          <%= link_to "ガイド", guide_path, class: "text-gray-700 hover:text-blue-600" %>
+        </li>
+        <li>
+          <div class="flex items-center">
+            <i class="fas fa-chevron-right text-gray-400 mx-2"></i>
+            <span class="text-gray-500">マスターデータ管理</span>
+          </div>
+        </li>
+      </ol>
+    </nav>
+
+    <!-- メインコンテンツ -->
+    <div class="bg-white rounded-lg shadow-md p-8">
+      <h1 class="text-3xl font-bold text-gray-900 mb-6">マスターデータ管理の使い方</h1>
+
+      <!-- マスターデータ管理の概要 -->
+      <section class="mb-8">
+        <h2 class="text-2xl font-semibold text-gray-900 mb-4">マスターデータ管理とは</h2>
+        <p class="text-gray-700 mb-4">
+          マスターデータ管理では、物品登録時に使用する基本情報を事前に登録・管理できます。
+          分類、保管場所、発注先の情報を一元管理することで、物品登録時の入力効率が向上します。
+        </p>
+        <div class="bg-blue-50 rounded-lg p-6">
+          <h3 class="text-lg font-semibold text-blue-900 mb-3">管理できるマスターデータ</h3>
+          <ul class="space-y-2 text-blue-800">
+            <li class="flex items-center">
+              <i class="fas fa-check text-blue-600 mr-2"></i>
+              分類：物品のカテゴリ（例：工具、部品、消耗品など）
+            </li>
+            <li class="flex items-center">
+              <i class="fas fa-check text-blue-600 mr-2"></i>
+              保管場所：物品の保管場所（例：倉庫A、作業場Bなど）
+            </li>
+            <li class="flex items-center">
+              <i class="fas fa-check text-blue-600 mr-2"></i>
+              発注先：物品の仕入先（例：株式会社ABC、XYZ商事など）
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- マスターデータの登録手順 -->
+      <section class="mb-8">
+        <h2 class="text-2xl font-semibold text-gray-900 mb-4">マスターデータの登録手順</h2>
+        <div class="space-y-6">
+          <div class="flex items-start">
+            <div class="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-bold mr-4 flex-shrink-0">1</div>
+            <div>
+              <h3 class="text-lg font-semibold text-gray-900 mb-2">サイドバーからマスターデータページにアクセス</h3>
+              <p class="text-gray-700 mb-3">サイドバーの「分類」「保管場所」「発注先」のいずれかをクリックして、該当するマスターデータページに移動します。</p>
+              <div class="bg-gray-100 rounded-lg p-4 text-sm text-gray-600">
+                <i class="fas fa-info-circle mr-2"></i>
+                管理者権限が必要です。一般ユーザーはマスターデータの閲覧のみ可能です。
+              </div>
+            </div>
+          </div>
+
+          <div class="flex items-start">
+            <div class="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-bold mr-4 flex-shrink-0">2</div>
+            <div>
+              <h3 class="text-lg font-semibold text-gray-900 mb-2">新規登録ボタンをクリック</h3>
+              <p class="text-gray-700 mb-3">マスターデータ一覧ページの右上にある「新規登録」ボタンをクリックします。</p>
+            </div>
+          </div>
+
+          <div class="flex items-start">
+            <div class="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-bold mr-4 flex-shrink-0">3</div>
+            <div>
+              <h3 class="text-lg font-semibold text-gray-900 mb-2">マスターデータ情報を入力</h3>
+              <p class="text-gray-700 mb-3">以下の情報を入力します：</p>
+              <div class="bg-gray-50 rounded-lg p-4">
+                <h4 class="font-semibold text-gray-900 mb-2">必須項目</h4>
+                <ul class="space-y-1 text-sm text-gray-700">
+                  <li>• 名前：分類名、保管場所名、発注先名</li>
+                </ul>
+                <h4 class="font-semibold text-gray-900 mb-2 mt-4">任意項目</h4>
+                <ul class="space-y-1 text-sm text-gray-700">
+                  <li>• 説明：詳細な説明や備考</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex items-start">
+            <div class="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-bold mr-4 flex-shrink-0">4</div>
+            <div>
+              <h3 class="text-lg font-semibold text-gray-900 mb-2">登録完了</h3>
+              <p class="text-gray-700">「登録」ボタンをクリックしてマスターデータを登録します。登録後は一覧ページに戻ります。</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 各マスターデータの詳細説明 -->
+      <section class="mb-8">
+        <h2 class="text-2xl font-semibold text-gray-900 mb-4">各マスターデータの詳細説明</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <!-- 分類 -->
+          <div class="bg-gray-50 rounded-lg p-6">
+            <h3 class="text-lg font-semibold text-gray-900 mb-3">分類</h3>
+            <p class="text-gray-700 mb-3">物品のカテゴリを管理します。</p>
+            <div class="text-sm text-gray-600">
+              <strong>例：</strong> 工具、部品、消耗品、電気部品、機械部品など
+            </div>
+          </div>
+
+          <!-- 保管場所 -->
+          <div class="bg-gray-50 rounded-lg p-6">
+            <h3 class="text-lg font-semibold text-gray-900 mb-3">保管場所</h3>
+            <p class="text-gray-700 mb-3">物品の保管場所を管理します。</p>
+            <div class="text-sm text-gray-600">
+              <strong>例：</strong> 倉庫A、作業場B、事務所、外倉庫など
+            </div>
+          </div>
+
+          <!-- 発注先 -->
+          <div class="bg-gray-50 rounded-lg p-6">
+            <h3 class="text-lg font-semibold text-gray-900 mb-3">発注先</h3>
+            <p class="text-gray-700 mb-3">物品の仕入先を管理します。</p>
+            <div class="text-sm text-gray-600">
+              <strong>例：</strong> 株式会社ABC、XYZ商事、工具専門店など
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- マスターデータの活用方法 -->
+      <section class="mb-8">
+        <h2 class="text-2xl font-semibold text-gray-900 mb-4">マスターデータの活用方法</h2>
+        <div class="space-y-6">
+          <div class="border border-gray-200 rounded-lg p-6">
+            <h3 class="text-lg font-semibold text-gray-900 mb-3">物品登録時の効率化</h3>
+            <p class="text-gray-700 mb-3">
+              マスターデータを事前に登録しておくことで、物品登録時にプルダウンから選択するだけで済みます。
+            </p>
+            <div class="bg-gray-50 rounded-lg p-4">
+              <h4 class="font-semibold text-gray-900 mb-2">メリット</h4>
+              <ul class="space-y-1 text-sm text-gray-700">
+                <li>• 入力時間の短縮</li>
+                <li>• 入力ミスの防止</li>
+                <li>• データの統一性確保</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="border border-gray-200 rounded-lg p-6">
+            <h3 class="text-lg font-semibold text-gray-900 mb-3">データの一貫性</h3>
+            <p class="text-gray-700 mb-3">
+              マスターデータを使用することで、同じ情報が異なる表記で登録されることを防げます。
+            </p>
+            <div class="bg-gray-50 rounded-lg p-4">
+              <h4 class="font-semibold text-gray-900 mb-2">例</h4>
+              <ul class="space-y-1 text-sm text-gray-700">
+                <li>• 「倉庫A」と「倉庫Ａ」（全角・半角の違い）</li>
+                <li>• 「株式会社ABC」と「ABC株式会社」（表記の違い）</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 次のステップ -->
+      <section class="bg-green-50 rounded-lg p-6">
+        <h2 class="text-xl font-semibold text-green-900 mb-4">次のステップ</h2>
+        <p class="text-green-800 mb-4">
+          マスターデータの登録が完了したら、次は物品の登録方法を学習しましょう。
+        </p>
+        <div class="flex flex-wrap gap-4 mb-4">
+          <%= link_to "物品管理を学習", guide_items_path,
+              class: "inline-flex items-center px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors" %>
+        </div>
+        <div class="border-t border-green-200 pt-4">
+          <%= link_to "ガイドトップに戻る", guide_path,
+              class: "inline-flex items-center px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 transition-colors" %>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>

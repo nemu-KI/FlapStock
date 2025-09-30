@@ -54,7 +54,7 @@ class CategoriesController < ApplicationController
       else
         redirect_to categories_path, alert: "「#{category_name}」の削除に失敗しました。"
       end
-    rescue ActiveRecord::InvalidForeignKey
+    rescue ActiveRecord::InvalidForeignKey, ActiveRecord::DeleteRestrictionError
       redirect_to categories_path, alert: "「#{category_name}」は使用中のため削除できません。関連する物品を先に削除してください。"
     end
   end
