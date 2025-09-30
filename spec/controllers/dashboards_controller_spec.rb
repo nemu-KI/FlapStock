@@ -51,10 +51,10 @@ RSpec.describe DashboardsController, type: :controller do
       item = create(:item, company: company, category: category, location: location, supplier: supplier)
       # まず入庫して在庫を増やす
       create(:stock_movement, item: item, user: user, company: company,
-                              movement_category: :inbound, quantity: 10, created_at: Date.current)
+                              movement_category: :inbound, quantity: 10, created_at: Time.current)
       # その後出庫
       create(:stock_movement, item: item, user: user, company: company,
-                              movement_category: :outbound, quantity: 5, created_at: Date.current)
+                              movement_category: :outbound, quantity: 5, created_at: Time.current)
 
       get :index
       expect(assigns(:monthly_inbound_count)).to eq(1)
@@ -92,7 +92,8 @@ RSpec.describe DashboardsController, type: :controller do
       other_company = create(:company)
       other_user = create(:user, company: other_company)
       other_item = create(:item, company: other_company, stock_quantity: 100)
-      create(:stock_movement, item: other_item, user: other_user, company: other_company, movement_category: :inbound, quantity: 10)
+      create(:stock_movement, item: other_item, user: other_user, company: other_company,
+                              movement_category: :inbound, quantity: 10)
 
       get :index
       expect(assigns(:total_items)).to eq(0)
