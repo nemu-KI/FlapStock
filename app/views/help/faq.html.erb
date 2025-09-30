@@ -1,0 +1,224 @@
+<% content_for :title, "よくある質問 - ヘルプ" %>
+
+<div class="min-h-screen bg-gray-50">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <!-- パンくずリスト -->
+    <nav class="flex mb-8" aria-label="Breadcrumb">
+      <ol class="inline-flex items-center space-x-1 md:space-x-3">
+        <li class="inline-flex items-center">
+          <%= link_to "ヘルプ", help_path, class: "text-gray-700 hover:text-blue-600" %>
+        </li>
+        <li>
+          <div class="flex items-center">
+            <i class="fas fa-chevron-right text-gray-400 mx-2"></i>
+            <span class="text-gray-500">よくある質問</span>
+          </div>
+        </li>
+      </ol>
+    </nav>
+
+    <!-- メインコンテンツ -->
+    <div class="bg-white rounded-lg shadow-md p-8">
+      <h1 class="text-3xl font-bold text-gray-900 mb-8">よくある質問</h1>
+
+      <!-- マスターデータ管理に関する質問 -->
+      <section class="mb-8">
+        <h2 class="text-2xl font-semibold text-gray-900 mb-6">マスターデータ管理について</h2>
+        <div class="space-y-6">
+          <div class="border border-gray-200 rounded-lg p-6">
+            <h3 class="text-lg font-semibold text-gray-900 mb-3">Q. マスターデータとは何ですか？</h3>
+            <div class="text-gray-700">
+              <p class="mb-3">A. マスターデータとは、物品登録時に使用する基本情報のことです。以下の3種類があります：</p>
+              <ul class="list-disc list-inside space-y-2 ml-4">
+                <li><strong>分類：</strong> 物品のカテゴリ（例：工具、部品、消耗品など）</li>
+                <li><strong>保管場所：</strong> 物品の保管場所（例：倉庫A、作業場Bなど）</li>
+                <li><strong>発注先：</strong> 物品の仕入先（例：株式会社ABC、XYZ商事など）</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="border border-gray-200 rounded-lg p-6">
+            <h3 class="text-lg font-semibold text-gray-900 mb-3">Q. マスターデータを登録するには？</h3>
+            <div class="text-gray-700">
+              <p class="mb-3">A. 以下の手順で登録できます：</p>
+              <ol class="list-decimal list-inside space-y-2 ml-4">
+                <li>サイドバーの分類、保管場所、発注先のいずれかをクリック</li>
+                <li>「新規登録」ボタンをクリック</li>
+                <li>名前と説明を入力</li>
+                <li>「登録」ボタンをクリック</li>
+              </ol>
+              <div class="mt-3 p-3 bg-yellow-50 rounded-lg">
+                <p class="text-sm text-yellow-800">
+                  <strong>注意：</strong> 管理者権限が必要です。一般ユーザーは閲覧のみ可能です。
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="border border-gray-200 rounded-lg p-6">
+            <h3 class="text-lg font-semibold text-gray-900 mb-3">Q. マスターデータを削除した場合、物品はどうなりますか？</h3>
+            <div class="text-gray-700">
+              <p>A. マスターデータを削除しようとした際、そのマスターデータを使用している物品が存在する場合は削除が失敗します。関連する物品を先に削除するか、物品のマスターデータを別のものに変更してから削除してください。</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 物品管理に関する質問 -->
+      <section class="mb-8">
+        <h2 class="text-2xl font-semibold text-gray-900 mb-6">物品管理について</h2>
+        <div class="space-y-6">
+          <div class="border border-gray-200 rounded-lg p-6">
+            <h3 class="text-lg font-semibold text-gray-900 mb-3">Q. 物品を登録するにはどうすればいいですか？</h3>
+            <div class="text-gray-700">
+              <p class="mb-3">A. 以下の手順で物品を登録できます：</p>
+              <ol class="list-decimal list-inside space-y-2 ml-4">
+                <li>サイドバーの「物品一覧」をクリック</li>
+                <li>「新規登録」ボタンをクリック</li>
+                <li>必要な情報を入力（物品名、型式、在庫数など）</li>
+                <li>「登録」ボタンをクリック</li>
+              </ol>
+            </div>
+          </div>
+
+          <div class="border border-gray-200 rounded-lg p-6">
+            <h3 class="text-lg font-semibold text-gray-900 mb-3">Q. 物品を削除した場合、履歴はどうなりますか？</h3>
+            <div class="text-gray-700">
+              <p>A. 物品を削除すると、その物品に関連する入出庫履歴も一緒に削除されます。削除前に必ず履歴をエクスポートすることをお勧めします。</p>
+            </div>
+          </div>
+
+          <div class="border border-gray-200 rounded-lg p-6">
+            <h3 class="text-lg font-semibold text-gray-900 mb-3">Q. 物品の画像をアップロードできますか？</h3>
+            <div class="text-gray-700">
+              <p>A. はい、物品編集画面で画像をアップロードできます。対応形式はJPG、PNG、GIFで、最大ファイルサイズは5MBです。</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 在庫管理に関する質問 -->
+      <section class="mb-8">
+        <h2 class="text-2xl font-semibold text-gray-900 mb-6">在庫管理について</h2>
+        <div class="space-y-6">
+          <div class="border border-gray-200 rounded-lg p-6">
+            <h3 class="text-lg font-semibold text-gray-900 mb-3">Q. 在庫数を変更するには？</h3>
+            <div class="text-gray-700">
+              <p class="mb-3">A. 以下の方法で在庫数を変更できます：</p>
+              <ul class="list-disc list-inside space-y-2 ml-4">
+                <li><strong>入庫：</strong> 在庫を増やす場合</li>
+                <li><strong>出庫：</strong> 在庫を減らす場合</li>
+                <li><strong>調整：</strong> 実際の在庫数に合わせて修正する場合</li>
+              </ul>
+              <p class="mt-3">物品詳細ページの「クイックアクション」から選択できます。</p>
+            </div>
+          </div>
+
+          <div class="border border-gray-200 rounded-lg p-6">
+            <h3 class="text-lg font-semibold text-gray-900 mb-3">Q. 在庫アラートはどのように設定しますか？</h3>
+            <div class="text-gray-700">
+              <p class="mb-3">A. 物品編集画面で以下の項目を設定してください：</p>
+              <ul class="list-disc list-inside space-y-2 ml-4">
+                <li><strong>最小在庫：</strong> この数値以下になると「在庫不足」アラートが表示されます</li>
+                <li><strong>最大在庫：</strong> この数値を超えると「在庫過剰」アラートが表示されます</li>
+              </ul>
+              <div class="mt-3 p-3 bg-yellow-50 rounded-lg">
+                <p class="text-sm text-yellow-800">
+                  <strong>注意：</strong> 現在、在庫アラート一覧機能は開発中です。物品詳細ページでは個別にアラート状況を確認できます。
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="border border-gray-200 rounded-lg p-6">
+            <h3 class="text-lg font-semibold text-gray-900 mb-3">Q. 入出庫履歴はどこで確認できますか？</h3>
+            <div class="text-gray-700">
+              <p>A. 以下の場所で確認できます：</p>
+              <ul class="list-disc list-inside space-y-2 ml-4 mt-2">
+                <li>物品詳細ページの「入出庫履歴」セクション</li>
+                <li>サイドバーの「履歴一覧」メニュー</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- アカウント・権限に関する質問 -->
+      <section class="mb-8">
+        <h2 class="text-2xl font-semibold text-gray-900 mb-6">アカウント・権限について</h2>
+        <div class="space-y-6">
+          <div class="border border-gray-200 rounded-lg p-6">
+            <h3 class="text-lg font-semibold text-gray-900 mb-3">Q. パスワードを忘れてしまいました</h3>
+            <div class="text-gray-700">
+              <p>A. ログイン画面の「パスワードを忘れた方」リンクをクリックして、登録済みのメールアドレスを入力してください。パスワードリセット用のメールが送信されます。</p>
+            </div>
+          </div>
+
+          <div class="border border-gray-200 rounded-lg p-6">
+            <h3 class="text-lg font-semibold text-gray-900 mb-3">Q. ユーザーの権限の違いは？</h3>
+            <div class="text-gray-700">
+              <p class="mb-3">A. 権限は以下の3種類があります：</p>
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-4 ml-4">
+                <div>
+                  <h4 class="font-semibold text-gray-900">スタッフ（staff）</h4>
+                  <ul class="list-disc list-inside space-y-1 text-sm">
+                    <li>物品の閲覧</li>
+                    <li>在庫状況の確認</li>
+                    <li>入出庫履歴の閲覧</li>
+                  </ul>
+                </div>
+                <div>
+                  <h4 class="font-semibold text-gray-900">マネージャー（manager）</h4>
+                  <ul class="list-disc list-inside space-y-1 text-sm">
+                    <li>物品の登録・編集・削除</li>
+                    <li>在庫の入出庫・調整</li>
+                    <li>マスターデータの管理</li>
+                  </ul>
+                </div>
+                <div>
+                  <h4 class="font-semibold text-gray-900">管理者（admin）</h4>
+                  <ul class="list-disc list-inside space-y-1 text-sm">
+                    <li>全機能の利用</li>
+                    <li>ユーザー管理</li>
+                    <li>システム設定</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- その他の質問 -->
+      <section class="mb-8">
+        <h2 class="text-2xl font-semibold text-gray-900 mb-6">その他</h2>
+        <div class="space-y-6">
+          <div class="border border-gray-200 rounded-lg p-6">
+            <h3 class="text-lg font-semibold text-gray-900 mb-3">Q. データのバックアップはできますか？</h3>
+            <div class="text-gray-700">
+              <p>A. 現在、自動バックアップ機能はありません。重要なデータは定期的にエクスポートすることをお勧めします。今後のアップデートでバックアップ機能を追加予定です。</p>
+            </div>
+          </div>
+
+          <div class="border border-gray-200 rounded-lg p-6">
+            <h3 class="text-lg font-semibold text-gray-900 mb-3">Q. 複数の会社の在庫を管理できますか？</h3>
+            <div class="text-gray-700">
+              <p>A. 1つのアカウントで複数の会社を管理することはできません。別会社の在庫を管理したい場合は、別のアカウントでログインしてください。</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- お問い合わせ -->
+      <div class="bg-blue-50 rounded-lg p-6">
+        <h2 class="text-xl font-semibold text-blue-900 mb-4">まだ解決しませんか？</h2>
+        <p class="text-blue-800 mb-4">
+          上記の質問で解決しない場合は、お気軽にお問い合わせください。
+          サポートチームがお手伝いします。
+        </p>
+        <%= link_to "お問い合わせ", help_contact_path,
+            class: "inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors" %>
+      </div>
+    </div>
+  </div>
+</div>

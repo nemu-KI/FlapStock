@@ -1,0 +1,209 @@
+<% content_for :title, "ダッシュボード - ガイド" %>
+
+<div class="min-h-screen bg-gray-50">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <!-- パンくずリスト -->
+    <nav class="flex mb-8" aria-label="Breadcrumb">
+      <ol class="inline-flex items-center space-x-1 md:space-x-3">
+        <li class="inline-flex items-center">
+          <%= link_to "ガイド", guide_path, class: "text-gray-700 hover:text-blue-600" %>
+        </li>
+        <li>
+          <div class="flex items-center">
+            <i class="fas fa-chevron-right text-gray-400 mx-2"></i>
+            <span class="text-gray-500">ダッシュボード</span>
+          </div>
+        </li>
+      </ol>
+    </nav>
+
+    <!-- メインコンテンツ -->
+    <div class="bg-white rounded-lg shadow-md p-8">
+      <h1 class="text-3xl font-bold text-gray-900 mb-6">ダッシュボードの使い方</h1>
+
+      <!-- ダッシュボードの概要 -->
+      <section class="mb-8">
+        <h2 class="text-2xl font-semibold text-gray-900 mb-4">ダッシュボードとは</h2>
+        <p class="text-gray-700 mb-4">
+          ダッシュボードは、在庫管理の状況を一目で把握できるメインページです。
+          統計情報、最近の活動、分析データを統合して表示します。
+        </p>
+        <div class="bg-blue-50 rounded-lg p-6">
+          <h3 class="text-lg font-semibold text-blue-900 mb-3">ダッシュボードの特徴</h3>
+          <ul class="space-y-2 text-blue-800">
+            <li class="flex items-center">
+              <i class="fas fa-check text-blue-600 mr-2"></i>
+              在庫管理の基本統計を数値で表示
+            </li>
+            <li class="flex items-center">
+              <i class="fas fa-check text-blue-600 mr-2"></i>
+              最近の入出庫履歴を一覧表示
+            </li>
+            <li class="flex items-center">
+              <i class="fas fa-check text-blue-600 mr-2"></i>
+              分類別・保管場所別の統計表示
+            </li>
+            <li class="flex items-center">
+              <i class="fas fa-check text-blue-600 mr-2"></i>
+              在庫管理の状況を素早く把握
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ダッシュボードの各セクション -->
+      <section class="mb-8">
+        <h2 class="text-2xl font-semibold text-gray-900 mb-4">ダッシュボードの各セクション</h2>
+        <div class="space-y-6">
+          <!-- 統計カード -->
+          <div class="border border-gray-200 rounded-lg p-6">
+            <h3 class="text-lg font-semibold text-gray-900 mb-3">統計カード</h3>
+            <p class="text-gray-700 mb-3">
+              在庫管理の基本統計を数値で表示します。現在の状況を一目で把握できます。
+            </p>
+            <div class="bg-gray-50 rounded-lg p-4">
+              <h4 class="font-semibold text-gray-900 mb-2">表示される情報</h4>
+              <ul class="space-y-1 text-sm text-gray-700">
+                <li>• 総物品数：登録されている物品の総数</li>
+                <li>• 今月の入庫回数：当月の入庫操作回数</li>
+                <li>• 今月の出庫回数：当月の出庫操作回数</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- 最近の入出庫履歴 -->
+          <div class="border border-gray-200 rounded-lg p-6">
+            <h3 class="text-lg font-semibold text-gray-900 mb-3">最近の入出庫履歴</h3>
+            <p class="text-gray-700 mb-3">
+              最新の入出庫操作を一覧表示します。最近の在庫変動を素早く確認できます。
+            </p>
+            <div class="bg-gray-50 rounded-lg p-4">
+              <h4 class="font-semibold text-gray-900 mb-2">表示される情報</h4>
+              <ul class="space-y-1 text-sm text-gray-700">
+                <li>• 日時・物品名・操作種別</li>
+                <li>• 数量・理由・操作者</li>
+                <li>• 物品詳細ページへのリンク</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- 分類別・保管場所別統計 -->
+          <div class="border border-gray-200 rounded-lg p-6">
+            <h3 class="text-lg font-semibold text-gray-900 mb-3">分類別・保管場所別統計</h3>
+            <p class="text-gray-700 mb-3">
+              物品の分類と保管場所ごとの統計を表示します。在庫の分布状況を把握できます。
+            </p>
+            <div class="bg-gray-50 rounded-lg p-4">
+              <h4 class="font-semibold text-gray-900 mb-2">表示される情報</h4>
+              <ul class="space-y-1 text-sm text-gray-700">
+                <li>• 分類別物品数：カテゴリごとの物品数</li>
+                <li>• 保管場所別物品数：場所ごとの物品数</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- 在庫アラート（将来実装予定） -->
+          <div class="border border-gray-200 rounded-lg p-6">
+            <h3 class="text-lg font-semibold text-gray-900 mb-3">在庫アラート（将来実装予定）</h3>
+            <p class="text-gray-700 mb-3">
+              在庫不足や在庫過剰の物品を一覧表示する機能です。現在は開発中です。
+            </p>
+            <div class="bg-yellow-50 rounded-lg p-4">
+              <h4 class="font-semibold text-yellow-900 mb-2">予定されている機能</h4>
+              <ul class="space-y-1 text-sm text-yellow-800">
+                <li>• 在庫不足アラート：最小在庫以下の物品一覧</li>
+                <li>• 在庫過剰アラート：最大在庫を超える物品一覧</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ダッシュボードの操作方法 -->
+      <section class="mb-8">
+        <h2 class="text-2xl font-semibold text-gray-900 mb-4">ダッシュボードの操作方法</h2>
+        <div class="space-y-6">
+          <div class="flex items-start">
+            <div class="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-bold mr-4 flex-shrink-0">1</div>
+            <div>
+              <h3 class="text-lg font-semibold text-gray-900 mb-2">ダッシュボードにアクセス</h3>
+              <p class="text-gray-700 mb-3">サイドバーの「ダッシュボード」をクリックして、ダッシュボードページに移動します。</p>
+            </div>
+          </div>
+
+          <div class="flex items-start">
+            <div class="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-bold mr-4 flex-shrink-0">2</div>
+            <div>
+              <h3 class="text-lg font-semibold text-gray-900 mb-2">統計情報を確認</h3>
+              <p class="text-gray-700 mb-3">上部の統計カードで、総物品数や今月の入出庫回数を確認できます。</p>
+            </div>
+          </div>
+
+          <div class="flex items-start">
+            <div class="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-bold mr-4 flex-shrink-0">3</div>
+            <div>
+              <h3 class="text-lg font-semibold text-gray-900 mb-2">詳細情報を確認</h3>
+              <p class="text-gray-700 mb-3">「詳細を見る」リンクから、入出庫履歴の詳細ページに移動できます。</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ダッシュボードの活用方法 -->
+      <section class="mb-8">
+        <h2 class="text-2xl font-semibold text-gray-900 mb-4">ダッシュボードの活用方法</h2>
+        <div class="space-y-6">
+          <div class="border border-gray-200 rounded-lg p-6">
+            <h3 class="text-lg font-semibold text-gray-900 mb-3">日常的な確認</h3>
+            <p class="text-gray-700 mb-3">
+              ダッシュボードを開いて、在庫管理の状況を素早く把握しましょう。
+            </p>
+            <div class="bg-gray-50 rounded-lg p-4">
+              <h4 class="font-semibold text-gray-900 mb-2">確認すべきポイント</h4>
+              <ul class="space-y-1 text-sm text-gray-700">
+                <li>• 総物品数が適切に管理されているか</li>
+                <li>• 入出庫活動が活発に行われているか</li>
+                <li>• 最近の入出庫履歴に異常がないか</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="border border-gray-200 rounded-lg p-6">
+            <h3 class="text-lg font-semibold text-gray-900 mb-3">分析と改善</h3>
+            <p class="text-gray-700 mb-3">
+              統計データを活用して、在庫管理の改善点を見つけましょう。
+            </p>
+            <div class="bg-gray-50 rounded-lg p-4">
+              <h4 class="font-semibold text-gray-900 mb-2">分析のポイント</h4>
+              <ul class="space-y-1 text-sm text-gray-700">
+                <li>• 分類別の物品分布は適切か</li>
+                <li>• 保管場所の利用状況は効率的か</li>
+                <li>• 入出庫の頻度は適切か</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 次のステップ -->
+      <section class="bg-green-50 rounded-lg p-6">
+        <h2 class="text-xl font-semibold text-green-900 mb-4">次のステップ</h2>
+        <p class="text-green-800 mb-4">
+          ダッシュボードの使い方を理解できました。他の機能の使い方も学習してみましょう。
+        </p>
+        <div class="flex flex-wrap gap-4 mb-4">
+          <%= link_to "マスターデータ管理を学習", guide_master_data_path,
+              class: "inline-flex items-center px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors" %>
+          <%= link_to "物品管理を学習", guide_items_path,
+              class: "inline-flex items-center px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors" %>
+          <%= link_to "在庫管理を学習", guide_stock_path,
+              class: "inline-flex items-center px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors" %>
+        </div>
+        <div class="border-t border-green-200 pt-4">
+          <%= link_to "ガイドトップに戻る", guide_path,
+              class: "inline-flex items-center px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 transition-colors" %>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>

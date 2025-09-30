@@ -1,0 +1,183 @@
+<% content_for :title, "物品管理 - ガイド" %>
+
+<div class="min-h-screen bg-gray-50">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <!-- パンくずリスト -->
+    <nav class="flex mb-8" aria-label="Breadcrumb">
+      <ol class="inline-flex items-center space-x-1 md:space-x-3">
+        <li class="inline-flex items-center">
+          <%= link_to "ガイド", guide_path, class: "text-gray-700 hover:text-blue-600" %>
+        </li>
+        <li>
+          <div class="flex items-center">
+            <i class="fas fa-chevron-right text-gray-400 mx-2"></i>
+            <span class="text-gray-500">物品管理</span>
+          </div>
+        </li>
+      </ol>
+    </nav>
+
+    <!-- メインコンテンツ -->
+    <div class="bg-white rounded-lg shadow-md p-8">
+      <h1 class="text-3xl font-bold text-gray-900 mb-6">物品管理の使い方</h1>
+
+      <!-- 物品管理の概要 -->
+      <section class="mb-8">
+        <h2 class="text-2xl font-semibold text-gray-900 mb-4">物品管理とは</h2>
+        <p class="text-gray-700 mb-4">
+          物品管理では、在庫管理の対象となる物品の情報を登録・編集・削除できます。
+          物品の基本情報、在庫設定、関連情報を一元管理することができます。
+        </p>
+        <div class="bg-blue-50 rounded-lg p-6">
+          <h3 class="text-lg font-semibold text-blue-900 mb-3">管理できる情報</h3>
+          <ul class="space-y-2 text-blue-800">
+            <li class="flex items-center">
+              <i class="fas fa-check text-blue-600 mr-2"></i>
+              物品名・型式・説明
+            </li>
+            <li class="flex items-center">
+              <i class="fas fa-check text-blue-600 mr-2"></i>
+              在庫数・単位・最小・最大在庫
+            </li>
+            <li class="flex items-center">
+              <i class="fas fa-check text-blue-600 mr-2"></i>
+              カテゴリ・保管場所・仕入先
+            </li>
+            <li class="flex items-center">
+              <i class="fas fa-check text-blue-600 mr-2"></i>
+              物品画像
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- 物品の登録手順 -->
+      <section class="mb-8">
+        <h2 class="text-2xl font-semibold text-gray-900 mb-4">物品の登録手順</h2>
+        <div class="space-y-6">
+          <div class="flex items-start">
+            <div class="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-bold mr-4 flex-shrink-0">1</div>
+            <div>
+              <h3 class="text-lg font-semibold text-gray-900 mb-2">物品管理ページにアクセス</h3>
+              <p class="text-gray-700 mb-3">サイドバーの「物品一覧」をクリックして、物品一覧ページに移動します。</p>
+              <div class="bg-gray-100 rounded-lg p-4 text-sm text-gray-600">
+                <i class="fas fa-info-circle mr-2"></i>
+                物品一覧ページでは、登録済みの物品が一覧表示されます。
+              </div>
+            </div>
+          </div>
+
+          <div class="flex items-start">
+            <div class="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-bold mr-4 flex-shrink-0">2</div>
+            <div>
+              <h3 class="text-lg font-semibold text-gray-900 mb-2">新規登録ボタンをクリック</h3>
+              <p class="text-gray-700 mb-3">物品一覧ページの右上にある「新規登録」ボタンをクリックします。</p>
+              <div class="bg-gray-100 rounded-lg p-4 text-sm text-gray-600">
+                <i class="fas fa-info-circle mr-2"></i>
+                管理者権限が必要です。一般ユーザーは物品の閲覧のみ可能です。
+              </div>
+            </div>
+          </div>
+
+          <div class="flex items-start">
+            <div class="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-bold mr-4 flex-shrink-0">3</div>
+            <div>
+              <h3 class="text-lg font-semibold text-gray-900 mb-2">物品情報を入力</h3>
+              <p class="text-gray-700 mb-3">以下の情報を入力します。カテゴリ、保管場所、仕入先は事前に登録したマスターデータからプルダウンで選択します：</p>
+              <div class="bg-gray-50 rounded-lg p-4">
+                <h4 class="font-semibold text-gray-900 mb-2">必須項目</h4>
+                <ul class="space-y-1 text-sm text-gray-700">
+                  <li>• 物品名：物品の名前</li>
+                  <li>• カテゴリ：プルダウンから選択（事前に登録済みの分類から選択）</li>
+                  <li>• 保管場所：プルダウンから選択（事前に登録済みの保管場所から選択）</li>
+                  <li>• 仕入先：プルダウンから選択（事前に登録済みの発注先から選択）</li>
+                </ul>
+                <h4 class="font-semibold text-gray-900 mb-2 mt-4">任意項目</h4>
+                <ul class="space-y-1 text-sm text-gray-700">
+                  <li>• 説明：物品の詳細説明</li>
+                  <li>• 型式：物品コード</li>
+                  <li>• 在庫数：初期在庫数</li>
+                  <li>• 単位：在庫の単位（個、kg、Lなど）</li>
+                  <li>• 最小在庫：在庫不足アラートの基準</li>
+                  <li>• 最大在庫：在庫過剰アラートの基準</li>
+                  <li>• 物品画像：物品の写真</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex items-start">
+            <div class="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-bold mr-4 flex-shrink-0">4</div>
+            <div>
+              <h3 class="text-lg font-semibold text-gray-900 mb-2">登録完了</h3>
+              <p class="text-gray-700">「登録」ボタンをクリックして物品を登録します。登録後は物品詳細ページに移動します。</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 物品の編集・削除 -->
+      <section class="mb-8">
+        <h2 class="text-2xl font-semibold text-gray-900 mb-4">物品の編集・削除</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="bg-gray-50 rounded-lg p-6">
+            <h3 class="text-lg font-semibold text-gray-900 mb-3">物品の編集</h3>
+            <p class="text-gray-700 mb-3">物品詳細ページの「編集」ボタンから物品情報を変更できます。</p>
+            <div class="text-sm text-gray-600">
+              <strong>注意：</strong> 在庫数の変更は「在庫管理」機能を使用してください。
+            </div>
+          </div>
+
+          <div class="bg-gray-50 rounded-lg p-6">
+            <h3 class="text-lg font-semibold text-gray-900 mb-3">物品の削除</h3>
+            <p class="text-gray-700 mb-3">物品詳細ページの「削除」ボタンから物品を削除できます。</p>
+            <div class="text-sm text-red-600">
+              <strong>注意：</strong> 削除すると入出庫履歴も一緒に削除されます。
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 物品の検索・フィルタ -->
+      <section class="mb-8">
+        <h2 class="text-2xl font-semibold text-gray-900 mb-4">物品の検索・フィルタ</h2>
+        <p class="text-gray-700 mb-4">
+          物品一覧ページでは、物品名や型式で検索したり、カテゴリや保管場所でフィルタリングできます。
+        </p>
+        <div class="bg-yellow-50 rounded-lg p-6">
+          <h3 class="text-lg font-semibold text-yellow-900 mb-3">検索・フィルタ機能</h3>
+          <ul class="space-y-2 text-yellow-800">
+            <li class="flex items-center">
+              <i class="fas fa-search text-yellow-600 mr-2"></i>
+              物品名・型式での検索
+            </li>
+            <li class="flex items-center">
+              <i class="fas fa-filter text-yellow-600 mr-2"></i>
+              カテゴリ・保管場所・仕入先でのフィルタ
+            </li>
+            <li class="flex items-center">
+              <i class="fas fa-sort text-yellow-600 mr-2"></i>
+              在庫数での並び替え
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- 次のステップ -->
+      <section class="bg-green-50 rounded-lg p-6">
+        <h2 class="text-xl font-semibold text-green-900 mb-4">次のステップ</h2>
+        <p class="text-green-800 mb-4">
+          物品の登録が完了したら、次は在庫管理の方法を学習しましょう。
+        </p>
+        <div class="flex flex-wrap gap-4 mb-4">
+          <%= link_to "在庫管理を学習", guide_stock_path,
+              class: "inline-flex items-center px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors" %>
+        </div>
+        <div class="border-t border-green-200 pt-4">
+          <%= link_to "ガイドトップに戻る", guide_path,
+              class: "inline-flex items-center px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 transition-colors" %>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>

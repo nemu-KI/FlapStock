@@ -23,11 +23,7 @@
           <% if policy(@item).destroy? %>
             <%= form_with url: item_path(@item), method: :delete, local: true, style: "display: inline;" do |f| %>
               <%= f.submit '削除',
-                  data: {
-                    controller: "delete-confirmation",
-                    action: "click->delete-confirmation#confirm",
-                    confirm: "「#{@item.name}」を削除しますか？\n\nこの操作は取り消せません。\n※調整履歴がある場合は削除できません。"
-                  },
+                  onclick: "return confirm('「#{@item.name}」を削除しますか？\\n\\nこの操作は取り消せません。\\n※調整履歴がある場合は削除できません。')",
                   class: button_classes(variant: :danger, size: :md) %>
             <% end %>
           <% end %>

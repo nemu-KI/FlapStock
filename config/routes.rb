@@ -16,6 +16,20 @@ Rails.application.routes.draw do
   get 'dashboards/index'
   get 'dashboard', to: 'dashboards#index'
 
+  # ガイドページ（新規ユーザー向け）
+  get 'guide', to: 'guide#index'
+  get 'guide/getting-started', to: 'guide#getting_started'
+  get 'guide/master-data', to: 'guide#master_data'
+  get 'guide/items', to: 'guide#items'
+  get 'guide/stock', to: 'guide#stock'
+  get 'guide/dashboard', to: 'guide#dashboard'
+
+  # ヘルプページ（既存ユーザー向け）
+  get 'help', to: 'help#index'
+  get 'help/faq', to: 'help#faq'
+  get 'help/troubleshooting', to: 'help#troubleshooting'
+  get 'help/contact', to: 'help#contact'
+
   # 認証
   devise_for :users, controllers: {
     sessions: 'users/sessions',
