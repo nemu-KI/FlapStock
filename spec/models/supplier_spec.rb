@@ -9,7 +9,7 @@ RSpec.describe Supplier, type: :model do
 
   describe 'associations' do
     it { should belong_to(:company) }
-    it { should have_many(:items).dependent(:destroy) }
+    it { should have_many(:items).dependent(:restrict_with_error) }
   end
 
   describe 'ransackable attributes' do

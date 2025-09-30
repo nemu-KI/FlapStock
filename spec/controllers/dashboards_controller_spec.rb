@@ -91,8 +91,8 @@ RSpec.describe DashboardsController, type: :controller do
       # 他社のデータを作成
       other_company = create(:company)
       other_user = create(:user, company: other_company)
-      other_item = create(:item, company: other_company)
-      create(:stock_movement, item: other_item, user: other_user, company: other_company)
+      other_item = create(:item, company: other_company, stock_quantity: 100)
+      create(:stock_movement, item: other_item, user: other_user, company: other_company, movement_category: :inbound, quantity: 10)
 
       get :index
       expect(assigns(:total_items)).to eq(0)
