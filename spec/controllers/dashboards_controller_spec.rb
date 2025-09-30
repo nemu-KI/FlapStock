@@ -49,14 +49,28 @@ RSpec.describe DashboardsController, type: :controller do
     it '今月の統計が正しく計算される' do
       # 今月のデータを作成
       item = create(:item, company: company, category: category, location: location, supplier: supplier)
+
+      # 今月の範囲内の時間を明示的に設定（UTCとJSTの両方に対応）
+      current_time = Time.current
+      month_start = current_time.beginning_of_month
+      test_time = month_start + 1.day + 12.hours # 今月の2日目の12時
+
       # まず入庫して在庫を増やす
       create(:stock_movement, item: item, user: user, company: company,
-                              movement_category: :inbound, quantity: 10, created_at: Time.current)
+                              movement_category: :inbound, quantity: 10, created_at: test_time)
       # その後出庫
       create(:stock_movement, item: item, user: user, company: company,
-                              movement_category: :outbound, quantity: 5, created_at: Time.current)
+                              movement_category: :outbound, quantity: 5, created_at: test_time)
 
       get :index
+
+      # デバッグ情報を出力（CI環境での問題特定用）
+      puts "Current time: #{Time.current}"
+      puts "Month start: #{month_start}"
+      puts "Test time: #{test_time}"
+      puts "Monthly inbound count: #{assigns(:monthly_inbound_count)}"
+      puts "Monthly outbound count: #{assigns(:monthly_outbound_count)}"
+
       expect(assigns(:monthly_inbound_count)).to eq(1)
       expect(assigns(:monthly_outbound_count)).to eq(1)
     end
