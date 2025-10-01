@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe Contact, type: :model do
@@ -65,7 +67,11 @@ RSpec.describe Contact, type: :model do
     end
 
     it 'statusが正しく定義されていること' do
-      expect(Contact.statuses).to eq({ 'pending' => 'pending', 'in_progress' => 'in_progress', 'completed' => 'completed' })
+      expect(Contact.statuses).to eq({
+        'pending' => 'pending',
+        'in_progress' => 'in_progress',
+        'completed' => 'completed'
+      })
     end
   end
 

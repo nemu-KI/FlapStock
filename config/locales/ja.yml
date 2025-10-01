@@ -56,6 +56,7 @@ ja:
       company: "会社"
       user: "ユーザー"
       stock_movement: "入出庫履歴"
+      contact: "お問い合わせ"  # 追加
 
     # 属性名
     attributes:
@@ -114,6 +115,17 @@ ja:
         phone: "電話番号"
         active: "有効状態"
 
+      contact:  # 追加
+        name: "お名前"
+        email: "メールアドレス"
+        category: "カテゴリ"
+        priority: "優先度"
+        status: "ステータス"
+        subject: "件名"
+        message: "メッセージ"
+        user: "ユーザー"
+        company: "会社"
+
     # enumの日本語化
     enums:
       stock_movement:
@@ -135,3 +147,10 @@ ja:
               adjustment_deletion_not_allowed: "調整レコードは削除できません"
             quantity:
               insufficient_stock: "現在の在庫数（%{current_stock}%{unit}）を超える出庫はできません"
+
+        contact:  # 追加
+          attributes:
+            email:
+              invalid: "は有効なメールアドレスではありません"
+            category:
+              inclusion: "は一覧にありません"

@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# お問い合わせフォームのコントローラー
 class ContactsController < ApplicationController
   before_action :authenticate_user!
 
@@ -33,7 +36,7 @@ class ContactsController < ApplicationController
       ContactMailer.notify_admin(@contact).deliver_now
       redirect_to contact_complete_path(id: @contact.id)
     else
-    # GETリクエストの場合は完了画面を表示
+      # GETリクエストの場合は完了画面を表示
       render :complete
     end
   end

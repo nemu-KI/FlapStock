@@ -28,13 +28,16 @@ RSpec.describe StockMovementsController, type: :controller do
         expect(assigns(:stock_movements)).to be_present
       end
 
-      it '検索機能が動作する' do
+      it '物品指定なしの場合 検索機能が動作する' do
         item = create(:item, company: company, stock_quantity: 100) # 在庫数を100に増加
-        movement1 = create(:stock_movement, item: item, user: user, company: company, reason: 'サンプル理由1',
-                                          movement_category: :inbound, quantity: 10)
-        movement2 = create(:stock_movement, item: item, user: user, company: company, reason: 'サンプル理由2',
-                                          movement_category: :outbound, quantity: 5) # 出庫数を5に減少
+
+        movement1 = create(:stock_movement, item: item, user: user, company: company,
+                                            movement_category: :inbound, quantity: 10)
+        movement2 = create(:stock_movement, item: item, user: user, company: company,
+                                            movement_category: :outbound, quantity: 5) # 出庫数を5に減少
+
         get :index, params: { search: 'サンプル' }
+
         expect(response).to have_http_status(:success)
         expect(assigns(:stock_movements)).to include(movement1, movement2)
       end

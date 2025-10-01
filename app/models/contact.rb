@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# お問い合わせモデル
 class Contact < ApplicationRecord
   belongs_to :user, optional: true
   belongs_to :company, optional: true
@@ -19,26 +22,29 @@ class Contact < ApplicationRecord
   scope :by_status, ->(status) { where(status: status) }
 
   def category_label
-    case category
-    when 'bug' then 'バグ報告'
-    when 'feature' then '機能要望'
-    when 'other' then 'その他'
-    end
+    category_labels = {
+      'bug' => 'バグ報告',
+      'feature' => '機能要望',
+      'other' => 'その他'
+    }
+    category_labels[category]
   end
 
   def priority_label
-    case priority
-    when 'high' then '高'
-    when 'medium' then '中'
-    when 'low' then '低'
-    end
+    priority_labels = {
+      'high' => '高',
+      'medium' => '中',
+      'low' => '低'
+    }
+    priority_labels[priority]
   end
 
   def status_label
-    case status
-    when 'pending' then '未対応'
-    when 'in_progress' then '対応中'
-    when 'completed' then '完了'
-    end
+    status_labels = {
+      'pending' => '未対応',
+      'in_progress' => '対応中',
+      'completed' => '完了'
+    }
+    status_labels[status]
   end
 end

@@ -1,4 +1,5 @@
-# spec/controllers/contacts_controller_spec.rb
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe ContactsController, type: :controller do
@@ -40,9 +41,9 @@ RSpec.describe ContactsController, type: :controller do
   describe 'POST #create' do
     context '有効なパラメータの場合' do
       it '新しいお問い合わせを作成すること' do
-        expect {
+        expect do
           post :create, params: { contact: valid_attributes }
-        }.to change(Contact, :count).by(1)
+        end.to change(Contact, :count).by(1)
       end
 
       it '確認ページにリダイレクトすること' do
@@ -51,9 +52,9 @@ RSpec.describe ContactsController, type: :controller do
       end
 
       it '即座にメールを送信しないこと' do
-        expect {
+        expect do
           post :create, params: { contact: valid_attributes }
-        }.not_to change { ActionMailer::Base.deliveries.count }
+        end.not_to change { ActionMailer::Base.deliveries.count }
       end
     end
 
@@ -61,9 +62,9 @@ RSpec.describe ContactsController, type: :controller do
       let(:invalid_attributes) { { name: '', email: 'invalid' } }
 
       it '新しいお問い合わせを作成しないこと' do
-        expect {
+        expect do
           post :create, params: { contact: invalid_attributes }
-        }.not_to change(Contact, :count)
+        end.not_to change(Contact, :count)
       end
 
       it 'newテンプレートをレンダリングすること' do
@@ -90,14 +91,10 @@ RSpec.describe ContactsController, type: :controller do
   describe 'POST #complete' do
     let(:contact) { create(:contact, user: user, company: company) }
 
-    before do
-      ActionMailer::Base.deliveries.clear
-    end
-
     it 'メール通知を送信すること' do
-      expect {
+      expect do
         post :complete, params: { id: contact.id }
-      }.to change { ActionMailer::Base.deliveries.count }.by(1)
+      end.to change(ActionMailer::Base.deliveries, :count).by(1)
     end
 
     it '完了ページにリダイレクトすること' do
