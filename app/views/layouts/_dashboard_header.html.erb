@@ -6,6 +6,7 @@
     <div class="flex items-center space-x-4">
       <%= link_to "ご利用ガイド", guide_path, class: "text-gray-700 hover:text-blue-600 transition-colors" %>
       <%= link_to "ヘルプ", help_path, class: "text-gray-700 hover:text-blue-600 transition-colors" %>
+      <%= link_to "お問い合わせ", contact_path, class: "text-gray-700 hover:text-blue-600 transition-colors" %>
     </div>
     <span class="text-base text-gray-700"><%= current_user&.name || 'ユーザー名' %></span>
     <a href="<%= destroy_user_session_path %>" data-method="delete" rel="nofollow" class="text-blue-700 hover:underline">ログアウト</a>

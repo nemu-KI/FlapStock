@@ -1,0 +1,19 @@
+FlapStock お問い合わせ通知
+===============================
+
+新しいお問い合わせが送信されました
+
+お名前: <%= @contact.name %>
+メールアドレス: <%= @contact.email %>
+カテゴリ: <%= @contact.category_label %>
+優先度: <%= @contact.priority_label %>
+件名: <%= @contact.subject %>
+
+メッセージ:
+<%= @contact.message %>
+
+送信日時: <%= @contact.created_at.strftime("%Y年%m月%d日 %H:%M") %>
+会社名: <%= @contact.company&.name || "未設定" %>
+
+===============================
+FlapStock システム

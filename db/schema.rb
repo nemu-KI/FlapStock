@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_07_29_135626) do
+ActiveRecord::Schema[7.1].define(version: 2025_10_01_154309) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -58,6 +58,26 @@ ActiveRecord::Schema[7.1].define(version: 2025_07_29_135626) do
     t.boolean "active", default: true, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "contacts", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "email", null: false
+    t.string "category", null: false
+    t.string "priority", default: "medium"
+    t.string "status", default: "pending"
+    t.string "subject", null: false
+    t.text "message", null: false
+    t.bigint "user_id"
+    t.bigint "company_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["category"], name: "index_contacts_on_category"
+    t.index ["company_id"], name: "index_contacts_on_company_id"
+    t.index ["created_at"], name: "index_contacts_on_created_at"
+    t.index ["priority"], name: "index_contacts_on_priority"
+    t.index ["status"], name: "index_contacts_on_status"
+    t.index ["user_id"], name: "index_contacts_on_user_id"
   end
 
   create_table "items", force: :cascade do |t|
@@ -137,6 +157,8 @@ ActiveRecord::Schema[7.1].define(version: 2025_07_29_135626) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "categories", "companies"
+  add_foreign_key "contacts", "companies"
+  add_foreign_key "contacts", "users"
   add_foreign_key "items", "categories"
   add_foreign_key "items", "companies"
   add_foreign_key "items", "locations"

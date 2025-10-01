@@ -30,6 +30,13 @@ Rails.application.routes.draw do
   get 'help/troubleshooting', to: 'help#troubleshooting'
   get 'help/contact', to: 'help#contact'
 
+  # お問い合わせフォーム
+  get 'contact', to: 'contacts#new'
+  post 'contact', to: 'contacts#create'
+  get 'contact/confirm', to: 'contacts#confirm'
+  post 'contact/complete', to: 'contacts#complete'
+  get 'contact/complete', to: 'contacts#complete'
+
   # 認証
   devise_for :users, controllers: {
     sessions: 'users/sessions',

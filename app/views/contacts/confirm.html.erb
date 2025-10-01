@@ -1,0 +1,47 @@
+<div class="max-w-4xl mx-auto p-6">
+  <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+    <h1 class="text-2xl font-bold text-gray-900 mb-6">お問い合わせ内容確認</h1>
+
+    <div class="bg-gray-50 rounded-lg p-6 space-y-4">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-700">お名前</label>
+          <p class="mt-1 text-sm text-gray-900"><%= @contact.name %></p>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700">メールアドレス</label>
+          <p class="mt-1 text-sm text-gray-900"><%= @contact.email %></p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-700">カテゴリ</label>
+          <p class="mt-1 text-sm text-gray-900"><%= @contact.category_label %></p>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700">優先度</label>
+          <p class="mt-1 text-sm text-gray-900"><%= @contact.priority_label %></p>
+        </div>
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-gray-700">件名</label>
+        <p class="mt-1 text-sm text-gray-900"><%= @contact.subject %></p>
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-gray-700">メッセージ</label>
+        <p class="mt-1 text-sm text-gray-900 whitespace-pre-wrap"><%= @contact.message %></p>
+      </div>
+    </div>
+
+    <div class="mt-6 flex justify-end space-x-3">
+      <%= link_to "修正", contact_path, class: "px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 transition-colors" %>
+      <%= form_with url: contact_complete_path, method: :post, local: true, class: "inline" do |form| %>
+        <%= form.hidden_field :id, value: @contact.id %>
+        <%= form.submit "送信完了", class: "px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors" %>
+      <% end %>
+    </div>
+  </div>
+</div>
