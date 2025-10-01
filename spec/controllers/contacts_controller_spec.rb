@@ -54,7 +54,7 @@ RSpec.describe ContactsController, type: :controller do
       it '即座にメールを送信しないこと' do
         expect do
           post :create, params: { contact: valid_attributes }
-        end.not_to change { ActionMailer::Base.deliveries.count }
+        end.not_to change(ActionMailer::Base.deliveries, :count)
       end
     end
 

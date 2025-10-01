@@ -67,11 +67,12 @@ RSpec.describe Contact, type: :model do
     end
 
     it 'statusが正しく定義されていること' do
-      expect(Contact.statuses).to eq({
+      expected_statuses = {
         'pending' => 'pending',
         'in_progress' => 'in_progress',
         'completed' => 'completed'
-      })
+      }
+      expect(Contact.statuses).to eq(expected_statuses)
     end
   end
 
