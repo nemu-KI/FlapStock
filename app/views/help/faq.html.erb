@@ -1,7 +1,10 @@
 <% content_for :title, "よくある質問 - ヘルプ" %>
 
-<div class="min-h-screen bg-gray-50">
-  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+<div class="min-h-screen flex flex-col bg-slate-50">
+  <%= render 'layouts/dashboard_header' %>
+  <div class="flex flex-1 min-h-0">
+    <%= render 'layouts/dashboard_sidebar' %>
+    <main class="flex-1 p-6 min-h-0 overflow-auto">
     <!-- パンくずリスト -->
     <nav class="flex mb-8" aria-label="Breadcrumb">
       <ol class="inline-flex items-center space-x-1 md:space-x-3">
@@ -220,5 +223,6 @@
             class: "inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors" %>
       </div>
     </div>
+    </main>
   </div>
 </div>

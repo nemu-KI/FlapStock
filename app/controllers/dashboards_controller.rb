@@ -31,6 +31,7 @@ class DashboardsController < ApplicationController
     load_monthly_statistics
     load_items_by_category
     load_items_by_location
+    load_alert_statistics
   end
 
   def load_recent_movements
@@ -63,5 +64,11 @@ class DashboardsController < ApplicationController
                                  .group('locations.name')
                                  .count
                                  .sort_by { |_, count| -count }
+  end
+
+  def load_alert_statistics
+    @low_stock_count = @company.items.low_stock.count
+    @overstock_count = @company.items.overstock.count
+    @total_alerts = @low_stock_count + @overstock_count
   end
 end

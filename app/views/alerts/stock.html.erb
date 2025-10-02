@@ -1,0 +1,187 @@
+<div class="min-h-screen flex flex-col bg-slate-50">
+  <%= render 'layouts/dashboard_header' %>
+  <div class="flex flex-1 min-h-0">
+    <%= render 'layouts/dashboard_sidebar' %>
+    <main class="flex-1 p-6 min-h-0 overflow-auto">
+      <!-- フラッシュメッセージ -->
+      <%= render 'shared/flash_messages_persistent' %>
+
+      <!-- ページタイトル -->
+      <div class="mb-6">
+        <div class="flex items-center justify-between">
+          <div>
+            <h1 class="text-2xl font-bold text-gray-900">在庫アラート一覧</h1>
+            <p class="text-gray-600 mt-2">
+              <% case @alert_type %>
+              <% when 'low_stock' %>
+                在庫不足の物品一覧
+              <% when 'overstock' %>
+                在庫過剰の物品一覧
+              <% else %>
+                在庫アラートの全物品一覧
+              <% end %>
+            </p>
+          </div>
+          <div class="flex space-x-3">
+            <%= link_to 'アラート統計', alerts_path, class: "inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50" %>
+            <%= link_to '物品一覧', items_path, class: "inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700" %>
+          </div>
+        </div>
+      </div>
+
+      <!-- フィルター -->
+      <div class="bg-white rounded-lg shadow mb-6">
+        <div class="p-6">
+          <div class="flex flex-wrap items-center gap-4">
+            <div class="flex space-x-2">
+              <%= link_to 'すべて', alerts_stock_path(type: 'all'),
+                  class: "px-3 py-2 rounded-md text-sm font-medium #{@alert_type == 'all' ? 'bg-blue-100 text-blue-700' : 'text-gray-500 hover:text-gray-700'}" %>
+              <%= link_to '在庫不足', alerts_stock_path(type: 'low_stock'),
+                  class: "px-3 py-2 rounded-md text-sm font-medium #{@alert_type == 'low_stock' ? 'bg-red-100 text-red-700' : 'text-gray-500 hover:text-gray-700'}" %>
+              <%= link_to '在庫過剰', alerts_stock_path(type: 'overstock'),
+                  class: "px-3 py-2 rounded-md text-sm font-medium #{@alert_type == 'overstock' ? 'bg-orange-100 text-orange-700' : 'text-gray-500 hover:text-gray-700'}" %>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 検索・フィルターバー -->
+      <div class="bg-white rounded-lg shadow-sm border border-slate-200 p-4 mb-6">
+        <%= search_form_for @q, url: alerts_stock_path, method: :get, html: { class: "flex flex-wrap gap-4 items-end" } do |f| %>
+          <%= hidden_field_tag :type, @alert_type %>
+          <div class="flex-1 min-w-64">
+            <%= f.label :name_cont, "物品名", class: "block text-sm font-medium text-slate-700 mb-1" %>
+            <%= f.text_field :name_cont, placeholder: "物品名で検索...", class: "w-full border border-slate-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" %>
+          </div>
+          <div class="w-48">
+            <%= f.label :category_id_eq, "分類", class: "block text-sm font-medium text-slate-700 mb-1" %>
+            <%= f.select :category_id_eq,
+                options_from_collection_for_select(current_user.company.categories, :id, :name),
+                { include_blank: "すべて" },
+                { class: "w-full border border-slate-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" } %>
+          </div>
+          <div class="w-48">
+            <%= f.label :location_id_eq, "保管場所", class: "block text-sm font-medium text-slate-700 mb-1" %>
+            <%= f.select :location_id_eq,
+                options_from_collection_for_select(current_user.company.locations, :id, :name),
+                { include_blank: "すべて" },
+                { class: "w-full border border-slate-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" } %>
+          </div>
+          <div class="flex gap-2">
+            <%= f.submit "検索", class: "bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400" %>
+            <%= link_to "リセット", alerts_stock_path(type: @alert_type), class: "bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-400" %>
+          </div>
+        <% end %>
+      </div>
+
+      <!-- アラート物品一覧 -->
+      <% if @items.any? %>
+        <div class="bg-white rounded-lg shadow">
+          <div class="overflow-x-auto">
+            <table class="w-full divide-y divide-gray-200">
+              <thead class="bg-gray-50">
+                <tr>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">物品名</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">現在在庫</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">最小在庫</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">最大在庫</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">アラート種別</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">分類</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">保管場所</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">操作</th>
+                </tr>
+              </thead>
+              <tbody class="bg-white divide-y divide-gray-200">
+                <% @items.each do |item| %>
+                  <tr class="hover:bg-gray-50">
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <div class="flex items-center">
+                        <div class="flex-shrink-0 h-10 w-10">
+                          <% if item.image.attached? %>
+                            <%= image_tag item.image, class: "h-10 w-10 rounded-full object-cover" %>
+                          <% else %>
+                            <div class="h-10 w-10 rounded-full bg-gray-200 flex items-center justify-center">
+                              <svg class="h-6 w-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
+                              </svg>
+                            </div>
+                          <% end %>
+                        </div>
+                        <div class="ml-4">
+                          <div class="text-sm font-medium text-gray-900">
+                            <%= link_to item.name, item_path(item), class: "text-blue-600 hover:text-blue-800" %>
+                          </div>
+                          <% if item.sku.present? %>
+                            <div class="text-sm text-gray-500">型式: <%= item.sku %></div>
+                          <% end %>
+                        </div>
+                      </div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                      <span class="font-medium"><%= item.stock_quantity %></span>
+                      <span class="text-gray-500"><%= item.unit %></span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                      <%= item.min_stock.present? ? "#{item.min_stock} #{item.unit}" : '未設定' %>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                      <%= item.max_stock.present? ? "#{item.max_stock} #{item.unit}" : '未設定' %>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <% case item.stock_alert_status %>
+                      <% when 'low_stock' %>
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                          <div class="w-2 h-2 bg-red-400 rounded-full mr-1"></div>
+                          在庫不足
+                        </span>
+                      <% when 'overstock' %>
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-orange-100 text-orange-800">
+                          <div class="w-2 h-2 bg-orange-400 rounded-full mr-1"></div>
+                          在庫過剰
+                        </span>
+                      <% end %>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                      <%= item.category.name %>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                      <%= item.location.name %>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                      <%= link_to '詳細', item_path(item), class: "text-blue-600 hover:text-blue-900" %>
+                    </td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- ページネーション -->
+          <div class="px-6 py-3 bg-gray-50 border-t border-gray-200">
+            <%= paginate @items %>
+          </div>
+        </div>
+      <% else %>
+        <div class="bg-white rounded-lg shadow p-8 text-center">
+          <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+          <h3 class="mt-2 text-sm font-medium text-gray-900">アラートなし</h3>
+          <p class="mt-1 text-sm text-gray-500">
+            <% case @alert_type %>
+            <% when 'low_stock' %>
+              在庫不足の物品はありません。
+            <% when 'overstock' %>
+              在庫過剰の物品はありません。
+            <% else %>
+              現在、在庫アラートは発生していません。
+            <% end %>
+          </p>
+          <div class="mt-6">
+            <%= link_to '物品一覧に戻る', items_path, class: "inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700" %>
+          </div>
+        </div>
+      <% end %>
+    </main>
+  </div>
+</div>
