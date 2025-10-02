@@ -1,7 +1,10 @@
 <% content_for :title, "ガイド" %>
 
-<div class="min-h-screen bg-gray-50">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+<div class="min-h-screen flex flex-col bg-slate-50">
+  <%= render 'layouts/dashboard_header' %>
+  <div class="flex flex-1 min-h-0">
+    <%= render 'layouts/dashboard_sidebar' %>
+    <main class="flex-1 p-6 min-h-0 overflow-auto">
     <!-- ヘッダー -->
     <div class="text-center mb-12">
       <h1 class="text-4xl font-bold text-gray-900 mb-4">FlapStock ガイド</h1>
@@ -115,5 +118,6 @@
       <%= link_to "ヘルプページへ", help_path,
           class: "inline-flex items-center px-6 py-3 bg-gray-600 text-white rounded-md hover:bg-gray-700 transition-colors" %>
     </div>
+    </main>
   </div>
 </div>

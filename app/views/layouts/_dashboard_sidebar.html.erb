@@ -10,11 +10,11 @@
       <li class="mt-4 mb-1 text-xs text-gray-500">入出庫履歴</li>
       <li><%= link_to '履歴一覧', stock_movements_path, class: "block px-3 py-2 rounded hover:bg-slate-200" %></li>
       <li class="mt-4 mb-1 text-xs text-gray-500">アラート</li>
-      <li><a href="#" class="block px-3 py-2 rounded hover:bg-slate-200">在庫アラート</a></li>
+      <li><%= link_to '在庫アラート', alerts_path, class: "block px-3 py-2 rounded hover:bg-slate-200" %></li>
       <li><a href="#" class="block px-3 py-2 rounded hover:bg-slate-200">発注メール作成</a></li>
       <li class="mt-4 mb-1 text-xs text-gray-500">その他</li>
       <li><a href="#" class="block px-3 py-2 rounded hover:bg-slate-200">設定</a></li>
-      <li><a href="#" class="block px-3 py-2 rounded hover:bg-slate-200">ヘルプ・FAQ</a></li>
+      <li><%= link_to 'ヘルプ・FAQ', help_path, class: "block px-3 py-2 rounded hover:bg-slate-200" %></li>
       <li><%= link_to 'プライバシーポリシー', privacy_policy_path, class: "block px-3 py-2 rounded hover:bg-slate-200" %></li>
       <li><%= link_to '利用規約', terms_of_service_path, class: "block px-3 py-2 rounded hover:bg-slate-200" %></li>
       <li><a href="#" class="block px-3 py-2 rounded hover:bg-slate-200">仮データリセット</a></li>

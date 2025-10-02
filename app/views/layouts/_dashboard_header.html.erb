@@ -1,14 +1,19 @@
 <header class="flex items-center justify-between px-8 py-4 bg-white shadow w-full">
-  <div class="flex items-center space-x-3">
+  <!-- 左側: ロゴ、会社名、ユーザー名 -->
+  <div class="flex items-center space-x-4">
     <%= image_tag 'FlapStock_logo.png', alt: 'FlapStock', class: 'h-10 w-auto' %>
-  </div>
-  <div class="flex items-center space-x-6">
-    <div class="flex items-center space-x-4">
-      <%= link_to "ご利用ガイド", guide_path, class: "text-gray-700 hover:text-blue-600 transition-colors" %>
-      <%= link_to "ヘルプ", help_path, class: "text-gray-700 hover:text-blue-600 transition-colors" %>
-      <%= link_to "お問い合わせ", contact_path, class: "text-gray-700 hover:text-blue-600 transition-colors" %>
+    <div class="flex items-center space-x-3">
+      <span class="text-lg font-semibold text-gray-800"><%= current_user&.company&.name || '会社名' %></span>
+      <span class="text-gray-400">|</span>
+      <span class="text-base text-gray-700"><%= current_user&.name || 'ユーザー名' %></span>
     </div>
-    <span class="text-base text-gray-700"><%= current_user&.name || 'ユーザー名' %></span>
+  </div>
+
+  <!-- 右側: ナビゲーションリンク -->
+  <div class="flex items-center space-x-6">
+    <%= link_to "ご利用ガイド", guide_path, class: "text-gray-700 hover:text-blue-600 transition-colors" %>
+    <%= link_to "ヘルプ", help_path, class: "text-gray-700 hover:text-blue-600 transition-colors" %>
+    <%= link_to "お問い合わせ", help_contact_path, class: "text-gray-700 hover:text-blue-600 transition-colors" %>
     <a href="<%= destroy_user_session_path %>" data-method="delete" rel="nofollow" class="text-blue-700 hover:underline">ログアウト</a>
   </div>
 </header>

@@ -37,6 +37,10 @@ Rails.application.routes.draw do
   post 'contact/complete', to: 'contacts#complete'
   get 'contact/complete', to: 'contacts#complete'
 
+  # 在庫アラート
+  get 'alerts', to: 'alerts#index'
+  get 'alerts/stock', to: 'alerts#stock'
+
   # 認証
   devise_for :users, controllers: {
     sessions: 'users/sessions',
