@@ -90,8 +90,10 @@ Rails.application.configure do
   # デバッグ用設定（一時的に）
   config.action_mailer.logger = Rails.logger
 
-  # SMTP設定のデバッグ（本番環境での確認用）
-  Rails.logger.info "SMTP Settings: #{config.action_mailer.smtp_settings.inspect}"
+  # SMTP設定の確認（アプリケーション起動後に実行）
+  config.after_initialize do
+    Rails.logger.info "SMTP Settings: #{Rails.application.config.action_mailer.smtp_settings.inspect}" if Rails.logger
+  end
 
   # SMTP設定
   config.action_mailer.smtp_settings = {
