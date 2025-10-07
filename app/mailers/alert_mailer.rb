@@ -2,7 +2,7 @@
 
 # 在庫アラート通知用メーラー
 class AlertMailer < ApplicationMailer
-  default from: 'noreply@flapstock.com'
+  default from: 'flapstockapp@gmail.com'
 
   # 在庫アラート通知メール
   def stock_alert(item, alert_type, recipients)
@@ -20,7 +20,7 @@ class AlertMailer < ApplicationMailer
     mail(
       to: recipients.map(&:email),
       subject: "[#{@company.name}] 在庫アラート: #{@item.name}",
-      reply_to: 'support@flapstock.com'
+      reply_to: 'flapstockapp@gmail.com'
     )
   end
 
