@@ -98,7 +98,7 @@ class StockMovement < ApplicationRecord
     begin
       AlertMailer.stock_alert(item, item.stock_alert_status, recipients).deliver_now
       Rails.logger.info "Stock alert sent: #{item.name} to #{recipients.count} recipients"
-    rescue => e
+    rescue StandardError => e
       Rails.logger.error "Failed to send stock alert: #{e.message}"
       # メール送信失敗でも入出庫処理は継続
     end
