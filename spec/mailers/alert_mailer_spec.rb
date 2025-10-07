@@ -28,7 +28,7 @@ RSpec.describe AlertMailer, type: :mailer do
 
       it 'メールが正しく送信される' do
         expect(mail.to).to eq([admin_user.email, manager_user.email])
-        expect(mail.from).to eq(['noreply@flapstock.com'])
+        expect(mail.from).to eq(['flapstockapp@gmail.com'])
         expect(mail.subject).to eq("[#{company.name}] 在庫アラート: #{item.name}")
       end
 

@@ -82,7 +82,7 @@ Rails.application.configure do
 
   config.action_mailer.perform_caching = false
 
-  # メール送信設定（Gmail SMTP設定を元に戻してテスト）
+  # メール送信設定（Gmail SMTP設定）
   config.action_mailer.perform_deliveries = true
   config.action_mailer.raise_delivery_errors = true
   config.action_mailer.delivery_method = :smtp
@@ -97,20 +97,17 @@ Rails.application.configure do
 
     # 環境変数の確認
     Rails.logger&.info 'Environment Variables:'
-    Rails.logger&.info "  SMTP_ADDRESS: #{ENV.fetch('SMTP_ADDRESS', nil)}"
-    Rails.logger&.info "  SMTP_PORT: #{ENV.fetch('SMTP_PORT', nil)}"
-    Rails.logger&.info "  SMTP_DOMAIN: #{ENV.fetch('SMTP_DOMAIN', nil)}"
-    Rails.logger&.info "  SMTP_USERNAME: #{ENV['SMTP_USERNAME'] ? '[SET]' : '[NOT SET]'}"
-    Rails.logger&.info "  SMTP_PASSWORD: #{ENV['SMTP_PASSWORD'] ? '[SET]' : '[NOT SET]'}"
+    Rails.logger&.info "  GMAIL_USERNAME: #{ENV['GMAIL_USERNAME'] ? '[SET]' : '[NOT SET]'}"
+    Rails.logger&.info "  GMAIL_APP_PASSWORD: #{ENV['GMAIL_APP_PASSWORD'] ? '[SET]' : '[NOT SET]'}"
   end
 
-  # SMTP設定（以前動作していた設定に戻す）
+  # Gmail SMTP設定（完全リセット）
   config.action_mailer.smtp_settings = {
-    address: ENV.fetch('SMTP_ADDRESS', 'smtp.gmail.com'),
-    port: ENV['SMTP_PORT']&.to_i || 587,
-    domain: ENV.fetch('SMTP_DOMAIN', 'gmail.com'),
-    user_name: ENV.fetch('SMTP_USERNAME', nil),
-    password: ENV.fetch('SMTP_PASSWORD', nil),
+    address: 'smtp.gmail.com',
+    port: 587,
+    domain: 'gmail.com',
+    user_name: ENV.fetch('GMAIL_USERNAME', nil),
+    password: ENV.fetch('GMAIL_APP_PASSWORD', nil),
     authentication: 'plain',
     enable_starttls_auto: true,
     open_timeout: 30,
