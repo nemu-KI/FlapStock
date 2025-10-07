@@ -87,20 +87,35 @@ class StockMovement < ApplicationRecord
   def check_and_send_alert
     return unless item.needs_alert?
 
-    # 通知対象ユーザーを取得
     recipients = AlertMailer.notification_recipients(company)
     return if recipients.empty?
-
-    # 重複送信防止: 最近同じアラートが送信されていないかチェック
     return if recent_alert_sent?
 
-    # アラート通知メールを送信（エラーハンドリング付き）
-    begin
-      AlertMailer.stock_alert(item, item.stock_alert_status, recipients).deliver_now
-      Rails.logger.info "Stock alert sent: #{item.name} to #{recipients.count} recipients"
-    rescue StandardError => e
-      Rails.logger.error "Failed to send stock alert: #{e.message}"
-      # メール送信失敗でも入出庫処理は継続
+    send_alert_email(recipients)
+  end
+
+  def send_alert_email(recipients)
+    AlertMailer.stock_alert(item, item.stock_alert_status, recipients).deliver_now
+    Rails.logger.info "Stock alert sent: #{item.name} to #{recipients.count} recipients"
+  rescue StandardError => e
+    handle_email_error(e)
+  end
+
+  def handle_email_error(error)
+    error_message = build_error_message(error)
+    Rails.logger.error error_message
+  end
+
+  def build_error_message(error)
+    case error
+    when Net::OpenTimeout
+      "SMTP Connection Timeout: #{error.message}"
+    when Net::SMTPAuthenticationError
+      "SMTP Authentication Failed: #{error.message}"
+    when Net::SMTPError
+      "SMTP Error: #{error.message}"
+    else
+      "Failed to send stock alert: #{error.class}: #{error.message}"
     end
   end
 
