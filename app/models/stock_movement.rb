@@ -15,6 +15,7 @@ class StockMovement < ApplicationRecord
   validate :check_stock_availability, if: :outbound?
 
   after_create :update_item_stock
+  after_create :check_and_send_alert
   before_destroy :check_adjustment_deletion
   after_destroy :revert_item_stock
 
@@ -80,6 +81,35 @@ class StockMovement < ApplicationRecord
       item.increment!(:stock_quantity, quantity)
     when 'adjustment'
       # 調整レコードは削除されないため、ここには到達しない
+    end
+  end
+
+  def check_and_send_alert
+    return unless item.needs_alert?
+
+    # 通知対象ユーザーを取得
+    recipients = AlertMailer.notification_recipients(company)
+    return if recipients.empty?
+
+    # 重複送信防止: 最近同じアラートが送信されていないかチェック
+    return if recent_alert_sent?
+
+    # アラート通知メールを送信
+    AlertMailer.stock_alert(item, item.stock_alert_status, recipients).deliver_now
+  end
+
+  def recent_alert_sent?
+    # 過去30分以内に同じ物品のアラートメールが送信されているかチェック
+    # アラート状態が変化した場合は送信する
+    recent_movements = company.stock_movements
+                              .joins(:item)
+                              .where(items: { id: item.id })
+                              .where('stock_movements.created_at > ?', 30.minutes.ago)
+                              .where.not(id: id)
+
+    # 最近の入出庫でアラートが発生していた場合のみ重複送信を防ぐ
+    recent_movements.any? do |movement|
+      movement.item.needs_alert? && movement.item.stock_alert_status == item.stock_alert_status
     end
   end
 end

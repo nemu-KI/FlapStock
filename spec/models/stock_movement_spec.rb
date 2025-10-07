@@ -249,4 +249,96 @@ RSpec.describe StockMovement, type: :model do
       expect(stock_movement.movement_category_i18n).to eq(expected_value)
     end
   end
+
+  describe 'アラート通知機能' do
+    let(:company) { create(:company) }
+    let(:category) { create(:category, company: company) }
+    let(:location) { create(:location, company: company) }
+    let(:supplier) { create(:supplier, company: company) }
+    let(:admin_user) { create(:user, company: company, role: :admin) }
+    let(:manager_user) { create(:user, company: company, role: :manager) }
+
+    context '在庫不足アラートが発生する場合' do
+      let(:item) do
+        create(:item,
+               company: company,
+               category: category,
+               location: location,
+               supplier: supplier,
+               stock_quantity: 10,
+               min_stock: 15,
+               unit: '個')
+      end
+
+      it '出庫時にアラートメールが送信される' do
+        expect do
+          create(:stock_movement,
+                 company: company,
+                 user: admin_user,
+                 item: item,
+                 movement_category: :outbound,
+                 quantity: 5)
+        end.to change { ActionMailer::Base.deliveries.count }.by(1)
+
+        mail = ActionMailer::Base.deliveries.last
+        # 会社の管理者・マネージャーにメールが送信されることを確認
+        expect(mail.to).not_to be_empty
+        expect(mail.subject).to include('在庫アラート')
+      end
+    end
+
+    context '在庫過剰アラートが発生する場合' do
+      let(:item) do
+        create(:item,
+               company: company,
+               category: category,
+               location: location,
+               supplier: supplier,
+               stock_quantity: 10,
+               max_stock: 15,
+               unit: '個')
+      end
+
+      it '入庫時にアラートメールが送信される' do
+        expect do
+          create(:stock_movement,
+                 company: company,
+                 user: admin_user,
+                 item: item,
+                 movement_category: :inbound,
+                 quantity: 10)
+        end.to change { ActionMailer::Base.deliveries.count }.by(1)
+
+        mail = ActionMailer::Base.deliveries.last
+        # 会社の管理者・マネージャーにメールが送信されることを確認
+        expect(mail.to).not_to be_empty
+        expect(mail.subject).to include('在庫アラート')
+      end
+    end
+
+    context 'アラートが発生しない場合' do
+      let(:item) do
+        create(:item,
+               company: company,
+               category: category,
+               location: location,
+               supplier: supplier,
+               stock_quantity: 20,
+               min_stock: 10,
+               max_stock: 30,
+               unit: '個')
+      end
+
+      it 'メールが送信されない' do
+        expect do
+          create(:stock_movement,
+                 company: company,
+                 user: admin_user,
+                 item: item,
+                 movement_category: :inbound,
+                 quantity: 5)
+        end.not_to(change { ActionMailer::Base.deliveries.count })
+      end
+    end
+  end
 end
