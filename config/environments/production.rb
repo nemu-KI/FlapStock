@@ -82,7 +82,7 @@ Rails.application.configure do
 
   config.action_mailer.perform_caching = false
 
-  # メール送信設定
+  # メール送信設定（段階的有効化）
   config.action_mailer.perform_deliveries = true
   config.action_mailer.raise_delivery_errors = true
   config.action_mailer.delivery_method = :smtp
@@ -92,7 +92,16 @@ Rails.application.configure do
 
   # SMTP設定の確認（アプリケーション起動後に実行）
   config.after_initialize do
-    Rails.logger&.info "SMTP Settings: #{Rails.application.config.action_mailer.smtp_settings.inspect}"
+    smtp_settings = Rails.application.config.action_mailer.smtp_settings
+    Rails.logger&.info "SMTP Settings: #{smtp_settings.inspect}"
+
+    # 環境変数の確認
+    Rails.logger&.info 'Environment Variables:'
+    Rails.logger&.info "  SMTP_ADDRESS: #{ENV.fetch('SMTP_ADDRESS', nil)}"
+    Rails.logger&.info "  SMTP_PORT: #{ENV.fetch('SMTP_PORT', nil)}"
+    Rails.logger&.info "  SMTP_DOMAIN: #{ENV.fetch('SMTP_DOMAIN', nil)}"
+    Rails.logger&.info "  SMTP_USERNAME: #{ENV['SMTP_USERNAME'] ? '[SET]' : '[NOT SET]'}"
+    Rails.logger&.info "  SMTP_PASSWORD: #{ENV['SMTP_PASSWORD'] ? '[SET]' : '[NOT SET]'}"
   end
 
   # SMTP設定
