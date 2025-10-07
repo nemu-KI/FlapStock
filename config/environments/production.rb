@@ -82,7 +82,7 @@ Rails.application.configure do
 
   config.action_mailer.perform_caching = false
 
-  # メール送信設定（段階的有効化）
+  # メール送信設定（Gmail SMTP設定を元に戻してテスト）
   config.action_mailer.perform_deliveries = true
   config.action_mailer.raise_delivery_errors = true
   config.action_mailer.delivery_method = :smtp
@@ -104,11 +104,11 @@ Rails.application.configure do
     Rails.logger&.info "  SMTP_PASSWORD: #{ENV['SMTP_PASSWORD'] ? '[SET]' : '[NOT SET]'}"
   end
 
-  # SMTP設定
+  # SMTP設定（以前動作していた設定に戻す）
   config.action_mailer.smtp_settings = {
     address: ENV.fetch('SMTP_ADDRESS', 'smtp.gmail.com'),
     port: ENV['SMTP_PORT']&.to_i || 587,
-    domain: ENV.fetch('SMTP_DOMAIN', 'flapstock.onrender.com'),
+    domain: ENV.fetch('SMTP_DOMAIN', 'gmail.com'),
     user_name: ENV.fetch('SMTP_USERNAME', nil),
     password: ENV.fetch('SMTP_PASSWORD', nil),
     authentication: 'plain',
