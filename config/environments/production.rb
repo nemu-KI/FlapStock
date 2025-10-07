@@ -92,7 +92,7 @@ Rails.application.configure do
 
   # SMTP設定の確認（アプリケーション起動後に実行）
   config.after_initialize do
-    Rails.logger.info "SMTP Settings: #{Rails.application.config.action_mailer.smtp_settings.inspect}" if Rails.logger
+    Rails.logger&.info "SMTP Settings: #{Rails.application.config.action_mailer.smtp_settings.inspect}"
   end
 
   # SMTP設定
