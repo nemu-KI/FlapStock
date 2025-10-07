@@ -90,15 +90,20 @@ Rails.application.configure do
   # デバッグ用設定（一時的に）
   config.action_mailer.logger = Rails.logger
 
+  # SMTP設定のデバッグ（本番環境での確認用）
+  Rails.logger.info "SMTP Settings: #{config.action_mailer.smtp_settings.inspect}"
+
   # SMTP設定
   config.action_mailer.smtp_settings = {
-    address: ENV.fetch('SMTP_ADDRESS', nil),
-    port: ENV['SMTP_PORT'] || 587,
-    domain: ENV.fetch('SMTP_DOMAIN', nil),
+    address: ENV.fetch('SMTP_ADDRESS', 'smtp.gmail.com'),
+    port: ENV['SMTP_PORT']&.to_i || 587,
+    domain: ENV.fetch('SMTP_DOMAIN', 'flapstock.onrender.com'),
     user_name: ENV.fetch('SMTP_USERNAME', nil),
     password: ENV.fetch('SMTP_PASSWORD', nil),
     authentication: 'plain',
-    enable_starttls_auto: true
+    enable_starttls_auto: true,
+    open_timeout: 30,
+    read_timeout: 30
   }
 
   # メールのデフォルトURL設定
