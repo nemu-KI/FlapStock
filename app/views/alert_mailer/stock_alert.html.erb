@@ -175,10 +175,10 @@
 
         <!-- アクションリンク -->
         <div class="action-links">
-          <a href="<%= Rails.application.routes.url_helpers.item_url(@item) %>" class="action-link primary">
+          <a href="<%= Rails.application.routes.url_helpers.item_url(@item, only_path: true) %>" class="action-link primary">
             物品詳細を確認
           </a>
-          <a href="<%= Rails.application.routes.url_helpers.alerts_stock_url %>" class="action-link success">
+          <a href="<%= Rails.application.routes.url_helpers.alerts_stock_url(only_path: true) %>" class="action-link success">
             アラート一覧を確認
           </a>
         </div>
