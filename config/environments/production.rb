@@ -82,36 +82,20 @@ Rails.application.configure do
 
   config.action_mailer.perform_caching = false
 
-  # メール送信設定（Gmail SMTP設定）
+  # メール送信設定
   config.action_mailer.perform_deliveries = true
   config.action_mailer.raise_delivery_errors = true
   config.action_mailer.delivery_method = :smtp
 
-  # デバッグ用設定（一時的に）
-  config.action_mailer.logger = Rails.logger
-
-  # SMTP設定の確認（アプリケーション起動後に実行）
-  config.after_initialize do
-    smtp_settings = Rails.application.config.action_mailer.smtp_settings
-    Rails.logger&.info "SMTP Settings: #{smtp_settings.inspect}"
-
-    # 環境変数の確認
-    Rails.logger&.info 'Environment Variables:'
-    Rails.logger&.info "  GMAIL_USERNAME: #{ENV['GMAIL_USERNAME'] ? '[SET]' : '[NOT SET]'}"
-    Rails.logger&.info "  GMAIL_APP_PASSWORD: #{ENV['GMAIL_APP_PASSWORD'] ? '[SET]' : '[NOT SET]'}"
-  end
-
-  # Gmail SMTP設定（完全リセット）
+  # SendGrid SMTP設定
   config.action_mailer.smtp_settings = {
-    address: 'smtp.gmail.com',
+    address: 'smtp.sendgrid.net',
     port: 587,
-    domain: 'gmail.com',
-    user_name: ENV.fetch('GMAIL_USERNAME', nil),
-    password: ENV.fetch('GMAIL_APP_PASSWORD', nil),
+    domain: ENV.fetch('SENDGRID_DOMAIN', 'flapstock.onrender.com'),
+    user_name: 'apikey',
+    password: ENV.fetch('SENDGRID_API_KEY', nil),
     authentication: 'plain',
-    enable_starttls_auto: true,
-    open_timeout: 30,
-    read_timeout: 30
+    enable_starttls_auto: true
   }
 
   # メールのデフォルトURL設定
