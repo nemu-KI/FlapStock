@@ -43,11 +43,14 @@ class SendgridApiDelivery
     html_part = mail.html_part&.body&.decoded || ''
     text_part = mail.text_part&.body&.decoded || ''
 
-    content_html = SendGrid::Content.new(type: 'text/html', value: html_part) if html_part.present?
+    # SendGridではtext/plainを最初に、text/htmlを次に追加する必要がある
     content_text = SendGrid::Content.new(type: 'text/plain', value: text_part) if text_part.present?
+    content_html = SendGrid::Content.new(type: 'text/html', value: html_part) if html_part.present?
 
-    sg_mail = SendGrid::Mail.new(from, subject, to, content_html)
-    sg_mail.add_content(content_text) if content_text
+    # text/plainを最初に設定
+    sg_mail = SendGrid::Mail.new(from, subject, to, content_text)
+    # text/htmlを追加
+    sg_mail.add_content(content_html) if content_html
 
     sg_mail
   end
