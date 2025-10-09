@@ -23,9 +23,9 @@ class SendgridApiDelivery
   private
 
   def build_sendgrid_mail(mail)
-    from = Email.new(email: mail.from.first)
+    from = SendGrid::Email.new(email: mail.from.first)
     subject = mail.subject
-    to = Email.new(email: mail.to.first)
+    to = SendGrid::Email.new(email: mail.to.first)
 
     sg_mail = if mail.multipart?
                 build_multipart_mail(mail, from, subject, to)
@@ -43,27 +43,27 @@ class SendgridApiDelivery
     html_part = mail.html_part&.body&.decoded || ''
     text_part = mail.text_part&.body&.decoded || ''
 
-    content_html = Content.new(type: 'text/html', value: html_part) if html_part.present?
-    content_text = Content.new(type: 'text/plain', value: text_part) if text_part.present?
+    content_html = SendGrid::Content.new(type: 'text/html', value: html_part) if html_part.present?
+    content_text = SendGrid::Content.new(type: 'text/plain', value: text_part) if text_part.present?
 
-    sg_mail = Mail.new(from, subject, to, content_html)
+    sg_mail = SendGrid::Mail.new(from, subject, to, content_html)
     sg_mail.add_content(content_text) if content_text
 
     sg_mail
   end
 
   def build_simple_mail(mail, from, subject, to)
-    content = Content.new(
+    content = SendGrid::Content.new(
       type: mail.content_type.include?('html') ? 'text/html' : 'text/plain',
       value: mail.body.decoded
     )
-    Mail.new(from, subject, to, content)
+    SendGrid::Mail.new(from, subject, to, content)
   end
 
   def add_additional_recipients(sg_mail, mail)
     mail.to.drop(1).each do |recipient|
-      personalization = Personalization.new
-      personalization.add_to(Email.new(email: recipient))
+      personalization = SendGrid::Personalization.new
+      personalization.add_to(SendGrid::Email.new(email: recipient))
       sg_mail.add_personalization(personalization)
     end
   end
@@ -71,7 +71,7 @@ class SendgridApiDelivery
   def add_reply_to(sg_mail, mail)
     return unless mail.reply_to.present?
 
-    reply_to = ReplyTo.new(email: mail.reply_to.first)
+    reply_to = SendGrid::ReplyTo.new(email: mail.reply_to.first)
     sg_mail.reply_to = reply_to
   end
 
