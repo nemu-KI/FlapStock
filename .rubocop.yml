@@ -61,6 +61,14 @@ Metrics/AbcSize:
 # 循環的複雑度
 Metrics/CyclomaticComplexity:
   Max: 8
+  Exclude:
+    - 'lib/sendgrid_api_delivery.rb'
+
+# 知覚的複雑度
+Metrics/PerceivedComplexity:
+  Max: 8
+  Exclude:
+    - 'lib/sendgrid_api_delivery.rb'
 
 # ネストの深さ
 Metrics/BlockNesting:

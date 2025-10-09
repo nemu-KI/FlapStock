@@ -25,6 +25,9 @@ gem 'devise' # 認証（ログイン機能）
 gem 'devise-i18n' # Devise日本語化
 gem 'pundit' # 権限管理
 
+# --- メール配信 ---
+gem 'sendgrid-ruby' # SendGrid Web API
+
 # --- 検索・ソート ---
 gem 'kaminari', '~> 1.2'          # ページネーション機能
 gem 'ransack', '~> 4.1'           # 検索・ソート機能
