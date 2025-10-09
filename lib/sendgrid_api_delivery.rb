@@ -71,8 +71,7 @@ class SendgridApiDelivery
   def add_reply_to(sg_mail, mail)
     return unless mail.reply_to.present?
 
-    reply_to = SendGrid::ReplyTo.new(email: mail.reply_to.first)
-    sg_mail.reply_to = reply_to
+    sg_mail.reply_to = SendGrid::Email.new(email: mail.reply_to.first)
   end
 
   def send_mail(api, sg_mail)
