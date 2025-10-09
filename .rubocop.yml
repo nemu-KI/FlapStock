@@ -57,6 +57,8 @@ Metrics/BlockLength:
 # ファイルの長さ
 Metrics/AbcSize:
   Max: 20
+  Exclude:
+    - 'lib/sendgrid_api_delivery.rb'
 
 # 循環的複雑度
 Metrics/CyclomaticComplexity:
