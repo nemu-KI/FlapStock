@@ -23,10 +23,6 @@ class SendgridApiDelivery
   private
 
   def build_sendgrid_mail(mail)
-    # デバッグ用ログ
-    Rails.logger.info "SendGrid: Sending email from #{mail.from.first} to #{mail.to.first}"
-    Rails.logger.info "SendGrid: Subject: #{mail.subject}"
-
     from = SendGrid::Email.new(email: mail.from.first)
     subject = mail.subject
     to = SendGrid::Email.new(email: mail.to.first)
