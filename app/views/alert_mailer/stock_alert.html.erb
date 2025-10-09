@@ -98,9 +98,27 @@
         border-radius: 4px;
         margin: 5px;
         font-size: 14px;
+        font-weight: bold;
       }
       .action-link:hover {
         background-color: #0056b3;
+        color: white;
+      }
+      .action-link.primary {
+        background-color: #007bff;
+        color: white;
+      }
+      .action-link.primary:hover {
+        background-color: #0056b3;
+        color: white;
+      }
+      .action-link.success {
+        background-color: #28a745;
+        color: white;
+      }
+      .action-link.success:hover {
+        background-color: #1e7e34;
+        color: white;
       }
       .footer {
         background-color: #f8f9fa;
@@ -157,10 +175,10 @@
 
         <!-- アクションリンク -->
         <div class="action-links">
-          <a href="<%= Rails.application.routes.url_helpers.item_url(@item, host: 'localhost:3000') %>" class="action-link">
+          <a href="<%= Rails.application.routes.url_helpers.item_url(@item, host: 'localhost:3000') %>" class="action-link primary">
             物品詳細を確認
           </a>
-          <a href="<%= Rails.application.routes.url_helpers.alerts_stock_url(host: 'localhost:3000') %>" class="action-link" style="background-color: #28a745;">
+          <a href="<%= Rails.application.routes.url_helpers.alerts_stock_url(host: 'localhost:3000') %>" class="action-link success">
             アラート一覧を確認
           </a>
         </div>
