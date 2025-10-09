@@ -85,18 +85,16 @@ Rails.application.configure do
   # メール送信設定
   config.action_mailer.perform_deliveries = true
   config.action_mailer.raise_delivery_errors = true
-  config.action_mailer.delivery_method = :smtp
 
-  # SendGrid SMTP設定
-  config.action_mailer.smtp_settings = {
-    address: 'smtp.sendgrid.net',
-    port: 587,
-    domain: ENV.fetch('SENDGRID_DOMAIN', 'flapstock.onrender.com'),
-    user_name: 'apikey',
-    password: ENV.fetch('SENDGRID_API_KEY', nil),
-    authentication: 'plain',
-    enable_starttls_auto: true
+  # SendGrid Web API設定（SMTPポートがブロックされているため、Web APIを使用）
+  config.action_mailer.delivery_method = :sendgrid_api
+  config.action_mailer.sendgrid_api_settings = {
+    api_key: ENV.fetch('SENDGRID_API_KEY', nil)
   }
+
+  # SendGrid APIデリバリーメソッドを登録
+  require Rails.root.join('lib/sendgrid_api_delivery')
+  ActionMailer::Base.add_delivery_method :sendgrid_api, SendgridApiDelivery
 
   # メールのデフォルトURL設定
   config.action_mailer.default_url_options = {
