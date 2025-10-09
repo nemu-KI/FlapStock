@@ -97,26 +97,6 @@ class StockMovement < ApplicationRecord
   def send_alert_email(recipients)
     AlertMailer.stock_alert(item, item.stock_alert_status, recipients).deliver_now
     Rails.logger.info "Stock alert sent: #{item.name} to #{recipients.count} recipients"
-  rescue StandardError => e
-    handle_email_error(e)
-  end
-
-  def handle_email_error(error)
-    error_message = build_error_message(error)
-    Rails.logger.error error_message
-  end
-
-  def build_error_message(error)
-    case error
-    when Net::OpenTimeout
-      "SMTP Connection Timeout: #{error.message}"
-    when Net::SMTPAuthenticationError
-      "SMTP Authentication Failed: #{error.message}"
-    when Net::SMTPError
-      "SMTP Error: #{error.message}"
-    else
-      "Failed to send stock alert: #{error.class}: #{error.message}"
-    end
   end
 
   def recent_alert_sent?
