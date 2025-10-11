@@ -9,9 +9,10 @@
       <li><%= link_to '発注先', suppliers_path, class: "block px-3 py-2 rounded hover:bg-slate-200" %></li>
       <li class="mt-4 mb-1 text-xs text-gray-500">入出庫履歴</li>
       <li><%= link_to '履歴一覧', stock_movements_path, class: "block px-3 py-2 rounded hover:bg-slate-200" %></li>
-      <li class="mt-4 mb-1 text-xs text-gray-500">アラート</li>
+      <li class="mt-4 mb-1 text-xs text-gray-500">アラート・発注</li>
       <li><%= link_to '在庫アラート', alerts_path, class: "block px-3 py-2 rounded hover:bg-slate-200" %></li>
-      <li><a href="#" class="block px-3 py-2 rounded hover:bg-slate-200">発注メール作成</a></li>
+      <li><%= link_to '発注メール作成', select_items_order_emails_path, class: "block px-3 py-2 rounded hover:bg-slate-200" %></li>
+      <li><%= link_to '発注履歴', orders_path, class: "block px-3 py-2 rounded hover:bg-slate-200" %></li>
       <li class="mt-4 mb-1 text-xs text-gray-500">その他</li>
       <li><a href="#" class="block px-3 py-2 rounded hover:bg-slate-200">設定</a></li>
       <li><%= link_to 'ヘルプ・FAQ', help_path, class: "block px-3 py-2 rounded hover:bg-slate-200" %></li>

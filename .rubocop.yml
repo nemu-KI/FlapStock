@@ -59,6 +59,8 @@ Metrics/AbcSize:
   Max: 20
   Exclude:
     - 'lib/sendgrid_api_delivery.rb'
+    - 'app/models/order_email.rb'  # メール本文生成の複雑性
+    - 'app/controllers/order_emails_controller.rb'  # 発注メール作成処理の複雑性
 
 # 循環的複雑度
 Metrics/CyclomaticComplexity:
@@ -71,6 +73,7 @@ Metrics/PerceivedComplexity:
   Max: 8
   Exclude:
     - 'lib/sendgrid_api_delivery.rb'
+    - 'app/controllers/order_emails_controller.rb'  # 発注メール作成処理の複雑性
 
 # ネストの深さ
 Metrics/BlockNesting:

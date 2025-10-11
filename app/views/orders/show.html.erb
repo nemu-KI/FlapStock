@@ -1,0 +1,189 @@
+<div class="min-h-screen flex flex-col bg-slate-50">
+  <%= render 'layouts/dashboard_header' %>
+  <div class="flex flex-1 min-h-0">
+    <%= render 'layouts/dashboard_sidebar' %>
+    <div class="flex-1 p-6 overflow-auto">
+      <!-- フラッシュメッセージ -->
+      <%= render 'shared/flash_messages_persistent' %>
+
+      <!-- ページタイトル -->
+      <div class="flex justify-between items-center mb-6">
+        <div>
+          <h1 class="text-2xl font-bold text-slate-800">発注詳細</h1>
+          <p class="text-sm text-slate-600 mt-1">発注番号: #<%= @order.id %></p>
+        </div>
+        <div class="flex space-x-3">
+          <%= link_to "一覧に戻る", orders_path, class: button_classes(variant: :secondary, size: :md) %>
+          <%= form_with url: order_path(@order), method: :delete, local: true, style: "display: inline;" do |f| %>
+            <%= f.submit '削除',
+                onclick: "return confirm('この発注履歴を削除しますか？\\n\\nこの操作は取り消せません。')",
+                class: button_classes(variant: :danger, size: :md) %>
+          <% end %>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- 左側：発注情報 -->
+        <div class="lg:col-span-2 space-y-6">
+          <!-- 基本情報 -->
+          <div class="bg-white rounded-lg shadow p-6">
+            <h2 class="text-xl font-semibold text-slate-800 mb-4">発注情報</h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-500 mb-1">発注先</label>
+                <p class="text-lg text-slate-800 font-medium"><%= @order.supplier.name %></p>
+                <% if @order.supplier.email.present? %>
+                  <p class="text-sm text-slate-600 mt-1"><%= @order.supplier.email %></p>
+                <% end %>
+              </div>
+
+              <div>
+                <label class="block text-sm font-medium text-gray-500 mb-1">発注日</label>
+                <p class="text-lg text-slate-800">
+                  <%= @order.order_date&.strftime('%Y年%m月%d日') || @order.created_at.strftime('%Y年%m月%d日') %>
+                </p>
+              </div>
+
+              <div>
+                <label class="block text-sm font-medium text-gray-500 mb-1">発注者</label>
+                <p class="text-lg text-slate-800"><%= @order.user.name %></p>
+              </div>
+
+              <div>
+                <label class="block text-sm font-medium text-gray-500 mb-1">ステータス</label>
+                <% case @order.status %>
+                <% when 'pending' %>
+                  <span class="px-3 py-1 text-sm font-semibold rounded-full bg-gray-100 text-gray-800">
+                    未送信
+                  </span>
+                <% when 'sent' %>
+                  <span class="px-3 py-1 text-sm font-semibold rounded-full bg-blue-100 text-blue-800">
+                    送信済み
+                  </span>
+                <% when 'confirmed' %>
+                  <span class="px-3 py-1 text-sm font-semibold rounded-full bg-green-100 text-green-800">
+                    確認済み
+                  </span>
+                <% when 'received' %>
+                  <span class="px-3 py-1 text-sm font-semibold rounded-full bg-purple-100 text-purple-800">
+                    入荷済み
+                  </span>
+                <% when 'cancelled' %>
+                  <span class="px-3 py-1 text-sm font-semibold rounded-full bg-red-100 text-red-800">
+                    キャンセル
+                  </span>
+                <% end %>
+              </div>
+            </div>
+
+            <% if @order.notes.present? %>
+              <div class="mt-4">
+                <label class="block text-sm font-medium text-gray-500 mb-1">備考</label>
+                <p class="text-slate-800 whitespace-pre-wrap"><%= @order.notes %></p>
+              </div>
+            <% end %>
+          </div>
+
+          <!-- 発注明細 -->
+          <div class="bg-white rounded-lg shadow">
+            <div class="px-6 py-4 border-b border-slate-200">
+              <h2 class="text-xl font-semibold text-slate-800">発注明細</h2>
+            </div>
+
+            <div class="overflow-x-auto">
+              <table class="w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                  <tr>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">商品名</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">型式</th>
+                    <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">発注数量</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">希望納期</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">備考</th>
+                  </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                  <% @order.order_items.each do |order_item| %>
+                    <tr class="hover:bg-gray-50">
+                      <td class="px-6 py-4">
+                        <%= link_to order_item.item.name, item_path(order_item.item), class: "text-blue-600 hover:text-blue-800" %>
+                      </td>
+                      <td class="px-6 py-4 text-sm text-gray-900">
+                        <%= order_item.item.sku %>
+                      </td>
+                      <td class="px-6 py-4 text-right text-sm text-gray-900">
+                        <%= order_item.quantity %> <%= order_item.item.unit %>
+                      </td>
+                      <td class="px-6 py-4 text-sm text-gray-900">
+                        <%= order_item.expected_delivery_date&.strftime('%Y/%m/%d') || '-' %>
+                      </td>
+                      <td class="px-6 py-4 text-sm text-gray-600">
+                        <%= order_item.notes %>
+                      </td>
+                    </tr>
+                  <% end %>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- 合計 -->
+            <div class="px-6 py-4 bg-gray-50 border-t border-gray-200">
+              <div class="flex justify-between items-center">
+                <span class="text-sm font-medium text-gray-700">合計発注数量:</span>
+                <span class="text-lg font-bold text-slate-800">
+                  <%= @order.order_items.sum(:quantity) %> 点
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 右側：アクション -->
+        <div class="lg:col-span-1 space-y-6">
+          <!-- ステータス変更 -->
+          <div class="bg-white rounded-lg shadow p-6">
+            <h3 class="text-lg font-semibold text-slate-800 mb-4">ステータス変更</h3>
+
+            <%= form_with model: @order, method: :patch, local: true do |f| %>
+              <div class="space-y-3">
+                <%= f.label :status, "ステータス", class: "block text-sm font-medium text-slate-700 mb-1" %>
+                <%= f.select :status,
+                    options_for_select([
+                      ['未送信', 'pending'],
+                      ['送信済み', 'sent'],
+                      ['確認済み', 'confirmed'],
+                      ['入荷済み', 'received'],
+                      ['キャンセル', 'cancelled']
+                    ], @order.status),
+                    {},
+                    { class: "w-full border border-slate-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" } %>
+
+                <%= f.submit "更新", class: button_classes(variant: :primary, size: :md) + " w-full" %>
+              </div>
+            <% end %>
+          </div>
+
+          <!-- メタ情報 -->
+          <div class="bg-white rounded-lg shadow p-6">
+            <h3 class="text-lg font-semibold text-slate-800 mb-4">情報</h3>
+
+            <dl class="space-y-3 text-sm">
+              <div>
+                <dt class="text-gray-500">作成日時</dt>
+                <dd class="text-slate-800 mt-1">
+                  <%= @order.created_at.strftime('%Y/%m/%d %H:%M') %>
+                </dd>
+              </div>
+              <div>
+                <dt class="text-gray-500">更新日時</dt>
+                <dd class="text-slate-800 mt-1">
+                  <%= @order.updated_at.strftime('%Y/%m/%d %H:%M') %>
+                </dd>
+              </div>
+            </dl>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

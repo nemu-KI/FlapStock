@@ -4,6 +4,7 @@
 class User < ApplicationRecord
   belongs_to :company
   has_many :stock_movements, dependent: :destroy
+  has_many :orders, dependent: :restrict_with_error
 
   # 仮想属性（フォーム用）
   attr_accessor :company_name

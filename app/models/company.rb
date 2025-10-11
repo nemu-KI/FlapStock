@@ -8,6 +8,7 @@ class Company < ApplicationRecord
   has_many :items, dependent: :destroy
   has_many :users, dependent: :destroy
   has_many :stock_movements, dependent: :destroy
+  has_many :orders, dependent: :destroy
 
   validates :name, presence: true
   validates :email, presence: true
@@ -19,6 +20,6 @@ class Company < ApplicationRecord
 
   # Ransackの検索可能な関連を定義
   def self.ransackable_associations(_auth_object = nil)
-    %w[categories locations suppliers items users stock_movements]
+    %w[categories locations suppliers items users stock_movements orders]
   end
 end

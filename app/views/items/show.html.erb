@@ -218,7 +218,7 @@
                   <p>入出庫操作には権限が必要です</p>
                 </div>
               <% end %>
-              <%= link_to "#", class: "w-full bg-purple-400 hover:bg-purple-600 text-white font-bold py-3 px-4 rounded transition flex items-center justify-center" do %>
+              <%= link_to new_order_email_path(item_ids: [@item.id]), class: "w-full bg-purple-400 hover:bg-purple-600 text-white font-bold py-3 px-4 rounded transition flex items-center justify-center" do %>
                 <i class="fas fa-envelope mr-2"></i>発注メール作成
               <% end %>
             </div>
