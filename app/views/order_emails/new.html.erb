@@ -1,0 +1,119 @@
+<div class="min-h-screen flex flex-col bg-slate-50">
+  <%= render 'layouts/dashboard_header' %>
+  <div class="flex flex-1 min-h-0">
+    <%= render 'layouts/dashboard_sidebar' %>
+    <div class="flex-1 p-6 overflow-auto">
+      <!-- フラッシュメッセージ -->
+      <%= render 'shared/flash_messages_persistent' %>
+
+      <!-- ページタイトル -->
+      <div class="mb-6">
+        <h1 class="text-2xl font-bold text-slate-800">発注メール作成</h1>
+        <p class="text-sm text-slate-600 mt-1">発注内容を入力してください</p>
+      </div>
+
+      <%= form_with url: preview_order_emails_path, method: :post, class: "space-y-6" do |f| %>
+        <% @order_emails.each_with_index do |order_email, order_index| %>
+          <div class="bg-white rounded-lg shadow p-6">
+            <!-- 発注先情報 -->
+            <div class="mb-6 pb-6 border-b border-slate-200">
+              <h2 class="text-xl font-semibold text-slate-900 mb-2">
+                <%= order_email.supplier.name %>宛
+              </h2>
+              <div class="text-sm text-slate-600">
+                <% if order_email.supplier.email.present? %>
+                  <p><span class="font-medium">メールアドレス:</span> <%= order_email.supplier.email %></p>
+                <% else %>
+                  <p class="text-red-600">⚠️ メールアドレスが設定されていません</p>
+                <% end %>
+              </div>
+            </div>
+
+            <%= f.hidden_field "order_emails[#{order_index}][supplier_id]", value: order_email.supplier.id %>
+
+            <!-- 物品リスト -->
+            <div class="space-y-6">
+              <% order_email.form_items.each_with_index do |item_data, item_index| %>
+                <% item = item_data[:item] %>
+                <% quantity = item_data[:quantity] %>
+                <% delivery_date = item_data[:delivery_date] %>
+                <% notes = item_data[:notes] %>
+
+                <div class="border border-slate-200 rounded-lg p-4 bg-slate-50">
+                  <!-- 物品情報 -->
+                  <div class="mb-4">
+                    <h3 class="text-lg font-semibold text-slate-900">
+                      <%= item.name %>
+                      <% if item.sku.present? %>
+                        <span class="ml-2 text-sm font-normal text-slate-600">(型式: <%= item.sku %>)</span>
+                      <% end %>
+                    </h3>
+                    <p class="text-sm text-slate-600 mt-1">
+                      現在庫: <%= item.stock_quantity %>個 / 最低在庫: <%= item.min_stock %>個
+                      <% if item.min_stock && item.stock_quantity && item.min_stock > item.stock_quantity %>
+                        <span class="text-red-600">(不足: <%= item.min_stock - item.stock_quantity %>個)</span>
+                      <% end %>
+                    </p>
+                  </div>
+
+                  <%= f.hidden_field "order_emails[#{order_index}][items_attributes][#{item_index}][item_id]", value: item.id %>
+
+                  <!-- 発注内容入力 -->
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <%= f.label "order_emails_#{order_index}_items_attributes_#{item_index}_quantity",
+                                  "発注数量",
+                                  class: "block text-sm font-medium text-slate-700 mb-1" %>
+                      <div class="flex items-center">
+                        <%= f.number_field "order_emails[#{order_index}][items_attributes][#{item_index}][quantity]",
+                                           value: quantity,
+                                           placeholder: "100",
+                                           min: 1,
+                                           class: "flex-1 rounded border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" %>
+                        <span class="ml-2 text-slate-600">個</span>
+                      </div>
+                    </div>
+
+                    <div>
+                      <%= f.label "order_emails_#{order_index}_items_attributes_#{item_index}_delivery_date",
+                                  "希望納期",
+                                  class: "block text-sm font-medium text-slate-700 mb-1" %>
+                      <%= f.date_field "order_emails[#{order_index}][items_attributes][#{item_index}][delivery_date]",
+                                       value: delivery_date,
+                                       class: "w-full rounded border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" %>
+                    </div>
+                  </div>
+
+                  <div class="mt-4">
+                    <%= f.label "order_emails_#{order_index}_items_attributes_#{item_index}_notes",
+                                "備考",
+                                class: "block text-sm font-medium text-slate-700 mb-1" %>
+                    <%= f.text_area "order_emails[#{order_index}][items_attributes][#{item_index}][notes]",
+                                    value: notes,
+                                    rows: 2,
+                                    placeholder: "例: 急ぎでお願いします",
+                                    class: "w-full rounded border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" %>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          </div>
+
+          <% if @order_emails.size > 1 && order_index < @order_emails.size - 1 %>
+            <div class="text-center text-sm text-slate-500 my-4">
+              ↓ 次は「<%= @order_emails[order_index + 1].supplier.name %>」宛のメール作成
+            </div>
+          <% end %>
+        <% end %>
+
+        <!-- アクションボタン -->
+        <div class="flex justify-between mt-6">
+          <button type="button" onclick="history.back()" class="<%= button_classes(variant: :secondary, size: :md) %>">
+            戻る
+          </button>
+          <%= f.submit "プレビュー", class: button_classes(variant: :primary, size: :md) %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

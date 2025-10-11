@@ -7,6 +7,8 @@ class Item < ApplicationRecord
   belongs_to :location
   belongs_to :supplier
   has_many :stock_movements, dependent: :destroy
+  has_many :order_items, dependent: :restrict_with_error
+  has_many :orders, through: :order_items
 
   has_one_attached :image
 
@@ -56,6 +58,24 @@ class Item < ApplicationRecord
     when 'overstock'
       "在庫過剰（現在: #{stock_quantity}#{unit}、最大在庫: #{max_stock}#{unit}）"
     end
+  end
+
+  # 発注関連のメソッド
+  # 未完了の発注があるか
+  def pending_order?
+    orders.pending_or_sent.exists?
+  end
+
+  # 最新の発注を取得
+  def latest_pending_order
+    orders.pending_or_sent.recent.first
+  end
+
+  # 発注済み数量の合計
+  def pending_order_quantity
+    order_items.joins(:order)
+               .where(orders: { status: %w[pending sent] })
+               .sum(:quantity)
   end
 
   private

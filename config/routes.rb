@@ -41,6 +41,17 @@ Rails.application.routes.draw do
   get 'alerts', to: 'alerts#index'
   get 'alerts/stock', to: 'alerts#stock'
 
+  # 発注メール作成
+  resources :order_emails, only: %i[new create] do
+    collection do
+      post :preview        # プレビュー画面
+      get :select_items    # 物品選択画面
+    end
+  end
+
+  # 発注履歴
+  resources :orders, only: %i[index show update destroy]
+
   # 認証
   devise_for :users, controllers: {
     sessions: 'users/sessions',
