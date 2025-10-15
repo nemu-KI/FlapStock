@@ -107,7 +107,7 @@ class ItemsController < ApplicationController
     # 期間内の移動を逆算して初期在庫を計算
     movements.each do |movement|
       quantity = movement.quantity_change.present? ? movement.quantity_change : movement.quantity
-      quantity = quantity || 0
+      quantity ||= 0
 
       # 移動種類に応じて初期在庫を調整（逆算）
       case movement.movement_category
@@ -131,22 +131,22 @@ class ItemsController < ApplicationController
 
     # 期間に応じてデータ表示間隔を調整
     display_interval = case @period
-                      when '1month'
-                        1  # 1ヶ月は毎日表示
-                      when '3months'
-                        3  # 3ヶ月は3日間隔
-                      when '6months'
-                        7  # 6ヶ月は週間隔
-                      when '1year'
-                        14 # 1年は2週間隔
-                      else
-                        1
-                      end
+                       when '1month'
+                         1  # 1ヶ月は毎日表示
+                       when '3months'
+                         3  # 3ヶ月は3日間隔
+                       when '6months'
+                         7  # 6ヶ月は週間隔
+                       when '1year'
+                         14 # 1年は2週間隔
+                       else
+                         1
+                       end
 
     # 各日付に対して在庫数を計算
     date_range.each_with_index do |date, index|
       # 表示間隔に応じてデータを間引く
-      next unless index % display_interval == 0 || date == date_range.last
+      next unless (index % display_interval).zero? || date == date_range.last
 
       # その日の在庫移動を取得
       day_movements = movements.select { |m| m.created_at.to_date == date }
@@ -154,7 +154,7 @@ class ItemsController < ApplicationController
       # その日の移動を適用
       day_movements.each do |movement|
         quantity = movement.quantity_change.present? ? movement.quantity_change : movement.quantity
-        quantity = quantity || 0
+        quantity ||= 0
 
         # 移動種類に応じて在庫数を更新
         case movement.movement_category
