@@ -116,6 +116,137 @@
             </div>
           </div>
 
+          <!-- 在庫推移グラフ -->
+          <div class="bg-white rounded-lg shadow p-6">
+            <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-4 gap-4">
+              <h2 class="text-xl font-semibold text-slate-800 flex items-center">
+                <i class="fas fa-chart-line mr-2 text-indigo-500"></i>在庫推移
+              </h2>
+              <div class="flex flex-wrap gap-2">
+                <%= link_to item_path(@item, period: '1month'),
+                    class: "px-3 py-1 text-sm rounded #{@period == '1month' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}" do %>
+                  1ヶ月
+                <% end %>
+                <%= link_to item_path(@item, period: '3months'),
+                    class: "px-3 py-1 text-sm rounded #{@period == '3months' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}" do %>
+                  3ヶ月
+                <% end %>
+                <%= link_to item_path(@item, period: '6months'),
+                    class: "px-3 py-1 text-sm rounded #{@period == '6months' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}" do %>
+                  6ヶ月
+                <% end %>
+                <%= link_to item_path(@item, period: '1year'),
+                    class: "px-3 py-1 text-sm rounded #{@period == '1year' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}" do %>
+                  1年
+                <% end %>
+              </div>
+            </div>
+
+            <div class="h-80 w-full overflow-x-auto">
+              <!-- Chartkick在庫推移グラフ -->
+              <%
+                # アノテーション設定を準備
+                annotations = {}
+                if @min_stock_line.present?
+                  annotations[:minLine] = {
+                    type: 'line',
+                    yMin: @min_stock_line,
+                    yMax: @min_stock_line,
+                    borderColor: '#EF4444',
+                    borderWidth: 2,
+                    borderDash: [5, 5],
+                    label: {
+                      content: "在庫下限: #{@min_stock_line}#{@item.unit}",
+                      enabled: true,
+                      position: 'end'
+                    }
+                  }
+                end
+                if @max_stock_line.present?
+                  annotations[:maxLine] = {
+                    type: 'line',
+                    yMin: @max_stock_line,
+                    yMax: @max_stock_line,
+                    borderColor: '#3B82F6',
+                    borderWidth: 2,
+                    borderDash: [5, 5],
+                    label: {
+                      content: "在庫上限: #{@max_stock_line}#{@item.unit}",
+                      enabled: true,
+                      position: 'end'
+                    }
+                  }
+                end
+
+              %>
+
+              <%= line_chart @chart_data,
+                  title: "#{@item.name}の在庫推移",
+                  ytitle: "在庫数 (#{@item.unit})",
+                  xtitle: "日付",
+                  colors: ["#000000"],
+                  height: "300px",
+                  library: {
+                    scales: {
+                      y: {
+                        beginAtZero: true,
+                        grid: {
+                          color: '#E5E7EB'
+                        }
+                      },
+                      x: {
+                        type: 'time',
+                        time: {
+                          unit: 'day',
+                          displayFormats: {
+                            day: 'MM/dd'
+                          }
+                        },
+                        grid: {
+                          color: '#E5E7EB'
+                        }
+                      }
+                    },
+                    plugins: {
+                      legend: {
+                        display: false
+                      },
+                      annotation: {
+                        annotations: annotations
+                      }
+                    },
+                    elements: {
+                      line: {
+                        borderWidth: 2
+                      },
+                      point: {
+                        radius: 3
+                      }
+                    }
+                  } %>
+            </div>
+
+            <!-- 基準ラインの説明 -->
+            <div class="mt-4 flex flex-wrap gap-4 text-sm">
+              <% if @min_stock_line.present? %>
+                <div class="flex items-center">
+                  <div class="w-4 h-0.5 bg-red-500 mr-2 border-dashed border-t-2 border-red-500"></div>
+                  <span class="text-gray-600">在庫下限: <%= @min_stock_line %><%= @item.unit %></span>
+                </div>
+              <% end %>
+              <% if @max_stock_line.present? %>
+                <div class="flex items-center">
+                  <div class="w-4 h-0.5 bg-blue-500 mr-2 border-dashed border-t-2 border-blue-500"></div>
+                  <span class="text-gray-600">在庫上限: <%= @max_stock_line %><%= @item.unit %></span>
+                </div>
+              <% end %>
+              <div class="flex items-center">
+                <div class="w-4 h-0.5 bg-black mr-2"></div>
+                <span class="text-gray-600">在庫推移</span>
+              </div>
+            </div>
+          </div>
+
           <!-- 入出庫履歴 -->
           <div class="bg-white rounded-lg shadow p-6">
             <div class="flex justify-between items-center mb-4">

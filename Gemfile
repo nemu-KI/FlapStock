@@ -32,6 +32,10 @@ gem 'sendgrid-ruby' # SendGrid Web API
 gem 'kaminari', '~> 1.2'          # ページネーション機能
 gem 'ransack', '~> 4.1'           # 検索・ソート機能
 
+# --- グラフ・可視化 ---
+gem 'chartkick'                   # グラフ描画ライブラリ
+gem 'groupdate'                   # 日付グループ化・集計
+
 # --- OS依存 ---
 gem 'tzinfo-data', platforms: %i[windows jruby] # Windows用タイムゾーン
 
