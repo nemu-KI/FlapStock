@@ -85,14 +85,12 @@ class ItemsController < ApplicationController
     start_date = case @period
                  when '1month'
                    1.month.ago
-                 when '3months'
+                 when '3months', nil
                    3.months.ago
                  when '6months'
                    6.months.ago
                  when '1year'
                    1.year.ago
-                 else
-                   3.months.ago
                  end
 
     # 在庫推移データの準備（累積在庫数を計算）
@@ -133,14 +131,12 @@ class ItemsController < ApplicationController
     display_interval = case @period
                        when '1month'
                          1  # 1ヶ月は毎日表示
-                       when '3months'
+                       when '3months', nil
                          3  # 3ヶ月は3日間隔
                        when '6months'
                          7  # 6ヶ月は週間隔
                        when '1year'
                          14 # 1年は2週間隔
-                       else
-                         1
                        end
 
     # 各日付に対して在庫数を計算
