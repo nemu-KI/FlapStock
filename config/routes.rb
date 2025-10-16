@@ -6,11 +6,18 @@ Rails.application.routes.draw do
   get 'terms_of_service', to: 'static_pages#terms_of_service'
   resources :items, only: %i[index show new create edit update destroy] do
     resources :stock_movements, only: %i[index new create]
+    collection do
+      get :autocomplete
+    end
   end
   resources :stock_movements, only: %i[index show edit update destroy]
   resources :categories, only: %i[index new create edit update destroy]
   resources :locations, only: %i[index new create edit update destroy]
-  resources :suppliers, only: %i[index show new create edit update destroy]
+  resources :suppliers, only: %i[index show new create edit update destroy] do
+    collection do
+      get :autocomplete
+    end
+  end
 
   # ダッシュボード
   get 'dashboards/index'

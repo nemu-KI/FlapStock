@@ -9,6 +9,21 @@ class SuppliersController < ApplicationController
     @suppliers = policy_scope(Supplier).includes(:items)
   end
 
+  def autocomplete
+    query = params[:q].to_s.strip
+    limit = params[:limit]&.to_i || 10
+
+    return render json: [] if query.length < 2
+
+    suppliers = policy_scope(Supplier)
+                .where('name ILIKE ?', "%#{query}%")
+                .limit(limit)
+                .pluck(:name, :id)
+                .map { |name, id| { text: name, id: id } }
+
+    render json: suppliers
+  end
+
   def show
     authorize @supplier
   end
