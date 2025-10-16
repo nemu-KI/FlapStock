@@ -11,6 +11,26 @@ class ItemsController < ApplicationController
     @items = @q.result(distinct: true).page(params[:page])
   end
 
+  def autocomplete
+    query = params[:q].to_s.strip
+    field = params[:field].present? ? params[:field] : 'name'
+    limit = params[:limit]&.to_i || 10
+
+    return render json: [] if query.length < 2
+
+    # フィールドの検証
+    allowed_fields = %w[name sku]
+    field = 'name' unless allowed_fields.include?(field)
+
+    items = policy_scope(Item)
+            .where("#{field} ILIKE ?", "%#{query}%")
+            .limit(limit)
+            .pluck(field.to_sym, :id)
+            .map { |text, id| { text: text, id: id } }
+
+    render json: items
+  end
+
   def show
     authorize @item
     prepare_chart_data
