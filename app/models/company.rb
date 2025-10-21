@@ -41,12 +41,6 @@ class Company < ApplicationRecord
                                    end
   end
 
-  private
-
-  def set_default_timezone
-    self.timezone ||= 'Tokyo'
-  end
-
   # Ransackの検索可能な属性を定義
   def self.ransackable_attributes(_auth_object = nil)
     %w[id name email phone address timezone active created_at updated_at email_notifications_enabled
@@ -56,5 +50,13 @@ class Company < ApplicationRecord
   # Ransackの検索可能な関連を定義
   def self.ransackable_associations(_auth_object = nil)
     %w[categories locations suppliers items users stock_movements orders]
+  end
+
+  private_class_method :ransackable_attributes, :ransackable_associations
+
+  private
+
+  def set_default_timezone
+    self.timezone ||= 'Tokyo'
   end
 end

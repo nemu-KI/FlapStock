@@ -2,6 +2,24 @@ ja:
   # 基本的な翻訳
   hello: "こんにちは"
 
+  # ActiveRecord エラーメッセージ
+  activerecord:
+    errors:
+      models:
+        company:
+          attributes:
+            email:
+              invalid: "は有効なメールアドレスではありません"
+            phone:
+              invalid: "は有効な電話番号ではありません"
+            timezone:
+              inclusion: "は有効なタイムゾーンではありません"
+            notification_time:
+              invalid: "はHH:MM形式で入力してください"
+      messages:
+        invalid: "は有効ではありません"
+        inclusion: "は一覧にありません"
+
   # ページネーション
   views:
     pagination:
