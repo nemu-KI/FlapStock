@@ -10,6 +10,7 @@ ja:
           attributes:
             email:
               invalid: "は有効なメールアドレスではありません"
+              blank: "を入力してください"
             phone:
               invalid: "は有効な電話番号ではありません"
             timezone:
@@ -19,6 +20,20 @@ ja:
       messages:
         invalid: "は有効ではありません"
         inclusion: "は一覧にありません"
+        blank: "を入力してください"
+        taken: "は既に使用されています"
+
+  # エラーメッセージのフォールバック
+  errors:
+    attributes:
+      email:
+        invalid: "は有効なメールアドレスではありません"
+        blank: "を入力してください"
+    messages:
+      invalid: "は有効ではありません"
+      inclusion: "は一覧にありません"
+      blank: "を入力してください"
+      taken: "は既に使用されています"
 
   # ページネーション
   views:
