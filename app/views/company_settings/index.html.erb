@@ -1,0 +1,640 @@
+<% content_for :title, '設定' %>
+
+<div class="flex h-screen bg-gray-100">
+  <!-- サイドバー -->
+  <%= render 'layouts/dashboard_sidebar' %>
+
+  <!-- メインコンテンツ -->
+  <div class="flex-1 flex flex-col overflow-hidden">
+    <!-- ヘッダー -->
+    <%= render 'layouts/dashboard_header' %>
+
+    <!-- コンテンツエリア -->
+    <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-100">
+      <div class="max-w-6xl mx-auto px-4 py-8">
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+          <!-- ヘッダー -->
+          <div class="px-6 py-4 border-b border-gray-200">
+            <h1 class="text-2xl font-bold text-gray-900">設定</h1>
+            <p class="mt-1 text-sm text-gray-600">アプリケーションの各種設定を管理できます</p>
+          </div>
+
+          <!-- タブナビゲーション -->
+          <div class="border-b border-gray-200">
+            <nav class="-mb-px flex space-x-8 px-6" aria-label="Tabs">
+              <button class="tab-button active" data-tab="company" onclick="switchTab('company')">
+                <span class="py-4 px-1 border-b-2 border-blue-500 font-medium text-sm text-blue-600">会社情報</span>
+              </button>
+              <button class="tab-button" data-tab="user" onclick="switchTab('user')">
+                <span class="py-4 px-1 border-b-2 border-transparent font-medium text-sm text-gray-500 hover:text-gray-700 hover:border-gray-300">ユーザー設定</span>
+              </button>
+              <button class="tab-button" data-tab="alerts" onclick="switchTab('alerts')">
+                <span class="py-4 px-1 border-b-2 border-transparent font-medium text-sm text-gray-500 hover:text-gray-700 hover:border-gray-300">アラート設定</span>
+              </button>
+              <button class="tab-button" data-tab="display" onclick="switchTab('display')">
+                <span class="py-4 px-1 border-b-2 border-transparent font-medium text-sm text-gray-500 hover:text-gray-700 hover:border-gray-300">表示設定</span>
+              </button>
+              <button class="tab-button" data-tab="users" onclick="switchTab('users')">
+                <span class="py-4 px-1 border-b-2 border-transparent font-medium text-sm text-gray-500 hover:text-gray-700 hover:border-gray-300">ユーザー権限設定</span>
+              </button>
+            </nav>
+          </div>
+
+          <!-- タブコンテンツ -->
+          <div class="p-6">
+            <!-- 会社情報タブ -->
+            <div id="tab-company" class="tab-content">
+              <%= render 'company_tab' %>
+            </div>
+
+            <!-- ユーザー設定タブ -->
+            <div id="tab-user" class="tab-content hidden">
+              <div class="space-y-6">
+                <!-- 現在のプロフィール表示 -->
+                <div class="bg-gray-50 rounded-lg p-6">
+                  <h2 class="text-lg font-semibold text-gray-900 mb-4">現在のプロフィール</h2>
+                  <dl class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                      <dt class="text-sm font-medium text-gray-600">表示名</dt>
+                      <dd class="mt-1 text-sm text-gray-900"><%= current_user.name %></dd>
+                    </div>
+                    <div>
+                      <dt class="text-sm font-medium text-gray-600">メールアドレス</dt>
+                      <dd class="mt-1 text-sm text-gray-900"><%= current_user.email %></dd>
+                    </div>
+                    <div>
+                      <dt class="text-sm font-medium text-gray-600">権限</dt>
+                      <dd class="mt-1 text-sm text-gray-900">
+                        <%= case current_user.role
+                            when 'admin' then '管理者'
+                            when 'manager' then 'マネージャー'
+                            when 'staff' then 'スタッフ'
+                            else current_user.role
+                            end %>
+                      </dd>
+                    </div>
+                    <div>
+                      <dt class="text-sm font-medium text-gray-600">最終ログイン</dt>
+                      <dd class="mt-1 text-sm text-gray-900">
+                        <% if current_user.respond_to?(:last_sign_in_at) && current_user.last_sign_in_at.present? %>
+                          <%= current_user.last_sign_in_at.strftime('%Y年%m月%d日 %H:%M') %>
+                        <% else %>
+                          未ログイン
+                        <% end %>
+                      </dd>
+                    </div>
+                  </dl>
+                </div>
+
+                <!-- プロフィール編集フォーム -->
+                <div class="bg-white border border-gray-200 rounded-lg p-6">
+                  <h2 class="text-lg font-semibold text-gray-900 mb-4">プロフィールを変更</h2>
+                  <%= form_with model: current_user, url: settings_user_path, method: :patch, local: true, class: "space-y-6" do |f| %>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div>
+                        <%= f.label :name, "表示名", class: "block text-sm font-medium text-gray-700" %>
+                        <%= f.text_field :name, class: "mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm" %>
+                      </div>
+                      <div>
+                        <label class="block text-sm font-medium text-gray-700">メールアドレス</label>
+                        <input type="text" value="<%= current_user.email %>" disabled class="mt-1 block w-full border-gray-300 rounded-md shadow-sm bg-gray-50 text-gray-500 sm:text-sm">
+                        <p class="mt-1 text-xs text-gray-500">メールアドレスは変更できません</p>
+                      </div>
+                    </div>
+                    <div class="flex justify-end">
+                      <%= f.submit "プロフィールを更新", class: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" %>
+                    </div>
+                  <% end %>
+                </div>
+
+                <!-- パスワード変更フォーム -->
+                <div class="bg-white border border-gray-200 rounded-lg p-6">
+                  <h2 class="text-lg font-semibold text-gray-900 mb-4">パスワードを変更</h2>
+                  <%= form_with model: current_user, url: settings_user_path, method: :patch, local: true, class: "space-y-6" do |f| %>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div>
+                        <%= f.label :current_password, "現在のパスワード", class: "block text-sm font-medium text-gray-700" %>
+                        <%= f.password_field :current_password, class: "mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm" %>
+                      </div>
+                      <div>
+                        <%= f.label :password, "新しいパスワード", class: "block text-sm font-medium text-gray-700" %>
+                        <%= f.password_field :password, class: "mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm" %>
+                        <p class="mt-1 text-xs text-gray-500">6文字以上で入力してください</p>
+                      </div>
+                      <div>
+                        <%= f.label :password_confirmation, "新しいパスワード（確認）", class: "block text-sm font-medium text-gray-700" %>
+                        <%= f.password_field :password_confirmation, class: "mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm" %>
+                      </div>
+                    </div>
+                    <div class="flex justify-end">
+                      <%= f.submit "パスワードを変更", class: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500" %>
+                    </div>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+
+            <!-- アラート設定タブ -->
+            <div id="tab-alerts" class="tab-content hidden">
+              <div class="space-y-6">
+                <!-- 現在の設定表示 -->
+                <div class="bg-gray-50 rounded-lg p-6">
+                  <h2 class="text-lg font-semibold text-gray-900 mb-4">現在のアラート設定</h2>
+                  <dl class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                      <dt class="text-sm font-medium text-gray-600">メール通知</dt>
+                      <dd class="mt-1 text-sm text-gray-900">
+                        <%= @company.email_notifications_enabled? ? '有効' : '無効' %>
+                      </dd>
+                    </div>
+                    <div>
+                      <dt class="text-sm font-medium text-gray-600">通知頻度</dt>
+                      <dd class="mt-1 text-sm text-gray-900">
+                        <%= case @company.notification_frequency
+                            when 'immediate' then '即時'
+                            when 'daily' then '日次'
+                            when 'weekly' then '週次'
+                            else '未設定'
+                            end %>
+                      </dd>
+                    </div>
+                    <% if @company.notification_frequency.present? && @company.notification_frequency != 'immediate' %>
+                      <div>
+                        <dt class="text-sm font-medium text-gray-600">通知時間</dt>
+                        <dd class="mt-1 text-sm text-gray-900">
+                          <%= @company.notification_time.present? ? @company.notification_time : '未設定' %>
+                        </dd>
+                      </div>
+                    <% end %>
+                    <div>
+                      <dt class="text-sm font-medium text-gray-600">通知対象</dt>
+                      <dd class="mt-1 text-sm text-gray-900">
+                        <% if @company.notification_recipients_list.any? %>
+                          <% recipient_users = @company.users.where(id: @company.notification_recipients_list) %>
+                          <%= recipient_users.pluck(:name).join(', ') %>
+                        <% else %>
+                          管理者・マネージャー（デフォルト）
+                        <% end %>
+                      </dd>
+                    </div>
+                  </dl>
+                </div>
+
+                <!-- 編集フォーム -->
+                <div class="bg-white border border-gray-200 rounded-lg p-6">
+                  <h2 class="text-lg font-semibold text-gray-900 mb-4">アラート設定を変更</h2>
+                  <%= form_with model: @company, url: settings_alerts_path, method: :patch, local: true, class: "space-y-6" do |f| %>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <!-- メール通知設定 -->
+                      <div class="space-y-4">
+                        <h4 class="text-md font-semibold text-gray-800 border-b border-gray-300 pb-2">通知設定</h4>
+
+                        <div class="flex items-center">
+                          <%= f.check_box :email_notifications_enabled, class: "h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded" %>
+                          <%= f.label :email_notifications_enabled, "メール通知を有効にする", class: "ml-2 text-sm text-gray-700" %>
+                        </div>
+
+                        <div>
+                          <%= f.label :notification_frequency, "通知頻度", class: "block text-sm font-medium text-gray-700" %>
+                          <%= f.select :notification_frequency,
+                              options_for_select([
+                                ['即時', 'immediate'],
+                                ['日次', 'daily'],
+                                ['週次', 'weekly']
+                              ], @company.notification_frequency),
+                              { prompt: '選択してください' },
+                              class: "mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm" %>
+                        </div>
+
+                        <div id="notification-time-field" style="<%= 'display: none;' unless @company.notification_frequency.present? && @company.notification_frequency != 'immediate' %>">
+                          <%= f.label :notification_time, "通知時間（HH:MM形式）", class: "block text-sm font-medium text-gray-700" %>
+                          <%= f.text_field :notification_time,
+                              placeholder: "09:00",
+                              class: "mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm" %>
+                          <p class="mt-1 text-xs text-gray-500">日次・週次の場合のみ設定してください</p>
+                        </div>
+                      </div>
+
+                      <!-- 通知対象設定 -->
+                      <div class="space-y-4">
+                        <h4 class="text-md font-semibold text-gray-800 border-b border-gray-300 pb-2">通知対象</h4>
+
+                        <div>
+                          <%= f.label :notification_recipients_list, "通知を受け取るユーザー", class: "block text-sm font-medium text-gray-700" %>
+                          <!-- チェックボックスが選択されていない場合の隠しフィールド -->
+                          <%= hidden_field_tag "company[notification_recipients_list][]", "" %>
+                          <div class="mt-2 space-y-2 max-h-40 overflow-y-auto border border-gray-200 rounded-md p-3">
+                            <% @company.users.each do |user| %>
+                              <div class="flex items-center">
+                                <%= check_box_tag "company[notification_recipients_list][]", user.id,
+                                    @company.notification_recipients_list.include?(user.id.to_s),
+                                    id: "user_#{user.id}",
+                                    class: "h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded" %>
+                                <%= label_tag "user_#{user.id}", user.name, class: "ml-2 text-sm text-gray-700" %>
+                                <span class="ml-2 text-xs text-gray-500">(<%= user.role %>)</span>
+                              </div>
+                            <% end %>
+                          </div>
+                          <p class="mt-1 text-xs text-gray-500">選択されていない場合は管理者・マネージャーに送信されます</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="flex justify-end pt-6 border-t border-gray-200">
+                      <%= f.submit "更新", class: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" %>
+                    </div>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+
+            <!-- 表示設定タブ -->
+            <div id="tab-display" class="tab-content hidden">
+              <div class="space-y-6">
+                <!-- 現在の設定表示 -->
+                <div class="bg-gray-50 rounded-lg p-6">
+                  <h2 class="text-lg font-semibold text-gray-900 mb-4">現在の表示設定</h2>
+                  <dl class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                      <dt class="text-sm font-medium text-gray-600">1ページあたりの件数</dt>
+                      <dd class="mt-1 text-sm text-gray-900"><%= current_user.per_page || 20 %> 件</dd>
+                    </div>
+                  </dl>
+                </div>
+
+                <!-- 編集フォーム -->
+                <div class="bg-white border border-gray-200 rounded-lg p-6">
+                  <h2 class="text-lg font-semibold text-gray-900 mb-4">表示設定を変更</h2>
+                  <%= form_with model: current_user, url: settings_display_path, method: :patch, local: true, class: "space-y-6" do |f| %>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div>
+                        <%= f.label :per_page, "1ページあたりの件数", class: "block text-sm font-medium text-gray-700" %>
+                        <%= f.number_field :per_page, min: 5, max: 200, step: 5, placeholder: 20, class: "mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm" %>
+                      </div>
+                    </div>
+                    <div class="flex justify-end">
+                      <%= f.submit "更新", class: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" %>
+                    </div>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+
+            <!-- ユーザー権限設定タブ -->
+            <div id="tab-users" class="tab-content hidden">
+              <div class="space-y-6">
+                <!-- ユーザー一覧 -->
+                <div class="bg-white border border-gray-200 rounded-lg">
+                  <div class="px-6 py-4 border-b border-gray-200">
+                    <h2 class="text-lg font-semibold text-gray-900">ユーザー一覧</h2>
+                  </div>
+
+                  <!-- 検索・フィルター -->
+                  <div class="px-6 py-4 bg-gray-50 border-b border-gray-200">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                      <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">名前で検索</label>
+                        <input type="text" id="user-search" placeholder="ユーザー名を入力..." class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                      </div>
+                      <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">権限で絞り込み</label>
+                        <select id="role-filter" class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                          <option value="">すべて</option>
+                          <option value="admin">管理者</option>
+                          <option value="manager">マネージャー</option>
+                          <option value="staff">スタッフ</option>
+                        </select>
+                      </div>
+                      <div class="flex items-end gap-2">
+                        <button id="search-button" class="<%= button_classes(variant: :primary, size: :md) %>">
+                          検索
+                        </button>
+                        <button id="clear-button" class="<%= button_classes(variant: :secondary, size: :md) %>">
+                          クリア
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- ユーザーリスト -->
+                  <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                      <thead class="bg-gray-50">
+                        <tr>
+                          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ユーザー</th>
+                          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">権限</th>
+                          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">最終ログイン</th>
+                          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">操作</th>
+                        </tr>
+                      </thead>
+                      <tbody class="bg-white divide-y divide-gray-200">
+                        <% @company.users.each do |user| %>
+                          <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-4 whitespace-nowrap">
+                              <div class="flex items-center">
+                                <div class="ml-4">
+                                  <div class="text-sm font-medium text-gray-900"><%= user.name %></div>
+                                  <div class="text-sm text-gray-500"><%= user.email %></div>
+                                </div>
+                              </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                              <select class="text-sm border-0 bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-500 rounded" data-user-id="<%= user.id %>" data-current-role="<%= user.role %>">
+                                <option value="admin" <%= 'selected' if user.role == 'admin' %>>管理者</option>
+                                <option value="manager" <%= 'selected' if user.role == 'manager' %>>マネージャー</option>
+                                <option value="staff" <%= 'selected' if user.role == 'staff' %>>スタッフ</option>
+                              </select>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                              <% if user.last_sign_in_at.present? %>
+                                <%= user.last_sign_in_at.strftime('%Y/%m/%d %H:%M') %>
+                              <% else %>
+                                未ログイン
+                              <% end %>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                              <div class="flex space-x-2">
+                                <button class="text-blue-600 hover:text-blue-900" onclick="resetPassword(<%= user.id %>, '<%= user.name %>')">パスワードリセット</button>
+                                <% unless user == current_user %>
+                                  <button class="text-red-600 hover:text-red-900" onclick="deleteUser(<%= user.id %>, '<%= user.name %>')">削除</button>
+                                <% end %>
+                              </div>
+                            </td>
+                          </tr>
+                        <% end %>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+                <!-- 権限の説明 -->
+                <div class="bg-blue-50 border border-blue-200 rounded-lg p-6">
+                  <h3 class="text-lg font-semibold text-blue-900 mb-4">権限レベルの説明</h3>
+                  <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="bg-white rounded-lg p-4 border border-blue-200">
+                      <h4 class="font-semibold text-gray-900 mb-2">管理者 (Admin)</h4>
+                      <ul class="text-sm text-gray-600 space-y-1">
+                        <li>• 全機能アクセス可能</li>
+                        <li>• ユーザー管理</li>
+                        <li>• 設定変更</li>
+                        <li>• レポート生成</li>
+                      </ul>
+                    </div>
+                    <div class="bg-white rounded-lg p-4 border border-blue-200">
+                      <h4 class="font-semibold text-gray-900 mb-2">マネージャー (Manager)</h4>
+                      <ul class="text-sm text-gray-600 space-y-1">
+                        <li>• 在庫管理</li>
+                        <li>• 在庫編集</li>
+                        <li>• レポート生成</li>
+                        <li>• ユーザー管理は不可</li>
+                      </ul>
+                    </div>
+                    <div class="bg-white rounded-lg p-4 border border-blue-200">
+                      <h4 class="font-semibold text-gray-900 mb-2">スタッフ (Staff)</h4>
+                      <ul class="text-sm text-gray-600 space-y-1">
+                        <li>• 在庫一覧・詳細</li>
+                        <li>• 在庫移動</li>
+                        <li>• 在庫編集は不可</li>
+                        <li>• レポートは不可</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<script>
+function switchTab(tabName) {
+  // すべてのタブボタンからactiveクラスを削除
+  document.querySelectorAll('.tab-button').forEach(button => {
+    button.classList.remove('active');
+    const span = button.querySelector('span');
+    span.classList.remove('border-blue-500', 'text-blue-600');
+    span.classList.add('border-transparent', 'text-gray-500');
+  });
+
+  // すべてのタブコンテンツを非表示
+  document.querySelectorAll('.tab-content').forEach(content => {
+    content.classList.add('hidden');
+  });
+
+  // 選択されたタブボタンにactiveクラスを追加
+  const activeButton = document.querySelector(`[data-tab="${tabName}"]`);
+  activeButton.classList.add('active');
+  const activeSpan = activeButton.querySelector('span');
+  activeSpan.classList.remove('border-transparent', 'text-gray-500');
+  activeSpan.classList.add('border-blue-500', 'text-blue-600');
+
+  // 選択されたタブコンテンツを表示
+  document.getElementById(`tab-${tabName}`).classList.remove('hidden');
+}
+
+// 通知頻度が変更された時の処理
+document.addEventListener('DOMContentLoaded', function() {
+  const frequencySelect = document.querySelector('select[name="company[notification_frequency]"]');
+  const timeField = document.getElementById('notification-time-field');
+
+  if (frequencySelect && timeField) {
+    function toggleTimeField() {
+      const frequency = frequencySelect.value;
+      if (frequency === 'daily' || frequency === 'weekly') {
+        timeField.style.display = 'block';
+      } else {
+        timeField.style.display = 'none';
+      }
+    }
+
+    frequencySelect.addEventListener('change', toggleTimeField);
+    toggleTimeField(); // 初期表示の設定
+  }
+
+  // 権限変更の処理
+  document.addEventListener('change', function(event) {
+    if (event.target.matches('select[data-user-id]')) {
+      const userId = event.target.dataset.userId;
+      const newRole = event.target.value;
+      const currentRole = event.target.dataset.currentRole;
+
+
+      if (newRole === currentRole) {
+        return; // 変更がない場合は何もしない
+      }
+
+      // 確認ダイアログ
+      if (!confirm(`権限を${getRoleDisplayName(newRole)}に変更しますか？`)) {
+        event.target.value = currentRole; // 元の値に戻す
+        return;
+      }
+
+      // AJAXで権限変更
+      fetch(`/settings/users/${userId}/role`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
+        },
+        body: JSON.stringify({ role: newRole })
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          // 成功メッセージを表示
+          showNotification(data.message, 'success');
+          // 現在の権限を更新
+          event.target.dataset.currentRole = newRole;
+        } else {
+          // エラーメッセージを表示
+          showNotification(data.message, 'error');
+          // 元の値に戻す
+          event.target.value = currentRole;
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        showNotification('権限の変更に失敗しました。', 'error');
+        // 元の値に戻す
+        event.target.value = currentRole;
+      });
+    }
+  });
+
+  // 権限表示名の取得
+  function getRoleDisplayName(role) {
+    const roleNames = {
+      'admin': '管理者',
+      'manager': 'マネージャー',
+      'staff': 'スタッフ'
+    };
+    return roleNames[role] || role;
+  }
+
+  // 通知の表示
+  function showNotification(message, type) {
+    const notification = document.createElement('div');
+    notification.className = `fixed top-4 right-4 z-50 px-6 py-3 rounded-md shadow-lg ${
+      type === 'success' ? 'bg-green-500 text-white' : 'bg-red-500 text-white'
+    }`;
+    notification.textContent = message;
+
+    document.body.appendChild(notification);
+
+    // 3秒後に削除
+    setTimeout(() => {
+      document.body.removeChild(notification);
+    }, 3000);
+  }
+
+  // 検索機能
+  document.getElementById('search-button').addEventListener('click', function() {
+    const searchTerm = document.getElementById('user-search').value.toLowerCase();
+    const roleFilter = document.getElementById('role-filter').value;
+    const rows = document.querySelectorAll('tbody tr');
+
+    rows.forEach(row => {
+      const name = row.querySelector('td:nth-child(1) div div:first-child').textContent.toLowerCase();
+      const role = row.querySelector('select').value;
+
+      let showRow = true;
+
+      // 名前で検索
+      if (searchTerm && !name.includes(searchTerm)) {
+        showRow = false;
+      }
+
+      // 権限でフィルター
+      if (roleFilter && role !== roleFilter) {
+        showRow = false;
+      }
+
+      row.style.display = showRow ? '' : 'none';
+    });
+  });
+
+  // 検索フィールドでEnterキーを押した時も検索実行
+  document.getElementById('user-search').addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') {
+      document.getElementById('search-button').click();
+    }
+  });
+
+  // クリアボタン
+  document.getElementById('clear-button').addEventListener('click', function() {
+    document.getElementById('user-search').value = '';
+    document.getElementById('role-filter').value = '';
+
+    // すべての行を表示
+    const rows = document.querySelectorAll('tbody tr');
+    rows.forEach(row => {
+      row.style.display = '';
+    });
+  });
+
+  // パスワードリセット関数
+  window.resetPassword = function(userId, userName) {
+    if (!confirm(`${userName}のパスワードをリセットしますか？\n新しいパスワードがメールで送信されます。`)) {
+      return;
+    }
+
+    fetch(`/settings/users/${userId}/reset_password`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
+      }
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        showNotification(data.message, 'success');
+      } else {
+        showNotification(data.message, 'error');
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      showNotification('パスワードリセットに失敗しました。', 'error');
+    });
+  };
+
+  // ユーザー削除関数
+  window.deleteUser = function(userId, userName) {
+    if (!confirm(`${userName}を削除しますか？\nこの操作は取り消せません。`)) {
+      return;
+    }
+
+    if (!confirm(`本当に${userName}を削除しますか？\nこの操作は取り消せません。`)) {
+      return;
+    }
+
+    fetch(`/settings/users/${userId}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
+      }
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        showNotification(data.message, 'success');
+        // ページをリロードしてユーザー一覧を更新
+        setTimeout(() => {
+          location.reload();
+        }, 2000);
+      } else {
+        showNotification(data.message, 'error');
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      showNotification('ユーザー削除に失敗しました。', 'error');
+    });
+  };
+});
+</script>

@@ -14,16 +14,21 @@ class User < ApplicationRecord
 
   # バリデーション
   validates :name, presence: true
+  validates :per_page,
+            numericality: { only_integer: true, allow_nil: true, greater_than: 0, less_than_or_equal_to: 200 }
+  # ほかの表示設定は将来のため保持（現時点ではバリデーション適用なし）
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :validatable
+         :recoverable, :rememberable, :validatable, :trackable
 
   # 全ユーザーをadminに設定（MVPリリース期間中）
   before_validation :set_admin_role, on: :create
   # 新規登録時の会社処理（バリデーション前に実行）
   before_validation :find_or_create_company, on: :create
+  # trackableカラムのデフォルト値を設定
+  before_validation :set_trackable_defaults, on: :create
   # 確実に権限を設定（フォールバック）
   after_create :ensure_admin_role
 
@@ -35,8 +40,9 @@ class User < ApplicationRecord
     # 正規化して検索（前後の空白除去、連続空白を単一空白に）
     normalized_name = company_name.strip.gsub(/[[:space:]]+/, ' ')
     self.company = Company.find_or_create_by(name: normalized_name) do |c|
-      c.email = "#{normalized_name}@example.com"
+      c.email = "#{normalized_name.gsub(/\s+/, '')}@example.com"
       c.active = true
+      c.timezone = 'Tokyo'
     end
   rescue StandardError => e
     # 会社作成に失敗した場合のエラーハンドリング
@@ -57,6 +63,10 @@ class User < ApplicationRecord
 
     Rails.logger.info "Ensuring admin role for user: #{email}"
     update_column(:role, :admin)
+  end
+
+  def set_trackable_defaults
+    self.sign_in_count ||= 0
   end
 
   # Ransackの検索可能な属性を定義

@@ -24,8 +24,31 @@ class AlertMailer < ApplicationMailer
     )
   end
 
+  # バッチ在庫アラート通知メール
+  def batch_stock_alert(company, alert_items, recipients)
+    @company = company
+    @alert_items = alert_items
+    @low_stock_items = alert_items.select { |item| item.stock_alert_status == 'low_stock' }
+    @overstock_items = alert_items.select { |item| item.stock_alert_status == 'overstock' }
+
+    mail(
+      to: recipients.map(&:email),
+      subject: "[#{@company.name}] 在庫アラート一覧 (#{alert_items.count}件)",
+      reply_to: 'flapstockapp@gmail.com'
+    )
+  end
+
   # 通知対象ユーザーを取得
   def self.notification_recipients(company)
-    company.users.where(role: %w[admin manager])
+    # 会社の設定で通知が無効の場合は空配列を返す
+    return [] unless company.email_notifications_enabled?
+
+    # 通知対象が設定されている場合はそのユーザーを返す
+    if company.notification_recipients_list.any?
+      company.users.where(id: company.notification_recipients_list)
+    else
+      # デフォルト: 管理者・マネージャー
+      company.users.where(role: %w[admin manager])
+    end
   end
 end

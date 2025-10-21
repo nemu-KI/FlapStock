@@ -7,14 +7,8 @@ class StockMovementsController < ApplicationController
   before_action :set_item, only: %i[index new create]
 
   def index
-    @q = if @item
-           # 物品別の履歴表示
-           policy_scope(StockMovement).where(item: @item).includes(:user).ransack(params[:q])
-         else
-           # 全体の履歴表示
-           policy_scope(StockMovement).includes(:item, :user).ransack(params[:q])
-         end
-    @stock_movements = @q.result(distinct: true).order(created_at: :desc).page(params[:page])
+    @q = build_search_query
+    @stock_movements = paginate_search_results
   end
 
   def show
@@ -82,5 +76,22 @@ class StockMovementsController < ApplicationController
 
   def stock_movement_params
     params.require(:stock_movement).permit(:movement_category, :quantity, :reason, :note)
+  end
+
+  def build_search_query
+    if @item
+      # 物品別の履歴表示
+      policy_scope(StockMovement).where(item: @item).includes(:user).ransack(params[:q])
+    else
+      # 全体の履歴表示
+      policy_scope(StockMovement).includes(:item, :user).ransack(params[:q])
+    end
+  end
+
+  def paginate_search_results
+    @q.result(distinct: true)
+      .order(created_at: :desc)
+      .page(params[:page])
+      .per(current_user.per_page || Kaminari.config.default_per_page)
   end
 end

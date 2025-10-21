@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe AlertMailer, type: :mailer do
-  let(:company) { create(:company) }
+  let(:company) { create(:company, email_notifications_enabled: true) }
   let(:category) { create(:category, company: company) }
   let(:location) { create(:location, company: company) }
   let(:supplier) { create(:supplier, company: company) }

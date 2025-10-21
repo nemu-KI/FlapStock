@@ -87,11 +87,27 @@ class StockMovement < ApplicationRecord
   def check_and_send_alert
     return unless item.needs_alert?
 
-    recipients = AlertMailer.notification_recipients(company)
-    return if recipients.empty?
-    return if recent_alert_sent?
+    scheduler = AlertScheduler.new(company)
 
-    send_alert_email(recipients)
+    case company.notification_frequency
+    when 'immediate'
+      # 即時送信の場合のみ重複チェック
+      return if recent_alert_sent?
+
+      scheduler.queue_immediate_alert(item, item.stock_alert_status)
+    when 'daily', 'weekly'
+      # 日次・週次はバッチ処理で送信されるため、ここでは何もしない
+      # ログも出力しない（重複を避けるため）
+      nil
+    else
+      # 設定されていない場合は従来通り即時送信
+      return if recent_alert_sent?
+
+      recipients = AlertMailer.notification_recipients(company)
+      return if recipients.empty?
+
+      send_alert_email(recipients)
+    end
   end
 
   def send_alert_email(recipients)

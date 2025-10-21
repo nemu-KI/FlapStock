@@ -8,7 +8,9 @@ class ItemsController < ApplicationController
 
   def index
     @q = policy_scope(Item).includes(:category, :location, :supplier).ransack(params[:q])
-    @items = @q.result(distinct: true).page(params[:page])
+    @items = @q.result(distinct: true)
+               .page(params[:page])
+               .per(current_user.per_page || Kaminari.config.default_per_page)
   end
 
   def autocomplete

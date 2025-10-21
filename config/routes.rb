@@ -59,6 +59,22 @@ Rails.application.routes.draw do
   # 発注履歴
   resources :orders, only: %i[index show update destroy]
 
+  # 設定
+  get 'settings', to: 'company_settings#index'
+  get 'settings/company', to: 'company_settings#show'
+  get 'settings/edit', to: 'company_settings#edit'
+  patch 'settings', to: 'company_settings#update'
+  # 表示設定（ユーザー個別設定）
+  patch 'settings/display', to: 'company_settings#update_display'
+  # アラート設定（会社単位設定）
+  patch 'settings/alerts', to: 'company_settings#update_alerts'
+  # ユーザー設定（ユーザー個別設定）
+  patch 'settings/user', to: 'company_settings#update_user'
+  # ユーザー権限設定（管理者のみ）
+  patch 'settings/users/:user_id/role', to: 'company_settings#update_user_role'
+  patch 'settings/users/:user_id/reset_password', to: 'company_settings#reset_user_password'
+  delete 'settings/users/:user_id', to: 'company_settings#delete_user'
+
   # 認証
   devise_for :users, controllers: {
     sessions: 'users/sessions',

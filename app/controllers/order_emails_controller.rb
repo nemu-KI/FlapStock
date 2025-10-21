@@ -12,7 +12,9 @@ class OrderEmailsController < ApplicationController
                          .includes(:supplier, :category, :location)
                          .order(:name)
     @q = @items.ransack(params[:q])
-    @items = @q.result.page(params[:page])
+    @items = @q.result
+               .page(params[:page])
+               .per(current_user.per_page || Kaminari.config.default_per_page)
   end
 
   # GET /order_emails/new?item_ids[]=1

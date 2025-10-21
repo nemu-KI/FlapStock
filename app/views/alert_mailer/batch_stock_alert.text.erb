@@ -1,0 +1,49 @@
+========================================
+🚨 在庫アラート一覧
+========================================
+
+<%= @company.name %>様
+
+以下の物品で在庫アラートが発生しています。
+
+<% if @low_stock_items.any? %>
+⚠️ 在庫不足アラート (<%= @low_stock_items.count %>件)
+========================================
+<% @low_stock_items.each do |item| %>
+物品名: <%= item.name %>
+型式: <%= item.sku %>
+現在在庫: <%= item.stock_quantity %> <%= item.unit %>
+最小在庫: <%= item.min_stock %> <%= item.unit %>
+保管場所: <%= item.location.name %>
+発注先: <%= item.supplier.name %>
+----------------------------------------
+<% end %>
+<% end %>
+
+<% if @overstock_items.any? %>
+📦 在庫過剰アラート (<%= @overstock_items.count %>件)
+========================================
+<% @overstock_items.each do |item| %>
+物品名: <%= item.name %>
+型式: <%= item.sku %>
+現在在庫: <%= item.stock_quantity %> <%= item.unit %>
+最大在庫: <%= item.max_stock %> <%= item.unit %>
+保管場所: <%= item.location.name %>
+発注先: <%= item.supplier.name %>
+----------------------------------------
+<% end %>
+<% end %>
+
+【対応方法】
+1. アラート一覧を確認: <%= Rails.application.routes.url_helpers.alerts_stock_url(host: 'localhost:3000') %>
+2. 物品詳細で在庫調整: 各物品の詳細画面から入出庫操作を実行
+3. 発注メール作成: 在庫不足の物品を発注
+
+========================================
+このメールは FlapStock システムから自動送信されました。
+お心当たりのない場合は、システム管理者にお問い合わせください。
+
+© <%= Date.current.year %> FlapStock. All rights reserved.
+========================================
+
+
