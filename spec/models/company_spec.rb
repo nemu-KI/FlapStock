@@ -5,7 +5,12 @@ require 'rails_helper'
 RSpec.describe Company, type: :model do
   describe 'validations' do
     it { should validate_presence_of(:name) }
-    it { should validate_presence_of(:email) }
+
+    it 'validates presence of email' do
+      company = build(:company, email: nil)
+      expect(company).not_to be_valid
+      expect(company.errors[:email]).to include("を入力してください")
+    end
   end
 
   describe 'associations' do
