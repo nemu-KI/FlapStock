@@ -51,6 +51,8 @@ class AlertsController < ApplicationController
 
   def apply_search_and_pagination
     @q = @items.ransack(params[:q])
-    @items = @q.result.order(:name).page(params[:page])
+    @items = @q.result.order(:name)
+               .page(params[:page])
+               .per(current_user.per_page || Kaminari.config.default_per_page)
   end
 end

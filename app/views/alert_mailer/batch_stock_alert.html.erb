@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>在庫アラート一覧</title>
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+    .container { max-width: 800px; margin: 0 auto; padding: 20px; }
+    .header { background-color: #f8f9fa; padding: 20px; border-radius: 8px; margin-bottom: 20px; }
+    .alert-section { margin-bottom: 30px; }
+    .alert-title { font-size: 18px; font-weight: bold; margin-bottom: 15px; padding: 10px; border-radius: 4px; }
+    .low-stock-title { background-color: #fff3cd; color: #856404; border: 1px solid #ffeaa7; }
+    .overstock-title { background-color: #d1ecf1; color: #0c5460; border: 1px solid #bee5eb; }
+    .item-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+    .item-table th, .item-table td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
+    .item-table th { background-color: #f8f9fa; font-weight: bold; }
+    .item-table tr:hover { background-color: #f5f5f5; }
+    .stock-quantity { font-weight: bold; }
+    .low-stock { color: #dc3545; }
+    .overstock { color: #007bff; }
+    .footer { margin-top: 30px; padding-top: 20px; border-top: 1px solid #ddd; font-size: 12px; color: #666; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>🚨 在庫アラート一覧</h1>
+      <p><strong><%= @company.name %></strong>様</p>
+      <p>以下の物品で在庫アラートが発生しています。</p>
+    </div>
+
+    <% if @low_stock_items.any? %>
+      <div class="alert-section">
+        <div class="alert-title low-stock-title">
+          ⚠️ 在庫不足アラート (<%= @low_stock_items.count %>件)
+        </div>
+        <table class="item-table">
+          <thead>
+            <tr>
+              <th>物品名</th>
+              <th>型式</th>
+              <th>現在在庫</th>
+              <th>最小在庫</th>
+              <th>単位</th>
+              <th>保管場所</th>
+              <th>発注先</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @low_stock_items.each do |item| %>
+              <tr>
+                <td><%= item.name %></td>
+                <td><%= item.sku %></td>
+                <td class="stock-quantity low-stock"><%= item.stock_quantity %></td>
+                <td><%= item.min_stock %></td>
+                <td><%= item.unit %></td>
+                <td><%= item.location.name %></td>
+                <td><%= item.supplier.name %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    <% end %>
+
+    <% if @overstock_items.any? %>
+      <div class="alert-section">
+        <div class="alert-title overstock-title">
+          📦 在庫過剰アラート (<%= @overstock_items.count %>件)
+        </div>
+        <table class="item-table">
+          <thead>
+            <tr>
+              <th>物品名</th>
+              <th>型式</th>
+              <th>現在在庫</th>
+              <th>最大在庫</th>
+              <th>単位</th>
+              <th>保管場所</th>
+              <th>発注先</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @overstock_items.each do |item| %>
+              <tr>
+                <td><%= item.name %></td>
+                <td><%= item.sku %></td>
+                <td class="stock-quantity overstock"><%= item.stock_quantity %></td>
+                <td><%= item.max_stock %></td>
+                <td><%= item.unit %></td>
+                <td><%= item.location.name %></td>
+                <td><%= item.supplier.name %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    <% end %>
+
+    <div class="footer">
+      <p><strong>対応方法</strong></p>
+      <ul>
+        <li>アラート一覧を確認: <%= Rails.application.routes.url_helpers.alerts_stock_url(host: 'localhost:3000') %></li>
+        <li>物品詳細で在庫調整: 各物品の詳細画面から入出庫操作を実行</li>
+        <li>発注メール作成: 在庫不足の物品を発注</li>
+      </ul>
+      <p>========================================</p>
+      <p>このメールは FlapStock システムから自動送信されました。</p>
+      <p>お心当たりのない場合は、システム管理者にお問い合わせください。</p>
+      <p>© <%= Date.current.year %> FlapStock. All rights reserved.</p>
+    </div>
+  </div>
+</body>
+</html>
+
+

@@ -13,6 +13,7 @@ class OrdersController < ApplicationController
                 .includes(:supplier, :user, order_items: :item)
                 .recent
                 .page(params[:page])
+                .per(current_user.per_page || Kaminari.config.default_per_page)
   end
 
   # GET /orders/:id

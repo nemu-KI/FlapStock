@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_10_09_154620) do
+ActiveRecord::Schema[7.1].define(version: 2025_10_21_123039) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -58,6 +58,13 @@ ActiveRecord::Schema[7.1].define(version: 2025_10_09_154620) do
     t.boolean "active", default: true, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "address"
+    t.string "timezone", default: "Asia/Tokyo"
+    t.boolean "email_notifications_enabled"
+    t.string "notification_frequency"
+    t.string "notification_time"
+    t.text "notification_recipients"
+    t.datetime "last_batch_alert_sent"
   end
 
   create_table "contacts", force: :cascade do |t|
@@ -177,6 +184,15 @@ ActiveRecord::Schema[7.1].define(version: 2025_10_09_154620) do
     t.string "name"
     t.integer "role"
     t.bigint "company_id"
+    t.integer "per_page"
+    t.string "default_sort"
+    t.string "date_format"
+    t.string "number_format"
+    t.integer "sign_in_count"
+    t.datetime "current_sign_in_at"
+    t.datetime "last_sign_in_at"
+    t.string "current_sign_in_ip"
+    t.string "last_sign_in_ip"
     t.index ["company_id"], name: "index_users_on_company_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true

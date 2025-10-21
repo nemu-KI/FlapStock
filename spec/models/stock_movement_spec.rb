@@ -251,7 +251,7 @@ RSpec.describe StockMovement, type: :model do
   end
 
   describe 'アラート通知機能' do
-    let(:company) { create(:company) }
+    let(:company) { create(:company, email_notifications_enabled: true) }
     let(:category) { create(:category, company: company) }
     let(:location) { create(:location, company: company) }
     let(:supplier) { create(:supplier, company: company) }
