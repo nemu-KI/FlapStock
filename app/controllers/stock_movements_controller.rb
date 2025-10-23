@@ -4,7 +4,7 @@
 class StockMovementsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_stock_movement, only: %i[show edit update destroy]
-  before_action :check_guest_restrictions, only: %i[create update destroy]
+  before_action :check_guest_restrictions, only: %i[create update]
   before_action :set_item, only: %i[index new create]
 
   def index
