@@ -67,13 +67,14 @@ class LocationsController < ApplicationController
     return unless session[:guest_mode]
 
     # ゲストユーザーのマスターデータ作成制限（1セッションあたり最大5件）
-    if action_name == 'create'
-      guest_locations_count = current_user.company.locations.where('created_at > ?', session[:guest_session_start]&.to_time || 1.hour.ago).count
-      if guest_locations_count >= 5
-        redirect_to locations_path, alert: 'お試しモードでは1セッションあたり最大5件まで場所を作成できます。'
-        return
-      end
-    end
+    return unless action_name == 'create'
+
+    guest_locations_count = current_user.company.locations.where('created_at > ?',
+                                                                 session[:guest_session_start]&.to_time || 1.hour.ago).count
+    return unless guest_locations_count >= 5
+
+    redirect_to locations_path, alert: 'お試しモードでは1セッションあたり最大5件まで場所を作成できます。'
+    nil
   end
 
   def set_location

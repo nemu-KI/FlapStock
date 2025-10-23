@@ -67,13 +67,14 @@ class CategoriesController < ApplicationController
     return unless session[:guest_mode]
 
     # ゲストユーザーのマスターデータ作成制限（1セッションあたり最大5件）
-    if action_name == 'create'
-      guest_categories_count = current_user.company.categories.where('created_at > ?', session[:guest_session_start]&.to_time || 1.hour.ago).count
-      if guest_categories_count >= 5
-        redirect_to categories_path, alert: 'お試しモードでは1セッションあたり最大5件までカテゴリを作成できます。'
-        return
-      end
-    end
+    return unless action_name == 'create'
+
+    guest_categories_count = current_user.company.categories.where('created_at > ?',
+                                                                   session[:guest_session_start]&.to_time || 1.hour.ago).count
+    return unless guest_categories_count >= 5
+
+    redirect_to categories_path, alert: 'お試しモードでは1セッションあたり最大5件までカテゴリを作成できます。'
+    nil
   end
 
   def set_category

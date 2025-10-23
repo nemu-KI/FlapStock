@@ -88,13 +88,14 @@ class ItemsController < ApplicationController
     return unless session[:guest_mode]
 
     # ゲストユーザーのデータ作成制限（1セッションあたり最大10件）
-    if action_name == 'create'
-      guest_items_count = current_user.company.items.where('created_at > ?', session[:guest_session_start]&.to_time || 1.hour.ago).count
-      if guest_items_count >= 10
-        redirect_to items_path, alert: 'お試しモードでは1セッションあたり最大10件まで物品を作成できます。'
-        return
-      end
-    end
+    return unless action_name == 'create'
+
+    guest_items_count = current_user.company.items.where('created_at > ?',
+                                                         session[:guest_session_start]&.to_time || 1.hour.ago).count
+    return unless guest_items_count >= 10
+
+    redirect_to items_path, alert: 'お試しモードでは1セッションあたり最大10件まで物品を作成できます。'
+    nil
   end
 
   def set_item
