@@ -1,0 +1,40 @@
+services:
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: flapstock_production
+      TZ: Asia/Tokyo
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+  web:
+    build: .
+    command: bash -c "bundle install && bundle exec rails server -b 0.0.0.0 -p 3000"
+    tty: true
+    stdin_open: true
+    volumes:
+      - .:/app:delegated
+      - bundle_data:/usr/local/bundle:cached
+      - node_modules:/app/node_modules:cached
+      - /app/vendor
+      - /app/tmp
+      - /app/log
+      - /app/.git
+    ports:
+      - "3000:3000"
+    environment:
+      RAILS_ENV: production
+      DATABASE_URL: postgresql://postgres:password@db:5432/flapstock_production
+      SECRET_KEY_BASE: production_secret_key_base_for_guest_login_testing
+      TZ: Asia/Tokyo
+    depends_on:
+      - db
+
+volumes:
+  db_data:
+  bundle_data:
+  node_modules:
