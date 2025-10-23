@@ -75,6 +75,11 @@ Rails.application.routes.draw do
   patch 'settings/users/:user_id/reset_password', to: 'company_settings#reset_user_password'
   delete 'settings/users/:user_id', to: 'company_settings#delete_user'
 
+  # ゲストログイン
+  get 'guest/login', to: 'guest#login'
+  post 'guest/login', to: 'guest#create_session'
+  delete 'guest/logout', to: 'guest#logout'
+
   # 認証
   devise_for :users, controllers: {
     sessions: 'users/sessions',

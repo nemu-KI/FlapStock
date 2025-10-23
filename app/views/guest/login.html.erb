@@ -1,0 +1,37 @@
+<div class="min-h-screen flex items-center justify-center bg-slate-50">
+  <div class="w-full max-w-xl p-4 sm:p-6 md:p-8 lg:p-10 bg-white rounded-xl shadow-lg flex flex-col items-center">
+    <%= image_tag 'FlapStock_logo.png', alt: 'FlapStock', class: 'w-32 sm:w-40 md:w-48 lg:w-56 mb-4 sm:mb-6 md:mb-8' %>
+
+    <%= render 'shared/flash_messages_persistent' %>
+
+    <div class="w-full text-center mb-8">
+      <h1 class="text-2xl font-bold text-gray-900 mb-4">お試しでログイン</h1>
+      <p class="text-gray-600 mb-6">
+        実際のデータを使用してFlapStockの機能をお試しいただけます。<br>
+        データは一時的なもので、ログアウト後は削除されます。
+      </p>
+
+      <div class="bg-green-50 border border-green-200 rounded-lg p-4 mb-6">
+        <h3 class="text-lg font-medium text-green-800 mb-2">お試しで体験できる機能</h3>
+        <ul class="text-sm text-green-700 text-left space-y-1">
+          <li>• 物品の登録・編集・削除</li>
+          <li>• 在庫の入出庫・調整</li>
+          <li>• カテゴリ・場所・仕入先の管理</li>
+          <li>• 在庫移動履歴の確認</li>
+          <li>• 在庫アラート機能</li>
+        </ul>
+      </div>
+    </div>
+
+    <%= form_with url: guest_login_path, method: :post, local: true, class: "w-full" do |form| %>
+      <div class="mb-6 w-full flex justify-center">
+        <%= form.submit "お試しでログイン",
+            class: "w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors duration-200" %>
+      </div>
+    <% end %>
+
+    <div class="mt-6 text-center">
+      <%= link_to '通常のログインに戻る', new_user_session_path, class: 'text-blue-700 hover:underline text-base' %>
+    </div>
+  </div>
+</div>

@@ -60,7 +60,7 @@
               <p class="text-sm text-slate-700 mb-3">
                 メールクライアントで下書きを開いてから、発注メールを送信してください
               </p>
-              <%= form_with url: order_emails_path, method: :post, id: "order-form-#{index}", local: true do |f| %>
+              <%= form_with url: order_emails_path, method: :post, id: "order-form-#{index}", local: true, data: { turbo: false } do |f| %>
                 <!-- order_emailsパラメータを保持 -->
                 <% if params[:order_emails] %>
                   <% params[:order_emails].each do |order_key, order_data| %>
@@ -113,9 +113,7 @@
 
       <!-- 戻るボタン -->
       <div class="flex justify-center mt-6">
-        <button type="button" onclick="history.back()" class="<%= button_classes(variant: :secondary, size: :md) %>">
-          戻って修正する
-        </button>
+        <%= link_to "戻って修正する", select_items_order_emails_path, class: button_classes(variant: :secondary, size: :md) %>
       </div>
 
       <script>

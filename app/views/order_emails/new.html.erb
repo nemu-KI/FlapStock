@@ -12,7 +12,7 @@
         <p class="text-sm text-slate-600 mt-1">発注内容を入力してください</p>
       </div>
 
-      <%= form_with url: preview_order_emails_path, method: :post, class: "space-y-6" do |f| %>
+      <%= form_with url: preview_order_emails_path, method: :post, class: "space-y-6", data: { turbo: false } do |f| %>
         <% @order_emails.each_with_index do |order_email, order_index| %>
           <div class="bg-white rounded-lg shadow p-6">
             <!-- 発注先情報 -->

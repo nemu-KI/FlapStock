@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_10_21_123039) do
+ActiveRecord::Schema[7.1].define(version: 2025_10_22_000001) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -65,6 +65,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_10_21_123039) do
     t.string "notification_time"
     t.text "notification_recipients"
     t.datetime "last_batch_alert_sent"
+    t.boolean "guest", default: false, null: false
   end
 
   create_table "contacts", force: :cascade do |t|
