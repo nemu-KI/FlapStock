@@ -42,23 +42,36 @@ class GuestSetupService
   end
 
   private_class_method def self.cleanup_existing_guest_data
-    existing_company = Company.find_by(name: 'ゲスト企業', email: 'guest@example.com')
-    if existing_company
-      puts '既存のゲスト企業の関連データを削除中...'
-      # 外部キー制約を考慮した削除順序
-      existing_company.stock_movements.delete_all
-      # order_itemsを先に削除
-      existing_company.items.joins(:order_items).distinct.each do |item|
-        item.order_items.delete_all
-      end
-      existing_company.items.delete_all
-      existing_company.categories.delete_all
-      existing_company.locations.delete_all
-      existing_company.suppliers.delete_all
-      existing_company.users.delete_all
-      existing_company.delete
-    end
+    cleanup_existing_guest_company
+    cleanup_existing_guest_user
+  end
 
+  private_class_method def self.cleanup_existing_guest_company
+    existing_company = Company.find_by(name: 'ゲスト企業', email: 'guest@example.com')
+    return unless existing_company
+
+    puts '既存のゲスト企業の関連データを削除中...'
+    delete_company_related_data(existing_company)
+    existing_company.delete
+  end
+
+  private_class_method def self.delete_company_related_data(company)
+    company.stock_movements.delete_all
+    delete_order_items_for_company(company)
+    company.items.delete_all
+    company.categories.delete_all
+    company.locations.delete_all
+    company.suppliers.delete_all
+    company.users.delete_all
+  end
+
+  private_class_method def self.delete_order_items_for_company(company)
+    company.items.joins(:order_items).distinct.each do |item|
+      item.order_items.delete_all
+    end
+  end
+
+  private_class_method def self.cleanup_existing_guest_user
     existing_user = User.find_by(email: 'guest@example.com')
     return unless existing_user
 

@@ -66,7 +66,7 @@ Rails.application.configure do
                                        .then { |logger| ActiveSupport::TaggedLogging.new(logger) }
 
   # secret_key_baseの設定
-  config.secret_key_base = ENV.fetch('SECRET_KEY_BASE') { 'production_secret_key_base_for_guest_login_testing' }
+  config.secret_key_base = ENV.fetch('SECRET_KEY_BASE', 'production_secret_key_base_for_guest_login_testing')
 
   # Prepend all log lines with the following tags.
   config.log_tags = [:request_id]
