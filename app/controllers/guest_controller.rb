@@ -59,16 +59,19 @@ class GuestController < ApplicationController
       company.guest = true
     end
 
-    # ゲストユーザーを作成
-    User.create!(
+    # ゲストユーザーを作成（Userモデルのコールバックでadminに設定される）
+    guest_user = User.create!(
       name: 'ゲストユーザー',
       email: 'guest@example.com',
       password: 'guest123',
       password_confirmation: 'guest123',
-      role: 'manager',
       company: guest_company,
       per_page: 20
     )
+
+    # ゲストユーザーはmanager権限に制限
+    guest_user.update_column(:role, 'manager')
+    guest_user
   rescue StandardError => e
     Rails.logger.error "Failed to create guest user: #{e.message}"
     nil
