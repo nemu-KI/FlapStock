@@ -45,9 +45,11 @@ class GuestController < ApplicationController
   end
 
   def sign_in_guest_user(guest_user)
+    Rails.logger.info "Signing in guest user: #{guest_user.email} with role: #{guest_user.role}"
     sign_in(guest_user)
     session[:guest_mode] = true
     session[:guest_session_start] = Time.current.to_s
+    Rails.logger.info "Guest user signed in successfully with role: #{guest_user.role}"
   end
 
   def create_guest_user
