@@ -4,6 +4,7 @@
 class SuppliersController < ApplicationController
   before_action :authenticate_user!
   before_action :set_supplier, only: %i[show edit update destroy]
+  before_action :check_guest_restrictions, only: %i[create update destroy]
 
   def index
     @suppliers = policy_scope(Supplier).includes(:items)
@@ -75,6 +76,20 @@ class SuppliersController < ApplicationController
   end
 
   private
+
+  # ゲストユーザーの制限チェック
+  def check_guest_restrictions
+    return unless session[:guest_mode]
+
+    # ゲストユーザーのマスターデータ作成制限（1セッションあたり最大5件）
+    if action_name == 'create'
+      guest_suppliers_count = current_user.company.suppliers.where('created_at > ?', session[:guest_session_start]&.to_time || 1.hour.ago).count
+      if guest_suppliers_count >= 5
+        redirect_to suppliers_path, alert: 'お試しモードでは1セッションあたり最大5件まで仕入先を作成できます。'
+        return
+      end
+    end
+  end
 
   def set_supplier
     # 他社のデータにアクセスしようとした場合も権限エラーとして扱う

@@ -4,6 +4,7 @@
 class CategoriesController < ApplicationController
   before_action :authenticate_user!
   before_action :set_category, only: %i[show edit update destroy]
+  before_action :check_guest_restrictions, only: %i[create update destroy]
 
   def index
     @categories = policy_scope(Category).includes(:items)
@@ -60,6 +61,20 @@ class CategoriesController < ApplicationController
   end
 
   private
+
+  # ゲストユーザーの制限チェック
+  def check_guest_restrictions
+    return unless session[:guest_mode]
+
+    # ゲストユーザーのマスターデータ作成制限（1セッションあたり最大5件）
+    if action_name == 'create'
+      guest_categories_count = current_user.company.categories.where('created_at > ?', session[:guest_session_start]&.to_time || 1.hour.ago).count
+      if guest_categories_count >= 5
+        redirect_to categories_path, alert: 'お試しモードでは1セッションあたり最大5件までカテゴリを作成できます。'
+        return
+      end
+    end
+  end
 
   def set_category
     # 他社のデータにアクセスしようとした場合も権限エラーとして扱う

@@ -83,4 +83,7 @@ Rails.application.configure do
 
   # データベースのタイムゾーン設定
   config.active_record.default_timezone = :local
+
+  # secret_key_baseの設定
+  config.secret_key_base = 'development_secret_key_base_for_guest_login_testing'
 end

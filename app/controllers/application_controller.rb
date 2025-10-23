@@ -6,6 +6,7 @@ class ApplicationController < ActionController::Base
 
   before_action :authenticate_user!
   before_action :configure_permitted_parameters, if: :devise_controller?
+  before_action :check_guest_session_timeout
 
   # Punditのエラーハンドリング
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
@@ -26,6 +27,21 @@ class ApplicationController < ActionController::Base
   end
 
   private
+
+  # ゲストセッションのタイムアウトチェック
+  def check_guest_session_timeout
+    return unless session[:guest_mode]
+
+    # ゲストセッションは2時間でタイムアウト
+    if session[:guest_session_start] && Time.current - Time.parse(session[:guest_session_start]) > 2.hours
+      session[:guest_mode] = false
+      session[:guest_session_start] = nil
+      sign_out(current_user)
+      redirect_to root_path, alert: 'お試しモードのセッションがタイムアウトしました。再度ログインしてください。'
+    elsif session[:guest_session_start].nil?
+      session[:guest_session_start] = Time.current.to_s
+    end
+  end
 
   def user_not_authorized
     flash[:alert] = 'この操作を実行する権限がありません。'

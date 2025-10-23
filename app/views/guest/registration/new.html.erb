@@ -1,0 +1,124 @@
+<% content_for :title, "正式登録（お試し）" %>
+
+<div class="min-h-screen bg-gray-50">
+  <!-- ヘッダー -->
+  <div class="bg-white shadow">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center py-4">
+        <div class="flex items-center">
+          <%= link_to guest_dashboard_path, class: "text-blue-600 hover:text-blue-500" do %>
+            <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+          <% end %>
+          <h1 class="ml-3 text-2xl font-bold text-gray-900">正式登録</h1>
+          <span class="ml-3 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+            お試しモード
+          </span>
+        </div>
+        <div class="flex items-center space-x-4">
+          <%= link_to "ログアウト", guest_logout_path, method: :delete,
+              class: "inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 transition-colors duration-200" %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="max-w-3xl mx-auto py-6 sm:px-6 lg:px-8">
+    <!-- 正式登録のメリット -->
+    <div class="mb-8">
+      <div class="bg-blue-50 border border-blue-200 rounded-md p-6">
+        <div class="flex">
+          <div class="flex-shrink-0">
+            <svg class="h-6 w-6 text-blue-400" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
+            </svg>
+          </div>
+          <div class="ml-3">
+            <h3 class="text-lg font-medium text-blue-800">正式登録のメリット</h3>
+            <div class="mt-2 text-sm text-blue-700">
+              <ul class="list-disc list-inside space-y-1">
+                <li><strong>データの永続化</strong> - 作成したデータが保存されます</li>
+                <li><strong>全機能の利用</strong> - 物品の作成・編集・削除が可能になります</li>
+                <li><strong>チーム利用</strong> - 複数ユーザーでの共同利用が可能になります</li>
+                <li><strong>設定管理</strong> - 会社設定やアラート設定が利用できます</li>
+                <li><strong>サポート</strong> - 専用サポートを受けることができます</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 登録フォーム -->
+    <div class="bg-white shadow rounded-lg">
+      <div class="px-4 py-5 sm:p-6">
+        <h3 class="text-lg leading-6 font-medium text-gray-900 mb-6">正式登録情報</h3>
+
+        <%= form_with url: guest_register_path, method: :post, local: true, class: "space-y-6" do |form| %>
+          <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+            <div>
+              <%= form.label :company_name, "会社名", class: "block text-sm font-medium text-gray-700" %>
+              <%= form.text_field :company_name,
+                  value: @company.name.gsub(/^お試し会社_/, ''),
+                  class: "mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm",
+                  placeholder: "会社名を入力してください" %>
+            </div>
+            <div>
+              <%= form.label :user_name, "お名前", class: "block text-sm font-medium text-gray-700" %>
+              <%= form.text_field :user_name,
+                  value: @user.name,
+                  class: "mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm",
+                  placeholder: "お名前を入力してください" %>
+            </div>
+          </div>
+
+          <div>
+            <%= form.label :email, "メールアドレス", class: "block text-sm font-medium text-gray-700" %>
+            <%= form.email_field :email,
+                class: "mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm",
+                placeholder: "メールアドレスを入力してください" %>
+            <p class="mt-2 text-sm text-gray-500">ログインに使用するメールアドレスです</p>
+          </div>
+
+          <div class="bg-gray-50 rounded-md p-4">
+            <h4 class="text-sm font-medium text-gray-900 mb-2">データ移行について</h4>
+            <p class="text-sm text-gray-600">
+              お試しモードで作成されたサンプルデータは正式登録後も引き続き利用できます。
+              ただし、本格的な利用には実際のデータを入力していただくことをお勧めします。
+            </p>
+          </div>
+
+          <div class="flex justify-end space-x-3">
+            <%= link_to "キャンセル", guest_dashboard_path,
+                class: "inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" %>
+            <%= form.submit "正式登録に進む",
+                class: "inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <!-- よくある質問 -->
+    <div class="mt-8 bg-white shadow rounded-lg">
+      <div class="px-4 py-5 sm:p-6">
+        <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">よくある質問</h3>
+        <div class="space-y-4">
+          <div>
+            <h4 class="text-sm font-medium text-gray-900">Q. 料金はかかりますか？</h4>
+            <p class="mt-1 text-sm text-gray-600">A. 現在は無料でご利用いただけます。将来的に有料プランを導入する予定ですが、既存ユーザーには移行期間を設けます。</p>
+          </div>
+          <div>
+            <h4 class="text-sm font-medium text-gray-900">Q. データは安全ですか？</h4>
+            <p class="mt-1 text-sm text-gray-600">A. はい、データは暗号化されて保存され、定期的にバックアップを取得しています。</p>
+          </div>
+          <div>
+            <h4 class="text-sm font-medium text-gray-900">Q. サポートはありますか？</h4>
+            <p class="mt-1 text-sm text-gray-600">A. はい、メールサポートを提供しています。お気軽にお問い合わせください。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

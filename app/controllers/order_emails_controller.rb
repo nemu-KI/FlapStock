@@ -4,6 +4,7 @@
 class OrderEmailsController < ApplicationController
   before_action :authenticate_user!
   before_action :load_items, only: %i[new]
+  before_action :check_guest_restrictions
 
   # GET /order_emails/select_items
   # サイドバーから物品を選択
@@ -26,8 +27,15 @@ class OrderEmailsController < ApplicationController
   # POST /order_emails/preview
   # プレビュー画面
   def preview
+    Rails.logger.info "=== ORDER EMAIL PREVIEW START ==="
+    Rails.logger.info "User: #{current_user.email} (#{current_user.role})"
+    Rails.logger.info "Params: #{params.inspect}"
+
     @order_emails = build_order_emails_from_params
     @items = load_items_for_validation
+
+    Rails.logger.info "Order emails count: #{@order_emails.count}"
+    Rails.logger.info "=== ORDER EMAIL PREVIEW END ==="
 
     # バリデーション
     # rubocop:disable Lint/NonLocalExitFromIterator
@@ -73,6 +81,13 @@ class OrderEmailsController < ApplicationController
   end
 
   private
+
+  # ゲストユーザーの制限チェック
+  def check_guest_restrictions
+    return unless session[:guest_mode]
+
+    redirect_to root_path, alert: 'お試しモードでは発注メール機能はご利用いただけません。正式登録後にご利用ください。'
+  end
 
   # 選択された物品を読み込み
   def load_items

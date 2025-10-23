@@ -4,6 +4,7 @@
 class StockMovementsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_stock_movement, only: %i[show edit update destroy]
+  before_action :check_guest_restrictions, only: %i[create update destroy]
   before_action :set_item, only: %i[index new create]
 
   def index
@@ -76,6 +77,20 @@ class StockMovementsController < ApplicationController
 
   def stock_movement_params
     params.require(:stock_movement).permit(:movement_category, :quantity, :reason, :note)
+  end
+
+  # ゲストユーザーの制限チェック
+  def check_guest_restrictions
+    return unless session[:guest_mode]
+
+    # ゲストユーザーの在庫移動制限（1セッションあたり最大20件）
+    if action_name == 'create'
+      guest_movements_count = current_user.stock_movements.where('created_at > ?', session[:guest_session_start]&.to_time || 1.hour.ago).count
+      if guest_movements_count >= 20
+        redirect_to stock_movements_path, alert: 'お試しモードでは1セッションあたり最大20件まで在庫移動を記録できます。'
+        return
+      end
+    end
   end
 
   def build_search_query

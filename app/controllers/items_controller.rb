@@ -4,6 +4,7 @@
 class ItemsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_item, only: %i[show edit update destroy]
+  before_action :check_guest_restrictions, only: %i[create update destroy]
   before_action :set_form_data, only: %i[new create edit update]
 
   def index
@@ -81,6 +82,20 @@ class ItemsController < ApplicationController
   end
 
   private
+
+  # ゲストユーザーの制限チェック
+  def check_guest_restrictions
+    return unless session[:guest_mode]
+
+    # ゲストユーザーのデータ作成制限（1セッションあたり最大10件）
+    if action_name == 'create'
+      guest_items_count = current_user.company.items.where('created_at > ?', session[:guest_session_start]&.to_time || 1.hour.ago).count
+      if guest_items_count >= 10
+        redirect_to items_path, alert: 'お試しモードでは1セッションあたり最大10件まで物品を作成できます。'
+        return
+      end
+    end
+  end
 
   def set_item
     # 他社のデータにアクセスしようとした場合も権限エラーとして扱う

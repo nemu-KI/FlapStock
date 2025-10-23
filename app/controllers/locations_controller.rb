@@ -4,6 +4,7 @@
 class LocationsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_location, only: %i[show edit update destroy]
+  before_action :check_guest_restrictions, only: %i[create update destroy]
 
   def index
     @locations = policy_scope(Location).includes(:items)
@@ -60,6 +61,20 @@ class LocationsController < ApplicationController
   end
 
   private
+
+  # ゲストユーザーの制限チェック
+  def check_guest_restrictions
+    return unless session[:guest_mode]
+
+    # ゲストユーザーのマスターデータ作成制限（1セッションあたり最大5件）
+    if action_name == 'create'
+      guest_locations_count = current_user.company.locations.where('created_at > ?', session[:guest_session_start]&.to_time || 1.hour.ago).count
+      if guest_locations_count >= 5
+        redirect_to locations_path, alert: 'お試しモードでは1セッションあたり最大5件まで場所を作成できます。'
+        return
+      end
+    end
+  end
 
   def set_location
     # 他社のデータにアクセスしようとした場合も権限エラーとして扱う
