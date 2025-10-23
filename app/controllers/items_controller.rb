@@ -15,22 +15,9 @@ class ItemsController < ApplicationController
   end
 
   def autocomplete
-    query = params[:q].to_s.strip
-    field = params[:field].present? ? params[:field] : 'name'
-    limit = params[:limit]&.to_i || 10
+    return render json: [] if autocomplete_query_too_short?
 
-    return render json: [] if query.length < 2
-
-    # フィールドの検証
-    allowed_fields = %w[name sku]
-    field = 'name' unless allowed_fields.include?(field)
-
-    items = policy_scope(Item)
-            .where("#{field} ILIKE ?", "%#{query}%")
-            .limit(limit)
-            .pluck(field.to_sym, :id)
-            .map { |text, id| { text: text, id: id } }
-
+    items = build_autocomplete_items
     render json: items
   end
 
@@ -118,105 +105,35 @@ class ItemsController < ApplicationController
   end
 
   def prepare_chart_data
-    # 期間の設定（デフォルトは過去3ヶ月）
     @period = params[:period] || '3months'
-    start_date = case @period
-                 when '1month'
-                   1.month.ago
-                 when '3months', nil
-                   3.months.ago
-                 when '6months'
-                   6.months.ago
-                 when '1year'
-                   1.year.ago
-                 end
+    chart_service = ItemChartService.new(@item, @period)
+    chart_result = chart_service.prepare_chart_data
 
-    # 在庫推移データの準備（累積在庫数を計算）
-    movements = @item.stock_movements
-                     .where('created_at >= ?', start_date)
-                     .order(:created_at)
+    @chart_data = chart_result[:chart_data]
+    @min_stock_line = chart_result[:stock_line_data][:min_stock_line]
+    @max_stock_line = chart_result[:stock_line_data][:max_stock_line]
+    @current_stock = chart_result[:stock_line_data][:current_stock]
+  end
 
-    # 期間開始時点の在庫数を計算
-    # 現在の在庫数から期間内の移動を差し引いて、期間開始時点の在庫数を求める
-    initial_stock = @item.stock_quantity || 0
+  def autocomplete_query_too_short?
+    params[:q].to_s.strip.length < 2
+  end
 
-    # 期間内の移動を逆算して初期在庫を計算
-    movements.each do |movement|
-      quantity = movement.quantity_change.present? ? movement.quantity_change : movement.quantity
-      quantity ||= 0
+  def build_autocomplete_items
+    query = params[:q].to_s.strip
+    field = validate_autocomplete_field
+    limit = params[:limit]&.to_i || 10
 
-      # 移動種類に応じて初期在庫を調整（逆算）
-      case movement.movement_category
-      when 'inbound'
-        initial_stock -= quantity  # 入庫分を差し引く（過去に戻る）
-      when 'outbound'
-        initial_stock += quantity  # 出庫分を戻す（過去に戻る）
-      when 'adjustment'
-        # 調整の場合は、その時点での在庫数に設定
-        initial_stock = quantity
-      end
-    end
+    policy_scope(Item)
+      .where("#{field} ILIKE ?", "%#{query}%")
+      .limit(limit)
+      .pluck(field.to_sym, :id)
+      .map { |text, id| { text: text, id: id } }
+  end
 
-    # 期間の開始日と終了日を設定
-    end_date = Date.current
-    date_range = (start_date.to_date..end_date).to_a
-
-    # 日別の累積在庫数を計算（連続した日付で）
-    stock_movements = {}
-    current_stock = initial_stock
-
-    # 期間に応じてデータ表示間隔を調整
-    display_interval = case @period
-                       when '1month'
-                         1  # 1ヶ月は毎日表示
-                       when '3months', nil
-                         3  # 3ヶ月は3日間隔
-                       when '6months'
-                         7  # 6ヶ月は週間隔
-                       when '1year'
-                         14 # 1年は2週間隔
-                       end
-
-    # 各日付に対して在庫数を計算
-    date_range.each_with_index do |date, index|
-      # 表示間隔に応じてデータを間引く
-      next unless (index % display_interval).zero? || date == date_range.last
-
-      # その日の在庫移動を取得
-      day_movements = movements.select { |m| m.created_at.to_date == date }
-
-      # その日の移動を適用
-      day_movements.each do |movement|
-        quantity = movement.quantity_change.present? ? movement.quantity_change : movement.quantity
-        quantity ||= 0
-
-        # 移動種類に応じて在庫数を更新
-        case movement.movement_category
-        when 'inbound'
-          current_stock += quantity  # 入庫で在庫増加
-        when 'outbound'
-          current_stock -= quantity  # 出庫で在庫減少
-        when 'adjustment'
-          current_stock = quantity   # 調整で在庫数を設定値に
-        end
-      end
-
-      # その日の在庫数を記録（移動がない日も含む）
-      stock_movements[date] = current_stock
-    end
-
-    # 在庫下限・上限ラインのデータ
-    @min_stock_line = @item.min_stock
-    @max_stock_line = @item.max_stock
-
-    # 現在の在庫数を取得
-    @current_stock = @item.stock_quantity
-
-    # グラフ用データの準備（在庫推移のみ）
-    @chart_data = stock_movements
-
-    # 在庫下限・上限ラインのデータ（別途管理）
-    @min_stock_line = @item.min_stock
-    @max_stock_line = @item.max_stock
+  def validate_autocomplete_field
+    field = params[:field].present? ? params[:field] : 'name'
+    allowed_fields = %w[name sku]
+    allowed_fields.include?(field) ? field : 'name'
   end
 end

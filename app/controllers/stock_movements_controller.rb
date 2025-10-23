@@ -86,8 +86,9 @@ class StockMovementsController < ApplicationController
     # ゲストユーザーの在庫移動制限（1セッションあたり最大20件）
     return unless action_name == 'create'
 
-    guest_movements_count = current_user.stock_movements.where('created_at > ?',
-                                                               session[:guest_session_start]&.to_time || 1.hour.ago).count
+    guest_movements_count = current_user.stock_movements.where(
+      'created_at > ?', session[:guest_session_start]&.to_time || 1.hour.ago
+    ).count
     return unless guest_movements_count >= 20
 
     redirect_to stock_movements_path, alert: 'お試しモードでは1セッションあたり最大20件まで在庫移動を記録できます。'

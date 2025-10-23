@@ -2,6 +2,7 @@
 
 # ゲストから正式登録への誘導
 module Guest
+  # ゲストユーザーの登録処理を管理するコントローラー
   class RegistrationController < ApplicationController
     before_action :authenticate_guest!
 

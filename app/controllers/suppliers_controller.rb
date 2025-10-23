@@ -84,8 +84,9 @@ class SuppliersController < ApplicationController
     # ゲストユーザーのマスターデータ作成制限（1セッションあたり最大5件）
     return unless action_name == 'create'
 
-    guest_suppliers_count = current_user.company.suppliers.where('created_at > ?',
-                                                                 session[:guest_session_start]&.to_time || 1.hour.ago).count
+    guest_suppliers_count = current_user.company.suppliers.where(
+      'created_at > ?', session[:guest_session_start]&.to_time || 1.hour.ago
+    ).count
     return unless guest_suppliers_count >= 5
 
     redirect_to suppliers_path, alert: 'お試しモードでは1セッションあたり最大5件まで仕入先を作成できます。'
