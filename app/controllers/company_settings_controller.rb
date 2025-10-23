@@ -7,6 +7,7 @@ class CompanySettingsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_company
   before_action :authorize_company_settings
+  before_action :check_guest_restrictions
 
   def index
     # 統合設定画面の表示
@@ -181,5 +182,12 @@ class CompanySettingsController < ApplicationController
     else
       redirect_to settings_path, alert: current_user.errors.full_messages.join(', ')
     end
+  end
+
+  # ゲストユーザーの制限チェック
+  def check_guest_restrictions
+    return unless session[:guest_mode]
+
+    redirect_to root_path, alert: 'お試しモードでは設定機能はご利用いただけません。正式登録後にご利用ください。'
   end
 end

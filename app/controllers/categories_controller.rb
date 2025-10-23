@@ -4,7 +4,7 @@
 class CategoriesController < ApplicationController
   before_action :authenticate_user!
   before_action :set_category, only: %i[show edit update destroy]
-  before_action :check_guest_restrictions, only: %i[create update destroy]
+  before_action :check_guest_restrictions, only: %i[create update]
 
   def index
     @categories = policy_scope(Category).includes(:items)

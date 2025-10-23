@@ -23,7 +23,9 @@
         <li><%= link_to '発注履歴', orders_path, class: "block px-3 py-2 rounded hover:bg-slate-200" %></li>
       <% end %>
       <li class="mt-4 mb-1 text-xs text-gray-500">その他</li>
-      <li><%= link_to '設定', settings_path, class: "block px-3 py-2 rounded hover:bg-slate-200" %></li>
+      <% unless session[:guest_mode] %>
+        <li><%= link_to '設定', settings_path, class: "block px-3 py-2 rounded hover:bg-slate-200" %></li>
+      <% end %>
       <li><%= link_to 'ヘルプ・FAQ', help_path, class: "block px-3 py-2 rounded hover:bg-slate-200" %></li>
       <li><%= link_to 'プライバシーポリシー', privacy_policy_path, class: "block px-3 py-2 rounded hover:bg-slate-200" %></li>
       <li><%= link_to '利用規約', terms_of_service_path, class: "block px-3 py-2 rounded hover:bg-slate-200" %></li>

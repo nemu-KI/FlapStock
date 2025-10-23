@@ -4,7 +4,7 @@
 class SuppliersController < ApplicationController
   before_action :authenticate_user!
   before_action :set_supplier, only: %i[show edit update destroy]
-  before_action :check_guest_restrictions, only: %i[create update destroy]
+  before_action :check_guest_restrictions, only: %i[create update]
 
   def index
     @suppliers = policy_scope(Supplier).includes(:items)
