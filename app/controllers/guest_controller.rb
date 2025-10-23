@@ -10,12 +10,17 @@ class GuestController < ApplicationController
   end
 
   def create_session
-    # ゲストユーザーを取得
+    # ゲストユーザーを取得または作成
     guest_user = User.find_by(email: 'guest@example.com')
 
     unless guest_user
-      redirect_to guest_login_path, alert: 'ゲストユーザーが見つかりません。管理者にお問い合わせください。'
-      return
+      # ゲストユーザーが存在しない場合は自動作成
+      guest_user = create_guest_user
+
+      unless guest_user
+        redirect_to guest_login_path, alert: 'ゲストユーザーの作成に失敗しました。管理者にお問い合わせください。'
+        return
+      end
     end
 
     # ゲストユーザーでログイン
@@ -45,5 +50,29 @@ class GuestController < ApplicationController
 
   def redirect_if_authenticated
     redirect_to root_path if user_signed_in?
+  end
+
+  def create_guest_user
+    # ゲスト企業を取得または作成
+    guest_company = Company.find_or_create_by(name: 'ゲスト企業', email: 'guest@example.com') do |company|
+      company.phone = '03-1234-5678'
+      company.active = true
+      company.timezone = 'Tokyo'
+      company.guest = true
+    end
+
+    # ゲストユーザーを作成
+    User.create!(
+      name: 'ゲストユーザー',
+      email: 'guest@example.com',
+      password: 'guest123',
+      password_confirmation: 'guest123',
+      role: 'manager',
+      company: guest_company,
+      per_page: 20
+    )
+  rescue StandardError => e
+    Rails.logger.error "Failed to create guest user: #{e.message}"
+    nil
   end
 end
