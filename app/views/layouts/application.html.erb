@@ -17,58 +17,21 @@
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.0.1/dist/chartjs-plugin-annotation.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartkick@5.0.1/dist/chartkick.min.js"></script>
 
-    <script>
-      // Chartkickの初期化とデバッグ
-      document.addEventListener('DOMContentLoaded', function() {
-        console.log('DOM loaded');
-        console.log('Chartkick available:', typeof Chartkick !== 'undefined');
-        console.log('Chart available:', typeof Chart !== 'undefined');
-
-        if (typeof Chartkick !== 'undefined') {
-          console.log('Chartkick loaded successfully');
-          console.log('Chartkick version:', Chartkick.version || 'unknown');
-        } else {
-          console.error('Chartkick not loaded');
-          // 手動でChartkickを読み込む試行
-          console.log('Attempting to load Chartkick manually...');
-        }
-      });
-
-      // ページ読み込み完了後の確認
-      window.addEventListener('load', function() {
-        console.log('Page fully loaded');
-        console.log('Chartkick available after load:', typeof Chartkick !== 'undefined');
-        console.log('Chart available after load:', typeof Chart !== 'undefined');
-      });
-    </script>
 
     <!-- モバイルメニューのJavaScript -->
     <script>
-      console.log('Mobile menu script loaded inline');
-
       function initializeMobileMenu() {
-        console.log('Initializing mobile menu...');
-
         const mobileMenuButton = document.getElementById('mobile-menu-button');
         const mobileMenuClose = document.getElementById('mobile-menu-close');
         const sidebar = document.getElementById('sidebar');
         const overlay = document.getElementById('mobile-menu-overlay');
 
-        console.log('Elements found:', {
-          mobileMenuButton: !!mobileMenuButton,
-          mobileMenuClose: !!mobileMenuClose,
-          sidebar: !!sidebar,
-          overlay: !!overlay
-        });
-
         if (!sidebar) {
-          console.log('Sidebar not found, skipping initialization');
           return;
         }
 
         // サイドバーを開く
         function openSidebar() {
-          console.log('Opening sidebar');
           sidebar.classList.remove('-translate-x-full');
           sidebar.classList.add('translate-x-0');
           if (overlay) {
@@ -79,7 +42,6 @@
 
         // サイドバーを閉じる
         function closeSidebar() {
-          console.log('Closing sidebar');
           sidebar.classList.add('-translate-x-full');
           sidebar.classList.remove('translate-x-0');
           if (overlay) {
@@ -90,20 +52,15 @@
 
         // ハンバーガーメニューボタン
         if (mobileMenuButton) {
-          console.log('Adding click listener to mobile menu button');
           mobileMenuButton.addEventListener('click', function(e) {
-            console.log('Mobile menu button clicked');
             e.preventDefault();
             openSidebar();
           });
         }
 
-
         // 閉じるボタン
         if (mobileMenuClose) {
-          console.log('Adding click listener to close button');
           mobileMenuClose.addEventListener('click', function(e) {
-            console.log('Close button clicked');
             e.preventDefault();
             closeSidebar();
           });
@@ -111,9 +68,7 @@
 
         // オーバーレイクリック
         if (overlay) {
-          console.log('Adding click listener to overlay');
           overlay.addEventListener('click', function(e) {
-            console.log('Overlay clicked');
             e.preventDefault();
             closeSidebar();
           });
@@ -122,7 +77,6 @@
         // ESCキーで閉じる
         document.addEventListener('keydown', function(e) {
           if (e.key === 'Escape') {
-            console.log('ESC key pressed');
             closeSidebar();
           }
         });
@@ -130,7 +84,6 @@
         // ウィンドウリサイズ時の処理
         window.addEventListener('resize', function() {
           if (window.innerWidth >= 1024) { // lg breakpoint
-            console.log('Window resized to desktop size, closing sidebar');
             closeSidebar();
           }
         });
