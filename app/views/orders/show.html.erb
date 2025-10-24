@@ -7,17 +7,17 @@
       <%= render 'shared/flash_messages_persistent' %>
 
       <!-- ページタイトル -->
-      <div class="flex justify-between items-center mb-6">
+      <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6 space-y-4 sm:space-y-0">
         <div>
-          <h1 class="text-2xl font-bold text-slate-800">発注詳細</h1>
+          <h1 class="text-xl sm:text-2xl font-bold text-slate-800">発注詳細</h1>
           <p class="text-sm text-slate-600 mt-1">発注番号: #<%= @order.id %></p>
         </div>
-        <div class="flex space-x-3">
-          <%= link_to "一覧に戻る", orders_path, class: button_classes(variant: :secondary, size: :md) %>
+        <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-3">
+          <%= link_to "一覧に戻る", orders_path, class: "w-full sm:w-auto #{button_classes(variant: :secondary, size: :md)} text-center" %>
           <%= form_with url: order_path(@order), method: :delete, local: true, style: "display: inline;" do |f| %>
             <%= f.submit '削除',
                 onclick: "return confirm('この発注履歴を削除しますか？\\n\\nこの操作は取り消せません。')",
-                class: button_classes(variant: :danger, size: :md) %>
+                class: "w-full sm:w-auto #{button_classes(variant: :danger, size: :md)}" %>
           <% end %>
         </div>
       </div>
@@ -26,10 +26,10 @@
         <!-- 左側：発注情報 -->
         <div class="lg:col-span-2 space-y-6">
           <!-- 基本情報 -->
-          <div class="bg-white rounded-lg shadow p-6">
+          <div class="bg-white rounded-lg shadow p-4 sm:p-6">
             <h2 class="text-xl font-semibold text-slate-800 mb-4">発注情報</h2>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label class="block text-sm font-medium text-gray-500 mb-1">発注先</label>
                 <p class="text-lg text-slate-800 font-medium"><%= @order.supplier.name %></p>
@@ -87,37 +87,37 @@
 
           <!-- 発注明細 -->
           <div class="bg-white rounded-lg shadow">
-            <div class="px-6 py-4 border-b border-slate-200">
+            <div class="px-4 sm:px-6 py-4 border-b border-slate-200">
               <h2 class="text-xl font-semibold text-slate-800">発注明細</h2>
             </div>
 
             <div class="overflow-x-auto">
-              <table class="w-full divide-y divide-gray-200">
+              <table class="w-full min-w-[700px] divide-y divide-gray-200">
                 <thead class="bg-gray-50">
                   <tr>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">商品名</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">型式</th>
-                    <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">発注数量</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">希望納期</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">備考</th>
+                    <th class="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">商品名</th>
+                    <th class="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">型式</th>
+                    <th class="px-3 sm:px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">発注数量</th>
+                    <th class="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">希望納期</th>
+                    <th class="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">備考</th>
                   </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200">
                   <% @order.order_items.each do |order_item| %>
                     <tr class="hover:bg-gray-50">
-                      <td class="px-6 py-4">
+                      <td class="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm text-gray-900">
                         <%= link_to order_item.item.name, item_path(order_item.item), class: "text-blue-600 hover:text-blue-800" %>
                       </td>
-                      <td class="px-6 py-4 text-sm text-gray-900">
+                      <td class="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm text-gray-900">
                         <%= order_item.item.sku %>
                       </td>
-                      <td class="px-6 py-4 text-right text-sm text-gray-900">
+                      <td class="px-3 sm:px-6 py-3 sm:py-4 text-right text-xs sm:text-sm text-gray-900">
                         <%= order_item.quantity %> <%= order_item.item.unit %>
                       </td>
-                      <td class="px-6 py-4 text-sm text-gray-900">
+                      <td class="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm text-gray-900">
                         <%= order_item.expected_delivery_date&.strftime('%Y/%m/%d') || '-' %>
                       </td>
-                      <td class="px-6 py-4 text-sm text-gray-600">
+                      <td class="px-3 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm text-gray-600">
                         <%= order_item.notes %>
                       </td>
                     </tr>
@@ -127,7 +127,7 @@
             </div>
 
             <!-- 合計 -->
-            <div class="px-6 py-4 bg-gray-50 border-t border-gray-200">
+            <div class="px-4 sm:px-6 py-4 bg-gray-50 border-t border-gray-200">
               <div class="flex justify-between items-center">
                 <span class="text-sm font-medium text-gray-700">合計発注数量:</span>
                 <span class="text-lg font-bold text-slate-800">
@@ -141,7 +141,7 @@
         <!-- 右側：アクション -->
         <div class="lg:col-span-1 space-y-6">
           <!-- ステータス変更 -->
-          <div class="bg-white rounded-lg shadow p-6">
+          <div class="bg-white rounded-lg shadow p-4 sm:p-6">
             <h3 class="text-lg font-semibold text-slate-800 mb-4">ステータス変更</h3>
 
             <%= form_with model: @order, method: :patch, local: true do |f| %>
@@ -164,7 +164,7 @@
           </div>
 
           <!-- メタ情報 -->
-          <div class="bg-white rounded-lg shadow p-6">
+          <div class="bg-white rounded-lg shadow p-4 sm:p-6">
             <h3 class="text-lg font-semibold text-slate-800 mb-4">情報</h3>
 
             <dl class="space-y-3 text-sm">

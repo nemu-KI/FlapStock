@@ -6,10 +6,10 @@
     <!-- コンテンツエリア -->
     <div class="flex-1 p-6 overflow-auto">
       <!-- ページタイトルと戻るリンク -->
-      <div class="flex items-center mb-6">
-        <h1 class="text-2xl font-bold text-slate-800">分類編集</h1>
-        <div class="ml-4">
-          <%= link_to categories_path, class: "text-blue-600 hover:text-blue-800 flex items-center text-sm" do %>
+      <div class="flex flex-col sm:flex-row sm:items-center mb-6 space-y-4 sm:space-y-0">
+        <div class="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-4">
+          <h1 class="text-xl sm:text-2xl font-bold text-slate-800">分類編集</h1>
+          <%= link_to categories_path, class: "text-blue-600 hover:text-blue-800 flex items-center text-sm sm:text-base" do %>
             <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
             </svg>
@@ -19,7 +19,7 @@
       </div>
 
       <!-- フォームカード -->
-      <div class="bg-white rounded-lg shadow-sm border border-slate-200 p-6">
+      <div class="bg-white rounded-lg shadow-sm border border-slate-200 p-4 sm:p-6">
         <%= form_with model: @category, local: true do |f| %>
           <% if @category.errors.any? %>
             <div class="w-full bg-red-100 border border-red-400 text-red-700 px-4 py-3 mb-6 rounded-lg" role="alert">
@@ -57,9 +57,9 @@
               <%= f.text_area :description, rows: 4, class: 'w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent' %>
             </div>
 
-            <div class="flex space-x-4">
-              <%= f.submit '更新', class: 'px-6 py-3 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-600 transition' %>
-              <%= link_to 'キャンセル', categories_path, class: 'px-6 py-3 bg-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-400 transition' %>
+            <div class="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4">
+              <%= f.submit '更新', class: 'w-full sm:w-auto px-6 py-3 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-600 transition' %>
+              <%= link_to 'キャンセル', categories_path, class: 'w-full sm:w-auto px-6 py-3 bg-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-400 transition text-center' %>
             </div>
           </div>
         <% end %>

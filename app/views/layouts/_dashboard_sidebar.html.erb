@@ -1,4 +1,24 @@
-<aside class="w-64 bg-white border-r border-gray-200 flex flex-col py-6 px-4 min-h-0 h-full">
+<!-- モバイル用オーバーレイ -->
+<div id="mobile-menu-overlay" class="fixed inset-0 z-40 bg-black bg-opacity-50 hidden lg:hidden"></div>
+
+<!-- サイドバー -->
+<aside id="sidebar" class="fixed lg:static inset-y-0 left-0 z-50 w-64 bg-white border-r border-gray-200 flex flex-col py-6 px-4 min-h-0 h-full transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out">
+  <!-- モバイル用ヘッダー -->
+  <div class="lg:hidden flex items-center justify-between mb-6">
+    <div class="flex items-center space-x-3">
+      <%= image_tag 'FlapStock_logo.png', alt: 'FlapStock', class: 'h-8 w-auto' %>
+      <div>
+        <div class="text-sm font-semibold text-gray-800"><%= current_user&.company&.name || '会社名' %></div>
+        <div class="text-xs text-gray-600"><%= current_user&.name || 'ユーザー名' %></div>
+      </div>
+    </div>
+    <button id="mobile-menu-close" class="p-2 rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-100">
+      <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+      </svg>
+    </button>
+  </div>
+
   <nav class="flex-1 min-h-0">
     <ul class="space-y-2">
       <li><%= link_to 'ダッシュボード', dashboard_path, class: "block px-3 py-2 rounded hover:bg-slate-200" %></li>
@@ -26,9 +46,13 @@
       <% unless session[:guest_mode] %>
         <li><%= link_to '設定', settings_path, class: "block px-3 py-2 rounded hover:bg-slate-200" %></li>
       <% end %>
+      <li><%= link_to 'ご利用ガイド', guide_path, class: "block px-3 py-2 rounded hover:bg-slate-200" %></li>
       <li><%= link_to 'ヘルプ・FAQ', help_path, class: "block px-3 py-2 rounded hover:bg-slate-200" %></li>
+      <li><%= link_to 'お問い合わせ', help_contact_path, class: "block px-3 py-2 rounded hover:bg-slate-200" %></li>
       <li><%= link_to 'プライバシーポリシー', privacy_policy_path, class: "block px-3 py-2 rounded hover:bg-slate-200" %></li>
       <li><%= link_to '利用規約', terms_of_service_path, class: "block px-3 py-2 rounded hover:bg-slate-200" %></li>
     </ul>
   </nav>
+
+
 </aside>

@@ -1,19 +1,27 @@
-<header class="flex items-center justify-between px-8 py-4 bg-white shadow w-full">
-  <!-- 左側: ロゴ、会社名、ユーザー名 -->
+<header class="flex items-center justify-between px-4 sm:px-8 py-4 bg-white shadow w-full">
+  <!-- 左側: ハンバーガーメニュー + ロゴ -->
   <div class="flex items-center space-x-4">
-    <%= image_tag 'FlapStock_logo.png', alt: 'FlapStock', class: 'h-10 w-auto' %>
-    <div class="flex items-center space-x-3">
+    <!-- ハンバーガーメニューボタン（モバイルのみ表示） -->
+    <button id="mobile-menu-button" class="lg:hidden p-2 rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500">
+      <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+      </svg>
+    </button>
+
+    <!-- ロゴ -->
+    <%= image_tag 'FlapStock_logo.png', alt: 'FlapStock', class: 'h-8 sm:h-10 w-auto' %>
+
+    <!-- 会社名・ユーザー名（デスクトップのみ表示） -->
+    <div class="hidden lg:flex items-center space-x-3">
       <span class="text-lg font-semibold text-gray-800"><%= current_user&.company&.name || '会社名' %></span>
       <span class="text-gray-400">|</span>
       <span class="text-base text-gray-700"><%= current_user&.name || 'ユーザー名' %></span>
     </div>
   </div>
 
-  <!-- 右側: ナビゲーションリンク -->
-  <div class="flex items-center space-x-6">
-    <%= link_to "ご利用ガイド", guide_path, class: "text-gray-700 hover:text-blue-600 transition-colors" %>
-    <%= link_to "ヘルプ", help_path, class: "text-gray-700 hover:text-blue-600 transition-colors" %>
-    <%= link_to "お問い合わせ", help_contact_path, class: "text-gray-700 hover:text-blue-600 transition-colors" %>
-    <a href="<%= destroy_user_session_path %>" data-method="delete" rel="nofollow" class="text-blue-700 hover:underline">ログアウト</a>
+  <!-- 右側: ログアウトボタンのみ -->
+  <div class="flex items-center">
+    <a href="<%= destroy_user_session_path %>" data-method="delete" rel="nofollow" class="text-blue-700 hover:underline text-sm lg:text-base">ログアウト</a>
   </div>
+
 </header>

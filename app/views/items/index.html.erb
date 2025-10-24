@@ -76,7 +76,7 @@
         <% end %>
       </div>
 
-      <!-- 商品一覧テーブル -->
+      <!-- 物品一覧テーブル -->
       <div class="bg-white rounded-lg shadow-sm border border-slate-200 overflow-hidden">
         <div class="overflow-x-auto">
           <table class="w-full table-fixed divide-y divide-slate-200">
@@ -176,22 +176,23 @@
             </tbody>
           </table>
         </div>
+
       </div>
 
       <!-- ページネーション -->
       <div class="mt-6">
-        <div class="bg-white px-4 py-3 border-t border-gray-200 sm:px-6">
-          <div class="flex flex-col items-center space-y-4">
-            <div>
-              <p class="text-sm text-gray-700 text-center">
-                <span class="font-medium">
-                  全<%= @items.total_count %>件中 <%= @items.offset_value + 1 %>-<%= @items.offset_value + @items.length %>件を表示
-                </span>
-              </p>
-            </div>
-            <div class="flex justify-center">
-              <%= paginate @items %>
-            </div>
+        <div class="bg-white rounded-lg border border-gray-200 px-4 py-4 sm:px-6">
+          <!-- 表示件数情報 -->
+          <div class="mb-4">
+            <p class="text-sm text-gray-700 text-center sm:text-left">
+              <span class="font-medium">
+                全<%= @items.total_count %>件中 <%= @items.offset_value + 1 %>-<%= @items.offset_value + @items.length %>件を表示
+              </span>
+            </p>
+          </div>
+          <!-- ページネーション -->
+          <div class="flex justify-center">
+            <%= paginate @items %>
           </div>
         </div>
       </div>
