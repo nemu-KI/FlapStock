@@ -21,6 +21,16 @@ module ApplicationHelper
     "#{base_classes} #{size_classes} #{width_classes} #{variant_classes}".strip
   end
 
+  # 戻るボタンの統一スタイル
+  def back_button_link(path, text, options = {})
+    default_classes = 'inline-flex items-center text-blue-600 hover:text-blue-800 transition text-sm sm:text-base'
+    classes = options[:class] || default_classes
+
+    link_to path, class: classes do
+      content_tag(:i, '', class: 'fas fa-arrow-left mr-2') + text
+    end
+  end
+
   private
 
   def default_ogp_title

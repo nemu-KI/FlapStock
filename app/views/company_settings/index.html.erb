@@ -1,23 +1,23 @@
 <% content_for :title, '設定' %>
 
-<div class="flex h-screen bg-gray-100">
-  <!-- サイドバー -->
-  <%= render 'layouts/dashboard_sidebar' %>
+<div class="min-h-screen flex flex-col bg-slate-50">
+  <%= render 'layouts/dashboard_header' %>
+  <div class="flex flex-1 min-h-0">
+    <%= render 'layouts/dashboard_sidebar' %>
+    <main class="flex-1 p-6 min-h-0 overflow-auto">
+      <!-- フラッシュメッセージ（自動消去なし） -->
+      <%= render 'shared/flash_messages_persistent' %>
 
-  <!-- メインコンテンツ -->
-  <div class="flex-1 flex flex-col overflow-hidden">
-    <!-- ヘッダー -->
-    <%= render 'layouts/dashboard_header' %>
+      <!-- ヘッダー部分 -->
+      <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6 space-y-4 sm:space-y-0">
+        <div class="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-4">
+          <h1 class="text-xl sm:text-2xl font-bold text-slate-800">設定</h1>
+          <p class="text-sm text-slate-600">アプリケーションの各種設定を管理できます</p>
+        </div>
+      </div>
 
-    <!-- コンテンツエリア -->
-    <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-100">
-      <div class="max-w-6xl mx-auto px-4 py-8">
+      <div class="max-w-6xl mx-auto">
         <div class="bg-white rounded-lg shadow-sm border border-gray-200">
-          <!-- ヘッダー -->
-          <div class="px-4 sm:px-6 py-4 border-b border-gray-200">
-            <h1 class="text-xl sm:text-2xl font-bold text-gray-900">設定</h1>
-            <p class="mt-1 text-xs sm:text-sm text-gray-600">アプリケーションの各種設定を管理できます</p>
-          </div>
 
           <!-- タブナビゲーション -->
           <div class="border-b border-gray-200">
