@@ -11,8 +11,6 @@ export default class extends Controller {
   }
 
   connect() {
-    console.log('Autocomplete controller connected')
-    console.log('Field value on connect:', this.fieldValue)
     this.hideDropdown()
     this.setupEventListeners()
   }
@@ -37,7 +35,6 @@ export default class extends Controller {
 
   handleInput(event) {
     const query = event.target.value.trim()
-    console.log('Input event:', query, 'Length:', query.length)
 
     if (query.length < this.minLengthValue) {
       this.hideDropdown()
@@ -98,10 +95,7 @@ export default class extends Controller {
       url.searchParams.set('field', this.fieldValue)
       url.searchParams.set('limit', this.maxResultsValue)
 
-      console.log('Fetching suggestions:', url.toString())
-      console.log('Field value:', this.fieldValue)
-      console.log('Field value type:', typeof this.fieldValue)
-      console.log('Field value length:', this.fieldValue ? this.fieldValue.length : 'undefined')
+      // Fetching suggestions for field: this.fieldValue
 
       const response = await fetch(url, {
         headers: {
@@ -117,7 +111,7 @@ export default class extends Controller {
       const suggestions = await response.json()
       this.displaySuggestions(suggestions)
     } catch (error) {
-      console.error('Autocomplete fetch error:', error)
+      // Autocomplete fetch error - silently handle
       this.hideDropdown()
     }
   }
