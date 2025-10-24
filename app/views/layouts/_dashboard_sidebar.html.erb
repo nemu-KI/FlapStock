@@ -21,16 +21,16 @@
 
   <nav class="flex-1 min-h-0">
     <ul class="space-y-2">
-      <li><%= link_to 'ダッシュボード', dashboard_path, class: "block px-3 py-2 rounded hover:bg-slate-200" %></li>
+      <li><%= link_to 'ダッシュボード', dashboard_path, class: "block px-3 py-2 rounded hover:bg-slate-200 #{'bg-blue-100 text-blue-700 font-medium' if current_page?(dashboard_path)}" %></li>
       <li class="mt-4 mb-1 text-xs text-gray-500">在庫管理</li>
-      <li><%= link_to '物品一覧', items_path, class: "block px-3 py-2 rounded hover:bg-slate-200" %></li>
-      <li><%= link_to '分類', categories_path, class: "block px-3 py-2 rounded hover:bg-slate-200" %></li>
-      <li><%= link_to '保管場所', locations_path, class: "block px-3 py-2 rounded hover:bg-slate-200" %></li>
-      <li><%= link_to '発注先', suppliers_path, class: "block px-3 py-2 rounded hover:bg-slate-200" %></li>
+      <li><%= link_to '物品一覧', items_path, class: "block px-3 py-2 rounded hover:bg-slate-200 #{'bg-blue-100 text-blue-700 font-medium' if current_page?(items_path)}" %></li>
+      <li><%= link_to '分類', categories_path, class: "block px-3 py-2 rounded hover:bg-slate-200 #{'bg-blue-100 text-blue-700 font-medium' if current_page?(categories_path)}" %></li>
+      <li><%= link_to '保管場所', locations_path, class: "block px-3 py-2 rounded hover:bg-slate-200 #{'bg-blue-100 text-blue-700 font-medium' if current_page?(locations_path)}" %></li>
+      <li><%= link_to '発注先', suppliers_path, class: "block px-3 py-2 rounded hover:bg-slate-200 #{'bg-blue-100 text-blue-700 font-medium' if current_page?(suppliers_path)}" %></li>
       <li class="mt-4 mb-1 text-xs text-gray-500">入出庫履歴</li>
-      <li><%= link_to '履歴一覧', stock_movements_path, class: "block px-3 py-2 rounded hover:bg-slate-200" %></li>
+      <li><%= link_to '履歴一覧', stock_movements_path, class: "block px-3 py-2 rounded hover:bg-slate-200 #{'bg-blue-100 text-blue-700 font-medium' if current_page?(stock_movements_path)}" %></li>
       <li class="mt-4 mb-1 text-xs text-gray-500">アラート・発注</li>
-      <li><%= link_to '在庫アラート', alerts_path, class: "block px-3 py-2 rounded hover:bg-slate-200" %></li>
+      <li><%= link_to '在庫アラート', alerts_path, class: "block px-3 py-2 rounded hover:bg-slate-200 #{'bg-blue-100 text-blue-700 font-medium' if current_page?(alerts_path)}" %></li>
       <% if session[:guest_mode] %>
         <li class="block px-3 py-2 text-gray-400 text-sm">
           <span class="text-xs text-gray-500">※発注機能は正式登録後にご利用いただけます</span>
@@ -39,18 +39,18 @@
           <span class="text-xs text-gray-500">※お試しモードでは制限があります</span>
         </li>
       <% else %>
-        <li><%= link_to '発注メール作成', select_items_order_emails_path, class: "block px-3 py-2 rounded hover:bg-slate-200" %></li>
-        <li><%= link_to '発注履歴', orders_path, class: "block px-3 py-2 rounded hover:bg-slate-200" %></li>
+        <li><%= link_to '発注メール作成', select_items_order_emails_path, class: "block px-3 py-2 rounded hover:bg-slate-200 #{'bg-blue-100 text-blue-700 font-medium' if current_page?(select_items_order_emails_path)}" %></li>
+        <li><%= link_to '発注履歴', orders_path, class: "block px-3 py-2 rounded hover:bg-slate-200 #{'bg-blue-100 text-blue-700 font-medium' if current_page?(orders_path)}" %></li>
       <% end %>
       <li class="mt-4 mb-1 text-xs text-gray-500">その他</li>
       <% unless session[:guest_mode] %>
-        <li><%= link_to '設定', settings_path, class: "block px-3 py-2 rounded hover:bg-slate-200" %></li>
+        <li><%= link_to '設定', settings_path, class: "block px-3 py-2 rounded hover:bg-slate-200 #{'bg-blue-100 text-blue-700 font-medium' if current_page?(settings_path)}" %></li>
       <% end %>
-      <li><%= link_to 'ご利用ガイド', guide_path, class: "block px-3 py-2 rounded hover:bg-slate-200" %></li>
-      <li><%= link_to 'ヘルプ・FAQ', help_path, class: "block px-3 py-2 rounded hover:bg-slate-200" %></li>
-      <li><%= link_to 'お問い合わせ', help_contact_path, class: "block px-3 py-2 rounded hover:bg-slate-200" %></li>
-      <li><%= link_to 'プライバシーポリシー', privacy_policy_path, class: "block px-3 py-2 rounded hover:bg-slate-200" %></li>
-      <li><%= link_to '利用規約', terms_of_service_path, class: "block px-3 py-2 rounded hover:bg-slate-200" %></li>
+      <li><%= link_to 'ご利用ガイド', guide_path, class: "block px-3 py-2 rounded hover:bg-slate-200 #{'bg-blue-100 text-blue-700 font-medium' if current_page?(guide_path)}" %></li>
+      <li><%= link_to 'ヘルプ・FAQ', help_path, class: "block px-3 py-2 rounded hover:bg-slate-200 #{'bg-blue-100 text-blue-700 font-medium' if current_page?(help_path)}" %></li>
+      <li><%= link_to 'お問い合わせ', help_contact_path, class: "block px-3 py-2 rounded hover:bg-slate-200 #{'bg-blue-100 text-blue-700 font-medium' if current_page?(help_contact_path)}" %></li>
+      <li><%= link_to 'プライバシーポリシー', privacy_policy_path, class: "block px-3 py-2 rounded hover:bg-slate-200 #{'bg-blue-100 text-blue-700 font-medium' if current_page?(privacy_policy_path)}" %></li>
+      <li><%= link_to '利用規約', terms_of_service_path, class: "block px-3 py-2 rounded hover:bg-slate-200 #{'bg-blue-100 text-blue-700 font-medium' if current_page?(terms_of_service_path)}" %></li>
     </ul>
   </nav>
 
