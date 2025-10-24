@@ -7,16 +7,16 @@
       <%= render 'shared/flash_messages_persistent' %>
 
       <!-- ヘッダー部分 -->
-      <div class="flex justify-between items-center mb-6">
-        <div class="flex items-center space-x-4">
-          <h1 class="text-2xl font-bold text-slate-800">発注先詳細</h1>
-          <%= link_to suppliers_path, class: "text-blue-600 hover:text-blue-800 transition" do %>
+      <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6 space-y-4 sm:space-y-0">
+        <div class="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-4">
+          <h1 class="text-xl sm:text-2xl font-bold text-slate-800">発注先詳細</h1>
+          <%= link_to suppliers_path, class: "text-blue-600 hover:text-blue-800 transition text-sm sm:text-base" do %>
             <i class="fas fa-arrow-left mr-2"></i>発注先一覧に戻る
           <% end %>
         </div>
-        <div class="flex space-x-3">
+        <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-3">
           <% if policy(@supplier).update? %>
-            <%= link_to edit_supplier_path(@supplier), class: button_classes(variant: :primary, size: :md) do %>
+            <%= link_to edit_supplier_path(@supplier), class: "w-full sm:w-auto #{button_classes(variant: :primary, size: :md)} text-center" do %>
               編集
             <% end %>
           <% end %>
@@ -24,7 +24,7 @@
             <%= form_with url: supplier_path(@supplier), method: :delete, local: true, style: "display: inline;" do |f| %>
               <%= f.submit '削除',
                   onclick: "return confirm('「#{@supplier.name}」を削除しますか？\\n\\nこの操作は取り消せません。\\n関連する物品がある場合は削除できません。')",
-                  class: button_classes(variant: :danger, size: :md) %>
+                  class: "w-full sm:w-auto #{button_classes(variant: :danger, size: :md)}" %>
             <% end %>
           <% end %>
         </div>
@@ -35,11 +35,11 @@
         <!-- 左側：基本情報 -->
         <div class="lg:col-span-2 space-y-6">
           <!-- 基本情報カード -->
-          <div class="bg-white rounded-lg shadow p-6">
+          <div class="bg-white rounded-lg shadow p-4 sm:p-6">
             <h2 class="text-xl font-semibold text-slate-800 mb-4 flex items-center">
               <i class="fas fa-info-circle mr-2 text-blue-500"></i>基本情報
             </h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label class="block text-sm font-medium text-gray-500 mb-1">発注先名</label>
                 <p class="text-lg text-slate-800 font-medium"><%= @supplier.name %></p>
@@ -84,14 +84,14 @@
           </div>
 
           <!-- 関連物品情報カード -->
-          <div class="bg-white rounded-lg shadow p-6">
+          <div class="bg-white rounded-lg shadow p-4 sm:p-6">
             <h2 class="text-xl font-semibold text-slate-800 mb-4 flex items-center">
               <i class="fas fa-boxes mr-2 text-green-500"></i>関連物品情報
             </h2>
-            <div class="text-center">
-              <label class="block text-sm font-medium text-gray-500 mb-1">登録物品数</label>
-              <p class="text-3xl font-bold text-slate-800"><%= @supplier.items.count %></p>
-              <p class="text-sm text-gray-500">件</p>
+            <div class="text-center p-3 bg-gray-50 rounded-lg">
+              <label class="block text-xs font-medium text-gray-500 mb-1">登録物品数</label>
+              <p class="text-2xl font-bold text-slate-800"><%= @supplier.items.count %></p>
+              <p class="text-xs text-gray-500">件</p>
             </div>
 
             <!-- 物品一覧 -->
@@ -99,28 +99,28 @@
               <div class="mt-6">
                 <h3 class="text-lg font-medium text-slate-800 mb-3">登録物品一覧</h3>
                 <div class="overflow-x-auto">
-                  <table class="min-w-full divide-y divide-slate-200">
+                  <table class="min-w-full min-w-[600px] divide-y divide-slate-200">
                     <thead class="bg-slate-50">
                       <tr>
-                        <th class="px-4 py-2 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">物品名</th>
-                        <th class="px-4 py-2 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">在庫数</th>
-                        <th class="px-4 py-2 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">分類</th>
-                        <th class="px-4 py-2 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">保管場所</th>
+                        <th class="px-3 sm:px-4 py-2 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">物品名</th>
+                        <th class="px-3 sm:px-4 py-2 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">在庫数</th>
+                        <th class="px-3 sm:px-4 py-2 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">分類</th>
+                        <th class="px-3 sm:px-4 py-2 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">保管場所</th>
                       </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-slate-200">
                       <% @supplier.items.limit(5).each do |item| %>
                         <tr class="hover:bg-slate-50">
-                          <td class="px-4 py-2 whitespace-nowrap text-sm font-medium text-slate-900">
+                          <td class="px-3 sm:px-4 py-2 whitespace-nowrap text-xs sm:text-sm font-medium text-slate-900">
                             <%= link_to item.name, item_path(item), class: "text-blue-600 hover:text-blue-900" %>
                           </td>
-                          <td class="px-4 py-2 whitespace-nowrap text-sm text-slate-500">
+                          <td class="px-3 sm:px-4 py-2 whitespace-nowrap text-xs sm:text-sm text-slate-500">
                             <%= item.stock_quantity %> <%= item.unit %>
                           </td>
-                          <td class="px-4 py-2 whitespace-nowrap text-sm text-slate-500">
+                          <td class="px-3 sm:px-4 py-2 whitespace-nowrap text-xs sm:text-sm text-slate-500">
                             <%= item.category&.name || '未設定' %>
                           </td>
-                          <td class="px-4 py-2 whitespace-nowrap text-sm text-slate-500">
+                          <td class="px-3 sm:px-4 py-2 whitespace-nowrap text-xs sm:text-sm text-slate-500">
                             <%= item.location&.name || '未設定' %>
                           </td>
                         </tr>
@@ -142,22 +142,12 @@
             <% end %>
           </div>
 
-          <!-- 発注履歴（後で実装予定） -->
-          <div class="bg-white rounded-lg shadow p-6">
-            <h2 class="text-xl font-semibold text-slate-800 mb-4 flex items-center">
-              <i class="fas fa-history mr-2 text-purple-500"></i>発注履歴
-            </h2>
-            <div class="text-center py-8 text-gray-500">
-              <i class="fas fa-clock text-4xl mb-4"></i>
-              <p>発注履歴機能は後ほど実装予定です</p>
-            </div>
-          </div>
         </div>
 
         <!-- 右側：サイドバー -->
         <div class="space-y-6">
           <!-- メタ情報 -->
-          <div class="bg-white rounded-lg shadow p-6">
+          <div class="bg-white rounded-lg shadow p-4 sm:p-6">
             <h3 class="text-lg font-semibold text-slate-800 mb-4">情報</h3>
             <div class="space-y-3 text-sm">
               <div class="flex justify-between">

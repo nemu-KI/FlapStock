@@ -8,16 +8,16 @@
 
       <!-- ページタイトル -->
       <div class="mb-6">
-        <h1 class="text-2xl font-bold text-slate-800">発注メール作成</h1>
+        <h1 class="text-xl sm:text-2xl font-bold text-slate-800">発注メール作成</h1>
         <p class="text-sm text-slate-600 mt-1">発注内容を入力してください</p>
       </div>
 
       <%= form_with url: preview_order_emails_path, method: :post, class: "space-y-6", data: { turbo: false } do |f| %>
         <% @order_emails.each_with_index do |order_email, order_index| %>
-          <div class="bg-white rounded-lg shadow p-6">
+          <div class="bg-white rounded-lg shadow p-4 sm:p-6">
             <!-- 発注先情報 -->
-            <div class="mb-6 pb-6 border-b border-slate-200">
-              <h2 class="text-xl font-semibold text-slate-900 mb-2">
+            <div class="mb-4 sm:mb-6 pb-4 sm:pb-6 border-b border-slate-200">
+              <h2 class="text-lg sm:text-xl font-semibold text-slate-900 mb-2">
                 <%= order_email.supplier.name %>宛
               </h2>
               <div class="text-sm text-slate-600">
@@ -39,16 +39,16 @@
                 <% delivery_date = item_data[:delivery_date] %>
                 <% notes = item_data[:notes] %>
 
-                <div class="border border-slate-200 rounded-lg p-4 bg-slate-50">
+                <div class="border border-slate-200 rounded-lg p-3 sm:p-4 bg-slate-50">
                   <!-- 物品情報 -->
-                  <div class="mb-4">
-                    <h3 class="text-lg font-semibold text-slate-900">
+                  <div class="mb-3 sm:mb-4">
+                    <h3 class="text-base sm:text-lg font-semibold text-slate-900">
                       <%= item.name %>
                       <% if item.sku.present? %>
-                        <span class="ml-2 text-sm font-normal text-slate-600">(型式: <%= item.sku %>)</span>
+                        <span class="ml-2 text-xs sm:text-sm font-normal text-slate-600">(型式: <%= item.sku %>)</span>
                       <% end %>
                     </h3>
-                    <p class="text-sm text-slate-600 mt-1">
+                    <p class="text-xs sm:text-sm text-slate-600 mt-1">
                       現在庫: <%= item.stock_quantity %>個 / 最低在庫: <%= item.min_stock %>個
                       <% if item.min_stock && item.stock_quantity && item.min_stock > item.stock_quantity %>
                         <span class="text-red-600">(不足: <%= item.min_stock - item.stock_quantity %>個)</span>
@@ -59,7 +59,7 @@
                   <%= f.hidden_field "order_emails[#{order_index}][items_attributes][#{item_index}][item_id]", value: item.id %>
 
                   <!-- 発注内容入力 -->
-                  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                     <div>
                       <%= f.label "order_emails_#{order_index}_items_attributes_#{item_index}_quantity",
                                   "発注数量",
@@ -84,7 +84,7 @@
                     </div>
                   </div>
 
-                  <div class="mt-4">
+                  <div class="mt-3 sm:mt-4">
                     <%= f.label "order_emails_#{order_index}_items_attributes_#{item_index}_notes",
                                 "備考",
                                 class: "block text-sm font-medium text-slate-700 mb-1" %>
@@ -107,11 +107,11 @@
         <% end %>
 
         <!-- アクションボタン -->
-        <div class="flex justify-between mt-6">
-          <button type="button" onclick="history.back()" class="<%= button_classes(variant: :secondary, size: :md) %>">
+        <div class="flex flex-col sm:flex-row sm:justify-between space-y-3 sm:space-y-0 sm:space-x-4 mt-6">
+          <button type="button" onclick="history.back()" class="w-full sm:w-auto <%= button_classes(variant: :secondary, size: :md) %> text-center">
             戻る
           </button>
-          <%= f.submit "プレビュー", class: button_classes(variant: :primary, size: :md) %>
+          <%= f.submit "プレビュー", class: "w-full sm:w-auto #{button_classes(variant: :primary, size: :md)}" %>
         </div>
       <% end %>
     </div>

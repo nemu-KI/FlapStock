@@ -7,24 +7,24 @@
       <%= render 'shared/flash_messages_persistent' %>
 
       <!-- ヘッダー部分 -->
-      <div class="flex justify-between items-center mb-6">
-        <div class="flex items-center space-x-4">
-          <h1 class="text-2xl font-bold text-slate-800">物品詳細</h1>
-          <%= link_to items_path, class: "text-blue-600 hover:text-blue-800 transition" do %>
+      <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6 space-y-4 sm:space-y-0">
+        <div class="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-4">
+          <h1 class="text-xl sm:text-2xl font-bold text-slate-800">物品詳細</h1>
+          <%= link_to items_path, class: "text-blue-600 hover:text-blue-800 transition text-sm sm:text-base" do %>
             <i class="fas fa-arrow-left mr-2"></i>物品一覧に戻る
           <% end %>
         </div>
-        <div class="flex space-x-3">
+        <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-3">
           <% if policy(@item).update? %>
-                      <%= link_to edit_item_path(@item), class: button_classes(variant: :primary, size: :md) do %>
-            編集
-          <% end %>
+            <%= link_to edit_item_path(@item), class: "w-full sm:w-auto #{button_classes(variant: :primary, size: :md)} text-center" do %>
+              編集
+            <% end %>
           <% end %>
           <% if policy(@item).destroy? %>
             <%= form_with url: item_path(@item), method: :delete, local: true, style: "display: inline;" do |f| %>
               <%= f.submit '削除',
                   onclick: "return confirm('「#{@item.name}」を削除しますか？\\n\\nこの操作は取り消せません。\\n※調整履歴がある場合は削除できません。')",
-                  class: button_classes(variant: :danger, size: :md) %>
+                  class: "w-full sm:w-auto #{button_classes(variant: :danger, size: :md)}" %>
             <% end %>
           <% end %>
         </div>
@@ -35,11 +35,11 @@
         <!-- 左側：基本情報 -->
         <div class="lg:col-span-2 space-y-6">
           <!-- 基本情報カード -->
-          <div class="bg-white rounded-lg shadow p-6">
+          <div class="bg-white rounded-lg shadow p-4 sm:p-6">
             <h2 class="text-xl font-semibold text-slate-800 mb-4 flex items-center">
               <i class="fas fa-info-circle mr-2 text-blue-500"></i>基本情報
             </h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label class="block text-sm font-medium text-gray-500 mb-1">物品名</label>
                 <p class="text-lg text-slate-800 font-medium"><%= @item.name %></p>
@@ -70,25 +70,25 @@
           </div>
 
           <!-- 在庫情報カード -->
-          <div class="bg-white rounded-lg shadow p-6">
+          <div class="bg-white rounded-lg shadow p-4 sm:p-6">
             <h2 class="text-xl font-semibold text-slate-800 mb-4 flex items-center">
               <i class="fas fa-boxes mr-2 text-green-500"></i>在庫情報
             </h2>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div class="text-center">
-                <label class="block text-sm font-medium text-gray-500 mb-1">現在の在庫数</label>
-                <p class="text-3xl font-bold text-slate-800"><%= @item.stock_quantity || 0 %></p>
-                <p class="text-sm text-gray-500"><%= @item.unit.present? ? @item.unit : '個' %></p>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <div class="text-center p-3 bg-gray-50 rounded-lg">
+                <label class="block text-xs font-medium text-gray-500 mb-1">現在の在庫数</label>
+                <p class="text-2xl font-bold text-slate-800"><%= @item.stock_quantity || 0 %></p>
+                <p class="text-xs text-gray-500"><%= @item.unit.present? ? @item.unit : '個' %></p>
               </div>
-              <div class="text-center">
-                <label class="block text-sm font-medium text-gray-500 mb-1">最小在庫</label>
-                <p class="text-2xl font-semibold text-orange-600"><%= @item.min_stock || '未設定' %></p>
-                <p class="text-sm text-gray-500">アラート基準</p>
+              <div class="text-center p-3 bg-gray-50 rounded-lg">
+                <label class="block text-xs font-medium text-gray-500 mb-1">最小在庫</label>
+                <p class="text-xl font-semibold text-orange-600"><%= @item.min_stock || '未設定' %></p>
+                <p class="text-xs text-gray-500">アラート基準</p>
               </div>
-              <div class="text-center">
-                <label class="block text-sm font-medium text-gray-500 mb-1">最大在庫</label>
-                <p class="text-2xl font-semibold text-blue-600"><%= @item.max_stock || '未設定' %></p>
-                <p class="text-sm text-gray-500">上限基準</p>
+              <div class="text-center p-3 bg-gray-50 rounded-lg">
+                <label class="block text-xs font-medium text-gray-500 mb-1">最大在庫</label>
+                <p class="text-xl font-semibold text-blue-600"><%= @item.max_stock || '未設定' %></p>
+                <p class="text-xs text-gray-500">上限基準</p>
               </div>
             </div>
 
@@ -117,7 +117,7 @@
           </div>
 
           <!-- 在庫推移グラフ -->
-          <div class="bg-white rounded-lg shadow p-6">
+          <div class="bg-white rounded-lg shadow p-4 sm:p-6">
             <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-4 gap-4">
               <h2 class="text-xl font-semibold text-slate-800 flex items-center">
                 <i class="fas fa-chart-line mr-2 text-indigo-500"></i>在庫推移
@@ -248,7 +248,7 @@
           </div>
 
           <!-- 入出庫履歴 -->
-          <div class="bg-white rounded-lg shadow p-6">
+          <div class="bg-white rounded-lg shadow p-4 sm:p-6">
             <div class="flex justify-between items-center mb-4">
               <h2 class="text-xl font-semibold text-slate-800 flex items-center">
                 <i class="fas fa-history mr-2 text-purple-500"></i>入出庫履歴
@@ -311,23 +311,8 @@
 
         <!-- 右側：サイドバー -->
         <div class="space-y-6">
-          <!-- 商品画像 -->
-          <div class="bg-white rounded-lg shadow p-6">
-            <h3 class="text-lg font-semibold text-slate-800 mb-4">商品画像</h3>
-            <% if @item.image.attached? %>
-              <%= image_tag @item.image, alt: @item.name, class: "w-full h-48 object-contain rounded bg-gray-100" %>
-            <% else %>
-              <div class="w-full h-48 bg-gray-200 rounded flex items-center justify-center">
-                <div class="text-center text-gray-500">
-                  <i class="fas fa-image text-4xl mb-2"></i>
-                  <p>画像なし</p>
-                </div>
-              </div>
-            <% end %>
-          </div>
-
-                    <!-- クイックアクション -->
-          <div class="bg-white rounded-lg shadow p-6">
+          <!-- クイックアクション -->
+          <div class="bg-white rounded-lg shadow p-4 sm:p-6">
             <h3 class="text-lg font-semibold text-slate-800 mb-4">クイックアクション</h3>
             <div class="space-y-3">
               <% if policy(StockMovement.new).create? %>
@@ -355,8 +340,23 @@
             </div>
           </div>
 
+          <!-- 商品画像 -->
+          <div class="bg-white rounded-lg shadow p-4 sm:p-6">
+            <h3 class="text-lg font-semibold text-slate-800 mb-4">商品画像</h3>
+            <% if @item.image.attached? %>
+              <%= image_tag @item.image, alt: @item.name, class: "w-full h-48 object-contain rounded bg-gray-100" %>
+            <% else %>
+              <div class="w-full h-48 bg-gray-200 rounded flex items-center justify-center">
+                <div class="text-center text-gray-500">
+                  <i class="fas fa-image text-4xl mb-2"></i>
+                  <p>画像なし</p>
+                </div>
+              </div>
+            <% end %>
+          </div>
+
           <!-- メタ情報 -->
-          <div class="bg-white rounded-lg shadow p-6">
+          <div class="bg-white rounded-lg shadow p-4 sm:p-6">
             <h3 class="text-lg font-semibold text-slate-800 mb-4">情報</h3>
             <div class="space-y-3 text-sm">
               <div class="flex justify-between">

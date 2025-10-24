@@ -2,7 +2,7 @@
   <%= render 'layouts/dashboard_header' %>
   <div class="flex flex-1 min-h-0">
     <%= render 'layouts/dashboard_sidebar' %>
-    <main class="flex-1 p-6 min-h-0 overflow-auto">
+    <main class="flex-1 p-4 sm:p-6 min-h-0 overflow-auto">
       <!-- フラッシュメッセージ -->
       <%= render 'shared/flash_messages_persistent' %>
 
@@ -12,74 +12,82 @@
       </div>
 
       <!-- 統計カード -->
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+      <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 mb-6 sm:mb-8">
         <!-- 総物品数 -->
-        <div class="bg-white rounded-lg shadow p-6">
-          <div class="flex items-center">
-            <div class="p-2 bg-blue-100 rounded-lg">
-              <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
-              </svg>
-            </div>
-            <div class="ml-4">
-              <p class="text-sm font-medium text-gray-600">総物品数</p>
-              <p class="text-2xl font-bold text-gray-900"><%= @total_items %>種</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- 今月の入庫回数 -->
-        <div class="bg-white rounded-lg shadow p-6">
-          <div class="flex items-center">
-            <div class="p-2 bg-green-100 rounded-lg">
-              <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 11l5-5m0 0l5 5m-5-5v12"></path>
-              </svg>
-            </div>
-            <div class="ml-4">
-              <p class="text-sm font-medium text-gray-600">今月の入庫</p>
-              <p class="text-2xl font-bold text-gray-900"><%= @monthly_inbound_count %>回</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- 今月の出庫回数 -->
-        <div class="bg-white rounded-lg shadow p-6">
-          <div class="flex items-center">
-            <div class="p-2 bg-red-100 rounded-lg">
-              <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 13l-5 5m0 0l-5-5m5 5V6"></path>
-              </svg>
-            </div>
-            <div class="ml-4">
-              <p class="text-sm font-medium text-gray-600">今月の出庫</p>
-              <p class="text-2xl font-bold text-gray-900"><%= @monthly_outbound_count %>回</p>
+        <div class="bg-white rounded-lg shadow p-3 sm:p-6">
+          <div class="flex flex-col sm:flex-row sm:items-center">
+            <div class="flex items-center sm:block">
+              <div class="p-1.5 sm:p-2 bg-blue-100 rounded-lg flex-shrink-0">
+                <svg class="w-4 h-4 sm:w-6 sm:h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
+                </svg>
+              </div>
+              <div class="ml-2 sm:ml-0 sm:mt-2 min-w-0">
+                <p class="text-xs font-medium text-gray-600">総物品数</p>
+                <p class="text-lg sm:text-2xl font-bold text-gray-900"><%= @total_items %>種</p>
+              </div>
             </div>
           </div>
         </div>
 
         <!-- 在庫アラート -->
-        <div class="bg-white rounded-lg shadow p-6">
-          <div class="flex items-center">
-            <div class="p-2 bg-yellow-100 rounded-lg">
-              <svg class="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
-              </svg>
+        <div class="bg-white rounded-lg shadow p-3 sm:p-6">
+          <div class="flex flex-col sm:flex-row sm:items-center">
+            <div class="flex items-center sm:block">
+              <div class="p-1.5 sm:p-2 bg-yellow-100 rounded-lg flex-shrink-0">
+                <svg class="w-4 h-4 sm:w-6 sm:h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
+                </svg>
+              </div>
+              <div class="ml-2 sm:ml-0 sm:mt-2 min-w-0">
+                <p class="text-xs font-medium text-gray-600">在庫アラート</p>
+                <p class="text-lg sm:text-2xl font-bold text-gray-900"><%= @total_alerts %>件</p>
+              </div>
             </div>
-            <div class="ml-4">
-              <p class="text-sm font-medium text-gray-600">在庫アラート</p>
-              <p class="text-2xl font-bold text-gray-900"><%= @total_alerts %>件</p>
+          </div>
+        </div>
+
+        <!-- 今月の入庫回数 -->
+        <div class="bg-white rounded-lg shadow p-3 sm:p-6">
+          <div class="flex flex-col sm:flex-row sm:items-center">
+            <div class="flex items-center sm:block">
+              <div class="p-1.5 sm:p-2 bg-green-100 rounded-lg flex-shrink-0">
+                <svg class="w-4 h-4 sm:w-6 sm:h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 11l5-5m0 0l5 5m-5-5v12"></path>
+                </svg>
+              </div>
+              <div class="ml-2 sm:ml-0 sm:mt-2 min-w-0">
+                <p class="text-xs font-medium text-gray-600">今月の入庫</p>
+                <p class="text-lg sm:text-2xl font-bold text-gray-900"><%= @monthly_inbound_count %>回</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 今月の出庫回数 -->
+        <div class="bg-white rounded-lg shadow p-3 sm:p-6">
+          <div class="flex flex-col sm:flex-row sm:items-center">
+            <div class="flex items-center sm:block">
+              <div class="p-1.5 sm:p-2 bg-red-100 rounded-lg flex-shrink-0">
+                <svg class="w-4 h-4 sm:w-6 sm:h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 13l-5 5m0 0l-5-5m5 5V6"></path>
+                </svg>
+              </div>
+              <div class="ml-2 sm:ml-0 sm:mt-2 min-w-0">
+                <p class="text-xs font-medium text-gray-600">今月の出庫</p>
+                <p class="text-lg sm:text-2xl font-bold text-gray-900"><%= @monthly_outbound_count %>回</p>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
       <!-- 最近の入出庫履歴 -->
-      <div class="bg-white rounded-lg shadow mb-6">
-        <div class="p-6 border-b border-gray-200">
-          <div class="flex items-center justify-between">
-            <h2 class="text-lg font-semibold text-gray-900 flex items-center">
-              <svg class="w-5 h-5 text-blue-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <div class="bg-white rounded-lg shadow mb-4 sm:mb-6">
+        <div class="p-4 sm:p-6 border-b border-gray-200">
+          <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-0">
+            <h2 class="text-base sm:text-lg font-semibold text-gray-900 flex items-center">
+              <svg class="w-4 h-4 sm:w-5 sm:h-5 text-blue-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
               </svg>
               最近の入出庫履歴

@@ -41,25 +41,124 @@
         console.log('Chart available after load:', typeof Chart !== 'undefined');
       });
     </script>
+
+    <!-- モバイルメニューのJavaScript -->
+    <script>
+      console.log('Mobile menu script loaded inline');
+
+      function initializeMobileMenu() {
+        console.log('Initializing mobile menu...');
+
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenuClose = document.getElementById('mobile-menu-close');
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('mobile-menu-overlay');
+
+        console.log('Elements found:', {
+          mobileMenuButton: !!mobileMenuButton,
+          mobileMenuClose: !!mobileMenuClose,
+          sidebar: !!sidebar,
+          overlay: !!overlay
+        });
+
+        if (!sidebar) {
+          console.log('Sidebar not found, skipping initialization');
+          return;
+        }
+
+        // サイドバーを開く
+        function openSidebar() {
+          console.log('Opening sidebar');
+          sidebar.classList.remove('-translate-x-full');
+          sidebar.classList.add('translate-x-0');
+          if (overlay) {
+            overlay.classList.remove('hidden');
+          }
+          document.body.classList.add('overflow-hidden');
+        }
+
+        // サイドバーを閉じる
+        function closeSidebar() {
+          console.log('Closing sidebar');
+          sidebar.classList.add('-translate-x-full');
+          sidebar.classList.remove('translate-x-0');
+          if (overlay) {
+            overlay.classList.add('hidden');
+          }
+          document.body.classList.remove('overflow-hidden');
+        }
+
+        // ハンバーガーメニューボタン
+        if (mobileMenuButton) {
+          console.log('Adding click listener to mobile menu button');
+          mobileMenuButton.addEventListener('click', function(e) {
+            console.log('Mobile menu button clicked');
+            e.preventDefault();
+            openSidebar();
+          });
+        }
+
+
+        // 閉じるボタン
+        if (mobileMenuClose) {
+          console.log('Adding click listener to close button');
+          mobileMenuClose.addEventListener('click', function(e) {
+            console.log('Close button clicked');
+            e.preventDefault();
+            closeSidebar();
+          });
+        }
+
+        // オーバーレイクリック
+        if (overlay) {
+          console.log('Adding click listener to overlay');
+          overlay.addEventListener('click', function(e) {
+            console.log('Overlay clicked');
+            e.preventDefault();
+            closeSidebar();
+          });
+        }
+
+        // ESCキーで閉じる
+        document.addEventListener('keydown', function(e) {
+          if (e.key === 'Escape') {
+            console.log('ESC key pressed');
+            closeSidebar();
+          }
+        });
+
+        // ウィンドウリサイズ時の処理
+        window.addEventListener('resize', function() {
+          if (window.innerWidth >= 1024) { // lg breakpoint
+            console.log('Window resized to desktop size, closing sidebar');
+            closeSidebar();
+          }
+        });
+      }
+
+      // DOMContentLoadedとTurboの両方に対応
+      document.addEventListener('DOMContentLoaded', initializeMobileMenu);
+      document.addEventListener('turbo:load', initializeMobileMenu);
+    </script>
   </head>
 
   <body class="m-0 p-0">
     <%= yield %>
 
     <!-- フッター -->
-    <footer class="bg-gray-800 text-white py-8 mt-16">
+    <footer class="bg-gray-800 text-white py-6 mt-8">
       <div class="max-w-6xl mx-auto px-4">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div>
-            <h3 class="text-lg font-semibold mb-4">FlapStock</h3>
+            <h3 class="text-lg font-semibold mb-3">FlapStock</h3>
             <p class="text-gray-300 text-sm">
               在庫管理システム
             </p>
           </div>
 
           <div>
-            <h4 class="text-md font-semibold mb-4">サービス</h4>
-            <ul class="space-y-2 text-sm">
+            <h4 class="text-md font-semibold mb-3">サービス</h4>
+            <ul class="space-y-1 text-sm">
               <li><%= link_to "ダッシュボード", dashboard_path, class: "text-gray-300 hover:text-white" %></li>
               <li><%= link_to "物品管理", items_path, class: "text-gray-300 hover:text-white" %></li>
               <li><%= link_to "入出庫履歴", stock_movements_path, class: "text-gray-300 hover:text-white" %></li>
@@ -67,8 +166,8 @@
           </div>
 
           <div>
-            <h4 class="text-md font-semibold mb-4">サポート</h4>
-            <ul class="space-y-2 text-sm">
+            <h4 class="text-md font-semibold mb-3">サポート</h4>
+            <ul class="space-y-1 text-sm">
               <li><%= link_to "プライバシーポリシー", privacy_policy_path, class: "text-gray-300 hover:text-white" %></li>
               <li><%= link_to "利用規約", terms_of_service_path, class: "text-gray-300 hover:text-white" %></li>
               <li><%= link_to "お問い合わせ", help_contact_path, class: "text-gray-300 hover:text-white" %></li>
@@ -76,7 +175,7 @@
           </div>
         </div>
 
-        <div class="border-t border-gray-700 mt-8 pt-8 text-center text-sm text-gray-400">
+        <div class="border-t border-gray-700 mt-6 pt-4 text-center text-sm text-gray-400">
           <p>&copy; <%= Date.current.year %> FlapStock. All rights reserved.</p>
         </div>
       </div>

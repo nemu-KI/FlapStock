@@ -14,19 +14,19 @@
       <div class="max-w-4xl mx-auto px-4 py-8">
   <div class="bg-white rounded-lg shadow-sm border border-gray-200">
     <!-- ヘッダー -->
-    <div class="px-6 py-4 border-b border-gray-200">
-      <div class="flex items-center justify-between">
-        <h1 class="text-2xl font-bold text-gray-900">会社設定</h1>
-        <%= link_to '編集', settings_edit_path, class: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" %>
+    <div class="px-4 sm:px-6 py-4 border-b border-gray-200">
+      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-3 sm:space-y-0">
+        <h1 class="text-xl sm:text-2xl font-bold text-gray-900">会社設定</h1>
+        <%= link_to '編集', settings_edit_path, class: "w-full sm:w-auto inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" %>
       </div>
     </div>
 
     <!-- 設定内容 -->
-    <div class="px-6 py-6">
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div class="px-4 sm:px-6 py-4 sm:py-6">
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
         <!-- 基本情報 -->
-        <div class="space-y-4">
-          <h2 class="text-lg font-semibold text-gray-900 border-b border-gray-200 pb-2">基本情報</h2>
+        <div class="space-y-3 sm:space-y-4">
+          <h2 class="text-base sm:text-lg font-semibold text-gray-900 border-b border-gray-200 pb-2">基本情報</h2>
 
           <div>
             <label class="block text-sm font-medium text-gray-700">会社名</label>
@@ -45,8 +45,8 @@
         </div>
 
         <!-- 連絡先情報 -->
-        <div class="space-y-4">
-          <h2 class="text-lg font-semibold text-gray-900 border-b border-gray-200 pb-2">連絡先情報</h2>
+        <div class="space-y-3 sm:space-y-4">
+          <h2 class="text-base sm:text-lg font-semibold text-gray-900 border-b border-gray-200 pb-2">連絡先情報</h2>
 
           <div>
             <label class="block text-sm font-medium text-gray-700">住所</label>
@@ -63,9 +63,9 @@
       </div>
 
       <!-- 設定の説明 -->
-      <div class="mt-8 p-4 bg-blue-50 rounded-lg">
-        <h3 class="text-sm font-medium text-blue-900 mb-2">設定について</h3>
-        <p class="text-sm text-blue-800">
+      <div class="mt-6 sm:mt-8 p-3 sm:p-4 bg-blue-50 rounded-lg">
+        <h3 class="text-xs sm:text-sm font-medium text-blue-900 mb-2">設定について</h3>
+        <p class="text-xs sm:text-sm text-blue-800">
           これらの情報は発注メールの署名や通知機能で使用されます。正確な情報を設定することで、より効果的な在庫管理が可能になります。
         </p>
       </div>

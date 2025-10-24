@@ -8,12 +8,12 @@
 
       <!-- ページタイトル -->
       <div class="mb-6">
-        <h1 class="text-2xl font-bold text-slate-800">メールプレビュー</h1>
+        <h1 class="text-xl sm:text-2xl font-bold text-slate-800">メールプレビュー</h1>
         <p class="text-sm text-slate-600 mt-1">内容を確認して、メールクライアントを開いてください</p>
       </div>
 
       <!-- 発注記録オプション -->
-      <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+      <div class="bg-blue-50 border border-blue-200 rounded-lg p-3 sm:p-4 mb-6">
         <label class="flex items-center cursor-pointer">
           <input type="checkbox" id="save-order-checkbox" checked class="rounded border-slate-300 text-blue-600 focus:ring-blue-500">
           <div class="ml-3">
@@ -28,36 +28,36 @@
       <% @order_emails.each_with_index do |order_email, index| %>
         <div class="bg-white rounded-lg shadow mb-6">
           <!-- メールヘッダー -->
-          <div class="px-6 py-4 border-b border-slate-200 bg-slate-50">
-            <h2 class="text-lg font-semibold text-slate-900 mb-3">
+          <div class="px-4 sm:px-6 py-4 border-b border-slate-200 bg-slate-50">
+            <h2 class="text-base sm:text-lg font-semibold text-slate-900 mb-3">
               <%= order_email.supplier.name %>宛のメール
             </h2>
 
-            <dl class="space-y-2 text-sm">
-              <div class="flex">
-                <dt class="w-20 font-medium text-slate-700">To:</dt>
-                <dd class="flex-1 text-slate-900"><%= order_email.to %></dd>
+            <dl class="space-y-2 text-xs sm:text-sm">
+              <div class="flex flex-col sm:flex-row">
+                <dt class="w-16 sm:w-20 font-medium text-slate-700">To:</dt>
+                <dd class="flex-1 text-slate-900 break-all"><%= order_email.to %></dd>
               </div>
-              <div class="flex">
-                <dt class="w-20 font-medium text-slate-700">From:</dt>
-                <dd class="flex-1 text-slate-900"><%= current_user.email %></dd>
+              <div class="flex flex-col sm:flex-row">
+                <dt class="w-16 sm:w-20 font-medium text-slate-700">From:</dt>
+                <dd class="flex-1 text-slate-900 break-all"><%= current_user.email %></dd>
               </div>
-              <div class="flex">
-                <dt class="w-20 font-medium text-slate-700">件名:</dt>
-                <dd class="flex-1 text-slate-900"><%= order_email.subject %></dd>
+              <div class="flex flex-col sm:flex-row">
+                <dt class="w-16 sm:w-20 font-medium text-slate-700">件名:</dt>
+                <dd class="flex-1 text-slate-900 break-all"><%= order_email.subject %></dd>
               </div>
             </dl>
           </div>
 
           <!-- メール本文 -->
-          <div class="px-6 py-4">
-            <pre class="whitespace-pre-wrap font-sans text-sm text-slate-800 leading-relaxed"><%= order_email.body %></pre>
+          <div class="px-4 sm:px-6 py-4">
+            <pre class="whitespace-pre-wrap font-sans text-xs sm:text-sm text-slate-800 leading-relaxed"><%= order_email.body %></pre>
           </div>
 
           <!-- アクションボタン -->
-          <div class="px-6 py-4 border-t border-slate-200 bg-slate-50">
+          <div class="px-4 sm:px-6 py-4 border-t border-slate-200 bg-slate-50">
             <% if order_email.email_configured? %>
-              <p class="text-sm text-slate-700 mb-3">
+              <p class="text-xs sm:text-sm text-slate-700 mb-3">
                 メールクライアントで下書きを開いてから、発注メールを送信してください
               </p>
               <%= form_with url: order_emails_path, method: :post, id: "order-form-#{index}", local: true, data: { turbo: false } do |f| %>
@@ -77,31 +77,31 @@
                 <% end %>
                 <%= f.hidden_field :save_order, value: '1', id: "save-order-field-#{index}" %>
 
-                <div class="flex flex-wrap gap-3">
+                <div class="flex flex-col sm:flex-row flex-wrap gap-3">
                   <a href="<%= order_email.mailto_link %>"
                      onclick="submitOrderForm(<%= index %>)"
-                     class="<%= button_classes(variant: :primary, size: :md) %> inline-flex items-center">
-                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                     class="w-full sm:w-auto <%= button_classes(variant: :primary, size: :md) %> inline-flex items-center justify-center">
+                    <svg class="w-4 h-4 sm:w-5 sm:h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
                     </svg>
-                    デフォルトのメールクライアントで開く
+                    <span class="text-sm sm:text-base">デフォルトのメールクライアントで開く</span>
                   </a>
 
                   <a href="<%= order_email.gmail_link %>"
                      onclick="submitOrderForm(<%= index %>)"
                      target="_blank"
                      rel="noopener noreferrer"
-                     class="<%= button_classes(variant: :secondary, size: :md) %> inline-flex items-center">
-                    <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                     class="w-full sm:w-auto <%= button_classes(variant: :secondary, size: :md) %> inline-flex items-center justify-center">
+                    <svg class="w-4 h-4 sm:w-5 sm:h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
                       <path d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-2.023 2.309-3.178 3.927-1.964L12 9.64l8.073-6.147A2.182 2.182 0 0 1 24 5.457z"/>
                     </svg>
-                    Gmailで開く
+                    <span class="text-sm sm:text-base">Gmailで開く</span>
                   </a>
                 </div>
               <% end %>
             <% else %>
-              <div class="bg-red-50 border border-red-200 rounded-md p-4">
-                <p class="text-sm text-red-800">
+              <div class="bg-red-50 border border-red-200 rounded-md p-3 sm:p-4">
+                <p class="text-xs sm:text-sm text-red-800">
                   ⚠️ 発注先のメールアドレスが設定されていないため、メールを作成できません。<br>
                   <%= link_to "発注先の編集", edit_supplier_path(order_email.supplier), class: "underline font-medium" %>からメールアドレスを設定してください。
                 </p>
@@ -113,7 +113,7 @@
 
       <!-- 戻るボタン -->
       <div class="flex justify-center mt-6">
-        <%= link_to "戻って修正する", select_items_order_emails_path, class: button_classes(variant: :secondary, size: :md) %>
+        <%= link_to "戻って修正する", select_items_order_emails_path, class: "w-full sm:w-auto #{button_classes(variant: :secondary, size: :md)} text-center" %>
       </div>
 
       <script>
