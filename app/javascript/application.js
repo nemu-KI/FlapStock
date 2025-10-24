@@ -5,8 +5,3 @@ import "@hotwired/stimulus-loading"
 
 // Import all controllers
 import "controllers"
-
-// Import mobile menu functionality
-import "mobile_menu"
-
-console.log('Application.js loaded')
