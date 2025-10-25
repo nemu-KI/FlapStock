@@ -89,7 +89,7 @@ Rails.application.configure do
   config.action_mailer.perform_deliveries = true
   config.action_mailer.raise_delivery_errors = true
 
-  # SendGrid Web API設定（SMTPポートがブロックされているため、Web APIを使用）
+  # SendGrid Web API設定
   config.action_mailer.delivery_method = :sendgrid_api
   config.action_mailer.sendgrid_api_settings = {
     api_key: ENV.fetch('SENDGRID_API_KEY', nil)
@@ -116,10 +116,10 @@ Rails.application.configure do
   config.active_record.dump_schema_after_migration = false
 
   # Enable DNS rebinding protection and other `Host` header attacks.
-  # config.hosts = [
-  #   "example.com",     # Allow requests from example.com
-  #   /.*\.example\.com/ # Allow requests from subdomains like `www.example.com`
-  # ]
+  # 独自ドメイン用のホスト設定
+  config.hosts << 'flapstock.com'      # 独自ドメイン
+  config.hosts << 'www.flapstock.com'  # www付きドメイン
+  config.hosts << 'flapstock.onrender.com' # 既存のRenderドメイン
   # Skip DNS rebinding protection for the default health check endpoint.
   # config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
 end
