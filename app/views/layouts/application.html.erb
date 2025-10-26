@@ -25,8 +25,9 @@
              const mobileMenuClose = document.getElementById('mobile-menu-close');
              const sidebar = document.getElementById('sidebar');
              const overlay = document.getElementById('mobile-menu-overlay');
-             const mobileHeader = document.querySelector('.lg\\:hidden');
-             const desktopUserInfo = document.querySelector('.hidden.lg\\:flex');
+             // より確実な要素取得
+             const mobileHeader = sidebar ? sidebar.querySelector('div:first-child') : null;
+             const desktopUserInfo = document.querySelector('header .hidden.lg\\:flex');
 
              if (!sidebar) {
                return;
@@ -35,6 +36,15 @@
              // レスポンシブ制御関数
              function handleResponsiveLayout() {
                const isDesktop = window.innerWidth >= 1024;
+
+               // デバッグ用ログ
+               console.log('handleResponsiveLayout called', {
+                 isDesktop,
+                 windowWidth: window.innerWidth,
+                 mobileHeader: mobileHeader,
+                 desktopUserInfo: desktopUserInfo,
+                 mobileMenuButton: mobileMenuButton
+               });
 
                if (isDesktop) {
                  // PC画面: サイドバーを常に表示、モバイルヘッダーを非表示
