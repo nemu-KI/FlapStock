@@ -37,17 +37,6 @@
              function handleResponsiveLayout() {
                const isDesktop = window.innerWidth >= 1280;
 
-               // デバッグ用ログ
-               console.log('handleResponsiveLayout called', {
-                 isDesktop,
-                 windowWidth: window.innerWidth,
-                 breakpoint: '1280px',
-                 mobileHeader: mobileHeader,
-                 desktopUserInfo: desktopUserInfo,
-                 mobileMenuButton: mobileMenuButton,
-                 sidebar: sidebar
-               });
-
                if (isDesktop) {
                  // PC画面: サイドバーを常に表示、モバイルヘッダーを非表示
                  sidebar.style.position = 'static';
@@ -87,20 +76,12 @@
 
              // サイドバーを開く
              function openSidebar() {
-               console.log('Opening sidebar', {
-                 sidebar: sidebar,
-                 currentTransform: sidebar.style.transform,
-                 currentPosition: sidebar.style.position
-               });
                sidebar.style.transform = 'translateX(0)';
                if (overlay) {
                  overlay.classList.remove('hidden');
+                 overlay.style.opacity = '0.5'; // 明示的に透明度を設定
                }
                document.body.classList.add('overflow-hidden');
-               console.log('Sidebar opened', {
-                 newTransform: sidebar.style.transform,
-                 overlayHidden: overlay ? overlay.classList.contains('hidden') : 'no overlay'
-               });
              }
 
              // サイドバーを閉じる
@@ -108,6 +89,7 @@
                sidebar.style.transform = 'translateX(-100%)';
                if (overlay) {
                  overlay.classList.add('hidden');
+                 overlay.style.opacity = '0'; // 透明度をリセット
                }
                document.body.classList.remove('overflow-hidden');
              }
@@ -116,11 +98,6 @@
              if (mobileMenuButton) {
                mobileMenuButton.addEventListener('click', function(e) {
                  e.preventDefault();
-                 console.log('Mobile menu button clicked', {
-                   windowWidth: window.innerWidth,
-                   isDesktop: window.innerWidth >= 1280,
-                   sidebar: sidebar
-                 });
                  openSidebar();
                });
              }
