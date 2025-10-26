@@ -18,81 +18,119 @@
     <script src="https://cdn.jsdelivr.net/npm/chartkick@5.0.1/dist/chartkick.min.js"></script>
 
 
-    <!-- モバイルメニューのJavaScript -->
-    <script>
-      function initializeMobileMenu() {
-        const mobileMenuButton = document.getElementById('mobile-menu-button');
-        const mobileMenuClose = document.getElementById('mobile-menu-close');
-        const sidebar = document.getElementById('sidebar');
-        const overlay = document.getElementById('mobile-menu-overlay');
+         <!-- モバイルメニューのJavaScript -->
+         <script>
+           function initializeMobileMenu() {
+             const mobileMenuButton = document.getElementById('mobile-menu-button');
+             const mobileMenuClose = document.getElementById('mobile-menu-close');
+             const sidebar = document.getElementById('sidebar');
+             const overlay = document.getElementById('mobile-menu-overlay');
+             const mobileHeader = document.querySelector('.lg\\:hidden');
+             const desktopUserInfo = document.querySelector('.hidden.lg\\:flex');
 
-        if (!sidebar) {
-          return;
-        }
+             if (!sidebar) {
+               return;
+             }
 
-        // サイドバーを開く
-        function openSidebar() {
-          sidebar.classList.remove('-translate-x-full');
-          sidebar.classList.add('translate-x-0');
-          if (overlay) {
-            overlay.classList.remove('hidden');
-          }
-          document.body.classList.add('overflow-hidden');
-        }
+             // レスポンシブ制御関数
+             function handleResponsiveLayout() {
+               const isDesktop = window.innerWidth >= 1024;
 
-        // サイドバーを閉じる
-        function closeSidebar() {
-          sidebar.classList.add('-translate-x-full');
-          sidebar.classList.remove('translate-x-0');
-          if (overlay) {
-            overlay.classList.add('hidden');
-          }
-          document.body.classList.remove('overflow-hidden');
-        }
+               if (isDesktop) {
+                 // PC画面: サイドバーを常に表示、モバイルヘッダーを非表示
+                 sidebar.style.position = 'static';
+                 sidebar.style.transform = 'translateX(0)';
+                 sidebar.style.width = '16rem'; // w-64
 
-        // ハンバーガーメニューボタン
-        if (mobileMenuButton) {
-          mobileMenuButton.addEventListener('click', function(e) {
-            e.preventDefault();
-            openSidebar();
-          });
-        }
+                 if (mobileHeader) {
+                   mobileHeader.style.display = 'none';
+                 }
 
-        // 閉じるボタン
-        if (mobileMenuClose) {
-          mobileMenuClose.addEventListener('click', function(e) {
-            e.preventDefault();
-            closeSidebar();
-          });
-        }
+                 if (desktopUserInfo) {
+                   desktopUserInfo.style.display = 'flex';
+                 }
 
-        // オーバーレイクリック
-        if (overlay) {
-          overlay.addEventListener('click', function(e) {
-            e.preventDefault();
-            closeSidebar();
-          });
-        }
+                 if (mobileMenuButton) {
+                   mobileMenuButton.style.display = 'none';
+                 }
+               } else {
+                 // モバイル画面: サイドバーを隠す、モバイルヘッダーを表示
+                 sidebar.style.position = 'fixed';
+                 sidebar.style.transform = 'translateX(-100%)';
+                 sidebar.style.width = '16rem'; // w-64
 
-        // ESCキーで閉じる
-        document.addEventListener('keydown', function(e) {
-          if (e.key === 'Escape') {
-            closeSidebar();
-          }
-        });
+                 if (mobileHeader) {
+                   mobileHeader.style.display = 'flex';
+                 }
 
-        // ウィンドウリサイズ時の処理
-        window.addEventListener('resize', function() {
-          if (window.innerWidth >= 1024) { // lg breakpoint
-            closeSidebar();
-          }
-        });
-      }
+                 if (desktopUserInfo) {
+                   desktopUserInfo.style.display = 'none';
+                 }
 
-      // DOMContentLoadedとTurboの両方に対応
-      document.addEventListener('DOMContentLoaded', initializeMobileMenu);
-      document.addEventListener('turbo:load', initializeMobileMenu);
-    </script>
+                 if (mobileMenuButton) {
+                   mobileMenuButton.style.display = 'block';
+                 }
+               }
+             }
+
+             // サイドバーを開く
+             function openSidebar() {
+               sidebar.style.transform = 'translateX(0)';
+               if (overlay) {
+                 overlay.classList.remove('hidden');
+               }
+               document.body.classList.add('overflow-hidden');
+             }
+
+             // サイドバーを閉じる
+             function closeSidebar() {
+               sidebar.style.transform = 'translateX(-100%)';
+               if (overlay) {
+                 overlay.classList.add('hidden');
+               }
+               document.body.classList.remove('overflow-hidden');
+             }
+
+             // ハンバーガーメニューボタン
+             if (mobileMenuButton) {
+               mobileMenuButton.addEventListener('click', function(e) {
+                 e.preventDefault();
+                 openSidebar();
+               });
+             }
+
+             // 閉じるボタン
+             if (mobileMenuClose) {
+               mobileMenuClose.addEventListener('click', function(e) {
+                 e.preventDefault();
+                 closeSidebar();
+               });
+             }
+
+             // オーバーレイクリック
+             if (overlay) {
+               overlay.addEventListener('click', function(e) {
+                 e.preventDefault();
+                 closeSidebar();
+               });
+             }
+
+             // ESCキーで閉じる
+             document.addEventListener('keydown', function(e) {
+               if (e.key === 'Escape') {
+                 closeSidebar();
+               }
+             });
+
+             // 初期化とリサイズ時の処理
+             handleResponsiveLayout();
+             window.addEventListener('resize', handleResponsiveLayout);
+           }
+
+           // DOMContentLoadedとTurboの両方に対応
+           document.addEventListener('DOMContentLoaded', initializeMobileMenu);
+           document.addEventListener('turbo:load', initializeMobileMenu);
+         </script>
   </head>
 
   <body class="m-0 p-0">
