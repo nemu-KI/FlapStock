@@ -25,80 +25,27 @@
              const mobileMenuClose = document.getElementById('mobile-menu-close');
              const sidebar = document.getElementById('sidebar');
              const overlay = document.getElementById('mobile-menu-overlay');
-             // より確実な要素取得
-             const mobileHeader = sidebar ? sidebar.querySelector('div:first-child') : null;
-             const desktopUserInfo = document.querySelector('header .hidden.lg\\:flex');
 
              if (!sidebar) {
                return;
              }
 
-             // サイドバーの開閉状態を管理
-             let isSidebarOpen = false;
-
-             // レスポンシブ制御関数
-             function handleResponsiveLayout() {
-               const isDesktop = window.innerWidth >= 1280;
-
-               if (isDesktop) {
-                 // PC画面: サイドバーを常に表示、モバイルヘッダーを非表示
-                 sidebar.style.position = 'static';
-                 sidebar.style.transform = 'translateX(0)';
-                 sidebar.style.width = '16rem'; // w-64
-
-                 if (mobileHeader) {
-                   mobileHeader.style.display = 'none';
-                 }
-
-                 if (desktopUserInfo) {
-                   desktopUserInfo.style.display = 'flex';
-                 }
-
-                 if (mobileMenuButton) {
-                   mobileMenuButton.style.display = 'none';
-                 }
-               } else {
-                 // モバイル画面: サイドバーを隠す、モバイルヘッダーを表示
-                 sidebar.style.position = 'fixed';
-                 sidebar.style.width = '16rem'; // w-64
-
-                 // サイドバーが開いていない場合のみ隠す
-                 if (!isSidebarOpen) {
-                   sidebar.style.transform = 'translateX(-100%)';
-                 }
-
-                 if (mobileHeader) {
-                   mobileHeader.style.display = 'flex';
-                 }
-
-                 if (desktopUserInfo) {
-                   desktopUserInfo.style.display = 'none';
-                 }
-
-                 if (mobileMenuButton) {
-                   mobileMenuButton.style.display = 'block';
-                 }
-               }
-             }
-
              // サイドバーを開く
              function openSidebar() {
-               isSidebarOpen = true;
                sidebar.style.transform = 'translateX(0)';
                if (overlay) {
                  overlay.classList.remove('hidden');
-                 overlay.style.opacity = '0.5'; // 明示的に透明度を設定
+                 overlay.style.opacity = '0.5';
                }
                document.body.classList.add('overflow-hidden');
              }
 
              // サイドバーを閉じる
              function closeSidebar() {
-               isSidebarOpen = false;
                sidebar.style.transform = 'translateX(-100%)';
                if (overlay) {
                  overlay.classList.add('hidden');
-                 overlay.style.opacity = '0'; // 透明度をリセット
+                 overlay.style.opacity = '0';
                }
                document.body.classList.remove('overflow-hidden');
              }
@@ -134,9 +81,25 @@
                }
              });
 
-             // 初期化とリサイズ時の処理
-             handleResponsiveLayout();
-             window.addEventListener('resize', handleResponsiveLayout);
+             // ウィンドウリサイズ時の処理（PC画面では自動で閉じる）
+             window.addEventListener('resize', function() {
+               if (window.innerWidth >= 1280) {
+                 closeSidebar();
+                 // PC画面ではサイドバーを常に表示
+                 sidebar.style.position = 'static';
+                 sidebar.style.transform = 'translateX(0)';
+               } else {
+                 // モバイル画面ではサイドバーを隠す
+                 sidebar.style.position = 'fixed';
+                 sidebar.style.transform = 'translateX(-100%)';
+               }
+             });
+
+             // 初期化時にPC画面かどうかチェック
+             if (window.innerWidth >= 1280) {
+               sidebar.style.position = 'static';
+               sidebar.style.transform = 'translateX(0)';
+             }
            }
 
            // DOMContentLoadedとTurboの両方に対応
