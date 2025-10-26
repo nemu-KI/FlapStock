@@ -35,15 +35,17 @@
 
              // レスポンシブ制御関数
              function handleResponsiveLayout() {
-               const isDesktop = window.innerWidth >= 1024;
+               const isDesktop = window.innerWidth >= 1280;
 
                // デバッグ用ログ
                console.log('handleResponsiveLayout called', {
                  isDesktop,
                  windowWidth: window.innerWidth,
+                 breakpoint: '1280px',
                  mobileHeader: mobileHeader,
                  desktopUserInfo: desktopUserInfo,
-                 mobileMenuButton: mobileMenuButton
+                 mobileMenuButton: mobileMenuButton,
+                 sidebar: sidebar
                });
 
                if (isDesktop) {
@@ -85,11 +87,20 @@
 
              // サイドバーを開く
              function openSidebar() {
+               console.log('Opening sidebar', {
+                 sidebar: sidebar,
+                 currentTransform: sidebar.style.transform,
+                 currentPosition: sidebar.style.position
+               });
                sidebar.style.transform = 'translateX(0)';
                if (overlay) {
                  overlay.classList.remove('hidden');
                }
                document.body.classList.add('overflow-hidden');
+               console.log('Sidebar opened', {
+                 newTransform: sidebar.style.transform,
+                 overlayHidden: overlay ? overlay.classList.contains('hidden') : 'no overlay'
+               });
              }
 
              // サイドバーを閉じる
@@ -105,6 +116,11 @@
              if (mobileMenuButton) {
                mobileMenuButton.addEventListener('click', function(e) {
                  e.preventDefault();
+                 console.log('Mobile menu button clicked', {
+                   windowWidth: window.innerWidth,
+                   isDesktop: window.innerWidth >= 1280,
+                   sidebar: sidebar
+                 });
                  openSidebar();
                });
              }
