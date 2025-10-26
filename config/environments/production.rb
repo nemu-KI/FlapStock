@@ -115,6 +115,9 @@ Rails.application.configure do
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
 
+  # Force HTTPS
+  config.force_ssl = true
+
   # Enable DNS rebinding protection and other `Host` header attacks.
   # 独自ドメイン用のホスト設定
   config.hosts << 'flapstock.com'      # 独自ドメイン
