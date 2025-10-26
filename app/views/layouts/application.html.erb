@@ -32,20 +32,22 @@
 
              // サイドバーを開く
              function openSidebar() {
-               sidebar.style.transform = 'translateX(0)';
+               sidebar.classList.remove('-translate-x-full');
+               sidebar.classList.add('translate-x-0');
                if (overlay) {
                  overlay.classList.remove('hidden');
-                 overlay.style.opacity = '0.5';
+                 overlay.style.opacity = '0.5'; // オーバーレイの透明度を明示的に設定
                }
                document.body.classList.add('overflow-hidden');
              }
 
              // サイドバーを閉じる
              function closeSidebar() {
-               sidebar.style.transform = 'translateX(-100%)';
+               sidebar.classList.add('-translate-x-full');
+               sidebar.classList.remove('translate-x-0');
                if (overlay) {
                  overlay.classList.add('hidden');
-                 overlay.style.opacity = '0';
+                 overlay.style.opacity = '0'; // 透明度をリセット
                }
                document.body.classList.remove('overflow-hidden');
              }
@@ -81,25 +83,12 @@
                }
              });
 
-             // ウィンドウリサイズ時の処理（PC画面では自動で閉じる）
+             // ウィンドウリサイズ時の処理
              window.addEventListener('resize', function() {
-               if (window.innerWidth >= 1280) {
+               if (window.innerWidth >= 1024) { // lg breakpoint
                  closeSidebar();
-                 // PC画面ではサイドバーを常に表示
-                 sidebar.style.position = 'static';
-                 sidebar.style.transform = 'translateX(0)';
-               } else {
-                 // モバイル画面ではサイドバーを隠す
-                 sidebar.style.position = 'fixed';
-                 sidebar.style.transform = 'translateX(-100%)';
                }
              });
-
-             // 初期化時にPC画面かどうかチェック
-             if (window.innerWidth >= 1280) {
-               sidebar.style.position = 'static';
-               sidebar.style.transform = 'translateX(0)';
-             }
            }
 
            // DOMContentLoadedとTurboの両方に対応
