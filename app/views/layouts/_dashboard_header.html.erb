@@ -2,7 +2,7 @@
   <!-- 左側: ハンバーガーメニュー + ロゴ -->
   <div class="flex items-center space-x-4">
              <!-- ハンバーガーメニューボタン（モバイルのみ表示） -->
-             <button id="mobile-menu-button" class="mobile-menu-button lg:hidden p-2 rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500">
+             <button id="mobile-menu-button" class="lg:hidden p-2 rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500">
       <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
       </svg>
@@ -12,7 +12,7 @@
     <%= image_tag 'FlapStock_logo.png', alt: 'FlapStock', class: 'h-8 sm:h-10 w-auto' %>
 
              <!-- 会社名・ユーザー名（デスクトップのみ表示） -->
-             <div class="desktop-user-info hidden lg:flex items-center space-x-3">
+             <div class="hidden lg:flex items-center space-x-3">
       <span class="text-lg font-semibold text-gray-800"><%= current_user&.company&.name || '会社名' %></span>
       <span class="text-gray-400">|</span>
       <span class="text-base text-gray-700"><%= current_user&.name || 'ユーザー名' %></span>

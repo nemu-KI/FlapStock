@@ -1,0 +1,29 @@
+/* レスポンシブデザインの強制適用 - Tailwind CSS v4の問題を回避 */
+
+/* PC画面（1024px以上）でのサイドバー制御 - より高い特異性で強制適用 */
+@media (min-width: 1024px) {
+  #sidebar {
+    position: static !important;
+    transform: translateX(0) !important;
+  }
+
+  #mobile-menu-overlay {
+    display: none !important;
+  }
+
+  #sidebar .lg\\:hidden {
+    display: none !important;
+  }
+}
+
+/* モバイル画面（1024px未満）でのサイドバー制御 */
+@media (max-width: 1023px) {
+  #sidebar {
+    position: fixed !important;
+    transform: translateX(-100%) !important;
+  }
+
+  #sidebar .lg\\:hidden {
+    display: flex !important;
+  }
+}
