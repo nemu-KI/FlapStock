@@ -32,22 +32,18 @@
 
              // サイドバーを開く
              function openSidebar() {
-               sidebar.classList.remove('-translate-x-full');
-               sidebar.classList.add('translate-x-0');
+               document.body.classList.add('sidebar-open');
                if (overlay) {
-                 overlay.classList.remove('hidden');
-                 overlay.style.opacity = '0.5'; // オーバーレイの透明度を明示的に設定
+                 overlay.style.opacity = '0.5';
                }
                document.body.classList.add('overflow-hidden');
              }
 
              // サイドバーを閉じる
              function closeSidebar() {
-               sidebar.classList.add('-translate-x-full');
-               sidebar.classList.remove('translate-x-0');
+               document.body.classList.remove('sidebar-open');
                if (overlay) {
-                 overlay.classList.add('hidden');
-                 overlay.style.opacity = '0'; // 透明度をリセット
+                 overlay.style.opacity = '0';
                }
                document.body.classList.remove('overflow-hidden');
              }
@@ -85,7 +81,7 @@
 
              // ウィンドウリサイズ時の処理
              window.addEventListener('resize', function() {
-               if (window.innerWidth >= 1024) { // lg breakpoint (64rem = 1024px)
+               if (window.innerWidth >= 1024) {
                  closeSidebar();
                }
              });
