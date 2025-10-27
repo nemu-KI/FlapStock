@@ -49,22 +49,22 @@ export default class extends Controller {
       return
     }
 
-    const items = this.itemTargets
-    const currentIndex = items.findIndex(item => item.classList.contains('active'))
+    const itemsArray = Array.from(this.dropdownTarget.querySelectorAll('.autocomplete-item'))
+    const currentIndex = itemsArray.findIndex(item => item.classList.contains('active'))
 
     switch (event.key) {
       case 'ArrowDown':
         event.preventDefault()
-        this.selectNextItem(items, currentIndex)
+        this.selectNextItem(itemsArray, currentIndex)
         break
       case 'ArrowUp':
         event.preventDefault()
-        this.selectPreviousItem(items, currentIndex)
+        this.selectPreviousItem(itemsArray, currentIndex)
         break
       case 'Enter':
         event.preventDefault()
         if (currentIndex >= 0) {
-          this.selectItem(items[currentIndex])
+          this.selectItem(itemsArray[currentIndex])
         }
         break
       case 'Escape':
@@ -94,8 +94,6 @@ export default class extends Controller {
       url.searchParams.set('q', query)
       url.searchParams.set('field', this.fieldValue)
       url.searchParams.set('limit', this.maxResultsValue)
-
-      // Fetching suggestions for field: this.fieldValue
 
       const response = await fetch(url, {
         headers: {
