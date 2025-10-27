@@ -454,55 +454,6 @@ document.addEventListener('DOMContentLoaded', function() {
     toggleTimeField(); // 初期表示の設定
   }
 
-  // 権限変更の処理
-  document.addEventListener('change', function(event) {
-    if (event.target.matches('select[data-user-id]')) {
-      const userId = event.target.dataset.userId;
-      const newRole = event.target.value;
-      const currentRole = event.target.dataset.currentRole;
-
-
-      if (newRole === currentRole) {
-        return; // 変更がない場合は何もしない
-      }
-
-      // 確認ダイアログ
-      if (!confirm(`権限を${getRoleDisplayName(newRole)}に変更しますか？`)) {
-        event.target.value = currentRole; // 元の値に戻す
-        return;
-      }
-
-      // AJAXで権限変更
-      fetch(`/settings/users/${userId}/role`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
-        },
-        body: JSON.stringify({ role: newRole })
-      })
-      .then(response => response.json())
-      .then(data => {
-        if (data.success) {
-          // 成功メッセージを表示
-          showNotification(data.message, 'success');
-          // 現在の権限を更新
-          event.target.dataset.currentRole = newRole;
-        } else {
-          // エラーメッセージを表示
-          showNotification(data.message, 'error');
-          // 元の値に戻す
-          event.target.value = currentRole;
-        }
-      })
-      .catch(error => {
-        console.error('Error:', error);
-        showNotification('権限の変更に失敗しました。', 'error');
-        // 元の値に戻す
-        event.target.value = currentRole;
-      });
-    }
-  });
 
   // 権限表示名の取得
   function getRoleDisplayName(role) {
@@ -636,5 +587,79 @@ document.addEventListener('DOMContentLoaded', function() {
       showNotification('ユーザー削除に失敗しました。', 'error');
     });
   };
+});
+</script>
+
+<script>
+// 権限表示名の取得（グローバル関数）
+function getRoleDisplayNameGlobal(role) {
+  const roleNames = {
+    'admin': '管理者',
+    'manager': 'マネージャー',
+    'staff': 'スタッフ'
+  };
+  return roleNames[role] || role;
+}
+
+// 通知の表示（グローバル関数）
+function showNotificationGlobal(message, type) {
+  const notification = document.createElement('div');
+  notification.className = `fixed top-4 right-4 z-50 px-6 py-3 rounded-md shadow-lg ${
+    type === 'success' ? 'bg-green-500 text-white' : 'bg-red-500 text-white'
+  }`;
+  notification.textContent = message;
+
+  document.body.appendChild(notification);
+
+  // 3秒後に削除
+  setTimeout(() => {
+    if (document.body.contains(notification)) {
+      document.body.removeChild(notification);
+    }
+  }, 3000);
+}
+
+// 権限変更のグローバルリスナー（Turbo遷移後も動作するように1回だけ設定）
+document.addEventListener('change', function(event) {
+  if (event.target.matches('select[data-user-id]')) {
+    const userId = event.target.dataset.userId;
+    const newRole = event.target.value;
+    const currentRole = event.target.dataset.currentRole;
+
+    if (newRole === currentRole) {
+      return; // 変更がない場合は何もしない
+    }
+
+    // 確認ダイアログ
+    if (!confirm(`権限を${getRoleDisplayNameGlobal(newRole)}に変更しますか？`)) {
+      event.target.value = currentRole; // 元の値に戻す
+      return;
+    }
+
+    // AJAXで権限変更
+    fetch(`/settings/users/${userId}/role`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
+      },
+      body: JSON.stringify({ role: newRole })
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        showNotificationGlobal(data.message, 'success');
+        event.target.dataset.currentRole = newRole;
+      } else {
+        showNotificationGlobal(data.message, 'error');
+        event.target.value = currentRole;
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      showNotificationGlobal('権限の変更に失敗しました。', 'error');
+      event.target.value = currentRole;
+    });
+  }
 });
 </script>
