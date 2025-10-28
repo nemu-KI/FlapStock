@@ -45,11 +45,9 @@ class GuestController < ApplicationController
   end
 
   def sign_in_guest_user(guest_user)
-    Rails.logger.info "Signing in guest user: #{guest_user.email} with role: #{guest_user.role}"
     sign_in(guest_user)
     session[:guest_mode] = true
     session[:guest_session_start] = Time.current.to_s
-    Rails.logger.info "Guest user signed in successfully with role: #{guest_user.role}"
   end
 
   def create_guest_user
@@ -82,7 +80,6 @@ class GuestController < ApplicationController
   def ensure_sample_data_exists(guest_company)
     return if guest_company.items.any?
 
-    Rails.logger.info "Creating sample data for guest company: #{guest_company.name}"
     create_sample_data(guest_company)
   end
 
@@ -92,8 +89,6 @@ class GuestController < ApplicationController
     suppliers = create_suppliers(guest_company)
     items = create_items(guest_company, categories, locations, suppliers)
     create_stock_movements(guest_company, items)
-
-    log_sample_data_creation(guest_company)
   rescue StandardError => e
     Rails.logger.error "Failed to create sample data: #{e.message}"
   end
@@ -156,8 +151,4 @@ class GuestController < ApplicationController
     end
   end
 
-  def log_sample_data_creation(guest_company)
-    Rails.logger.info "Sample data created: #{guest_company.items.count} items, " \
-                      "#{guest_company.stock_movements.count} movements"
-  end
 end

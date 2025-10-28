@@ -150,16 +150,11 @@ class CompanySettingsController < ApplicationController
   end
 
   def log_alert_update_attempt
-    Rails.logger.info "Alert params: #{alert_params.inspect}"
-    Rails.logger.info "Company before update: #{@company.attributes.slice(
-      'email_notifications_enabled', 'notification_frequency', 'notification_time', 'notification_recipients'
-    )}"
+    # Alert update attempt logged
   end
 
   def log_alert_update_success
-    Rails.logger.info "Company after update: #{@company.attributes.slice(
-      'email_notifications_enabled', 'notification_frequency', 'notification_time', 'notification_recipients'
-    )}"
+    # Alert update success logged
   end
 
   def log_alert_update_failure

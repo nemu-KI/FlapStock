@@ -111,9 +111,7 @@ class StockMovement < ApplicationRecord
   end
 
   def send_alert_email(recipients)
-    Rails.logger.info "Sending stock alert to: #{recipients.map(&:email).join(', ')}"
     AlertMailer.stock_alert(item, item.stock_alert_status, recipients).deliver_now
-    Rails.logger.info "Stock alert sent: #{item.name} to #{recipients.count} recipients"
   end
 
   def recent_alert_sent?

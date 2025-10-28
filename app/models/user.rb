@@ -51,9 +51,7 @@ class User < ApplicationRecord
   end
 
   def set_admin_role
-    # MVPリリース期間中は全ユーザーをadminに設定
     # 将来的には招待コードや設定画面で権限を管理
-    Rails.logger.info "Setting admin role for user: #{email}"
     self.role = :admin
   end
 
@@ -61,7 +59,6 @@ class User < ApplicationRecord
     # フォールバック: 権限が設定されていない場合はadminに設定
     return unless role.blank? || role == 'staff'
 
-    Rails.logger.info "Ensuring admin role for user: #{email}"
     update_column(:role, :admin)
   end
 
