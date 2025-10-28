@@ -42,10 +42,7 @@ class CompanySettingsController < ApplicationController
 
   # アラート設定の更新（会社単位）
   def update_alerts
-    log_alert_update_attempt
-
     if @company.update(alert_params)
-      log_alert_update_success
       redirect_to settings_path, notice: 'アラート設定を更新しました。'
     else
       log_alert_update_failure
@@ -149,13 +146,6 @@ class CompanySettingsController < ApplicationController
     end
   end
 
-  def log_alert_update_attempt
-    # Alert update attempt logged
-  end
-
-  def log_alert_update_success
-    # Alert update success logged
-  end
 
   def log_alert_update_failure
     Rails.logger.error "Update failed: #{@company.errors.full_messages}"
