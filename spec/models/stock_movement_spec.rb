@@ -191,8 +191,8 @@ RSpec.describe StockMovement, type: :model do
     let(:item) { create(:item, company: company, category: category, location: location, supplier: supplier) }
 
     before do
-      create(:stock_movement, company: company, user: user, item: item, movement_category: :inbound)
-      build(:stock_movement, company: company, user: user, item: item, movement_category: :outbound, quantity: 5).save!
+      create(:stock_movement, company: company, user: user, item: item, movement_category: :inbound, quantity: 10)
+      create(:stock_movement, company: company, user: user, item: item, movement_category: :outbound, quantity: 5)
       create(:stock_movement, company: company, user: user, item: item, movement_category: :adjustment)
     end
 

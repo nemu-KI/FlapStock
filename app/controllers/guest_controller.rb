@@ -150,5 +150,4 @@ class GuestController < ApplicationController
       )
     end
   end
-
 end

@@ -146,7 +146,6 @@ class CompanySettingsController < ApplicationController
     end
   end
 
-
   def log_alert_update_failure
     Rails.logger.error "Update failed: #{@company.errors.full_messages}"
   end
