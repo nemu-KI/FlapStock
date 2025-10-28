@@ -27,15 +27,8 @@ class OrderEmailsController < ApplicationController
   # POST /order_emails/preview
   # プレビュー画面
   def preview
-    Rails.logger.info '=== ORDER EMAIL PREVIEW START ==='
-    Rails.logger.info "User: #{current_user.email} (#{current_user.role})"
-    Rails.logger.info "Params: #{params.inspect}"
-
     @order_emails = build_order_emails_from_params
     @items = load_items_for_validation
-
-    Rails.logger.info "Order emails count: #{@order_emails.count}"
-    Rails.logger.info '=== ORDER EMAIL PREVIEW END ==='
 
     # バリデーション
     # rubocop:disable Lint/NonLocalExitFromIterator
