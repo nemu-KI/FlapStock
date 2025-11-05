@@ -1,6 +1,15 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XJ6XRGMP68"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-XJ6XRGMP68');
+    </script>
+
     <title><%= @page_title || 'FlapStock - 在庫管理システム' %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="description" content="<%= @page_description || 'FlapStockは、効率的な在庫管理を実現するWebアプリケーションです。' %>">
