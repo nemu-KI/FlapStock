@@ -35,7 +35,6 @@ class AlertScheduler
 
   # 日次・週次のアラートをキューに追加（バッチ処理用）
   def queue_batch_alerts
-
     return unless should_send_alert?
     return if already_sent_today?
 
@@ -59,9 +58,8 @@ class AlertScheduler
     # 同じ日で、かつ1時間以内に送信済みの場合は重複とみなす
     same_date = last_sent.to_date == current_time.to_date
     within_hour = (current_time - last_sent) < 1.hour
-    is_duplicate = same_date && within_hour
+    same_date && within_hour
 
-    is_duplicate
   end
 
   def should_send_daily_alert?
@@ -71,9 +69,8 @@ class AlertScheduler
     target_time = Time.zone.parse("#{current_time.to_date} #{@company.notification_time}")
 
     time_diff = (current_time - target_time).abs
-    should_send = time_diff <= 5.minutes
+    time_diff <= 5.minutes
 
-    should_send
   end
 
   def should_send_weekly_alert?
@@ -84,19 +81,17 @@ class AlertScheduler
   end
 
   def find_alert_items
-    alert_items = @company.items.with_stock_alerts.select(&:needs_alert?)
-    alert_items
+    @company.items.with_stock_alerts.select(&:needs_alert?)
   end
 
   def find_recipients
-    recipients = AlertMailer.notification_recipients(@company)
-    recipients
+    AlertMailer.notification_recipients(@company)
+
   end
 
   def send_batch_alert(alert_items, recipients)
     AlertMailer.batch_stock_alert(@company, alert_items, recipients).deliver_now
     # 送信日時を記録
     @company.update_column(:last_batch_alert_sent, Time.current)
-
   end
 end
