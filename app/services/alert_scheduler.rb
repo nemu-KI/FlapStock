@@ -31,12 +31,10 @@ class AlertScheduler
     return if recipients.empty?
 
     AlertMailer.stock_alert(item, alert_type, recipients).deliver_now
-    Rails.logger.info "Immediate alert sent: #{item.name} to #{recipients.count} recipients"
   end
 
   # 日次・週次のアラートをキューに追加（バッチ処理用）
   def queue_batch_alerts
-    Rails.logger.info "queue_batch_alerts called for #{@company.name}"
 
     return unless should_send_alert?
     return if already_sent_today?
@@ -63,12 +61,6 @@ class AlertScheduler
     within_hour = (current_time - last_sent) < 1.hour
     is_duplicate = same_date && within_hour
 
-    Rails.logger.info "Duplicate check for #{@company.name}: " \
-                      "last_sent=#{last_sent.strftime('%Y-%m-%d %H:%M')}, " \
-                      "current=#{current_time.strftime('%Y-%m-%d %H:%M')}, " \
-                      "same_date=#{same_date}, within_hour=#{within_hour}, " \
-                      "is_duplicate=#{is_duplicate}"
-
     is_duplicate
   end
 
@@ -80,11 +72,6 @@ class AlertScheduler
 
     time_diff = (current_time - target_time).abs
     should_send = time_diff <= 5.minutes
-
-    Rails.logger.info "Daily alert check for #{@company.name}: " \
-                      "current=#{current_time.strftime('%H:%M')}, " \
-                      "target=#{target_time.strftime('%H:%M')}, " \
-                      "diff=#{time_diff.to_i}s, send=#{should_send}"
 
     should_send
   end
@@ -98,23 +85,18 @@ class AlertScheduler
 
   def find_alert_items
     alert_items = @company.items.with_stock_alerts.select(&:needs_alert?)
-    Rails.logger.info "Found #{alert_items.count} alert items for #{@company.name}"
     alert_items
   end
 
   def find_recipients
     recipients = AlertMailer.notification_recipients(@company)
-    Rails.logger.info "Found #{recipients.count} recipients for #{@company.name}"
     recipients
   end
 
   def send_batch_alert(alert_items, recipients)
-    Rails.logger.info "Sending batch alert for #{@company.name}"
     AlertMailer.batch_stock_alert(@company, alert_items, recipients).deliver_now
-
     # 送信日時を記録
     @company.update_column(:last_batch_alert_sent, Time.current)
 
-    Rails.logger.info "Batch alert sent: #{alert_items.count} items to #{recipients.count} recipients"
   end
 end
