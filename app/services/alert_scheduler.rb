@@ -59,6 +59,7 @@ class AlertScheduler
     same_date = last_sent.to_date == current_time.to_date
     within_hour = (current_time - last_sent) < 1.hour
     same_date && within_hour
+
   end
 
   def should_send_daily_alert?
@@ -69,6 +70,7 @@ class AlertScheduler
 
     time_diff = (current_time - target_time).abs
     time_diff <= 5.minutes
+
   end
 
   def should_send_weekly_alert?
@@ -84,6 +86,7 @@ class AlertScheduler
 
   def find_recipients
     AlertMailer.notification_recipients(@company)
+
   end
 
   def send_batch_alert(alert_items, recipients)
